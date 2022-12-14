@@ -1,0 +1,27 @@
+ <section>
+    <form action="/admin/couponEdit/<%=coup._id%>" method="post">
+        <div class="container">
+            <div class="row justify-content-center">
+        <div class="col-sm-12 col-xl-6">
+            <div class="bg-secondary rounded h-100 p-4">
+                <h6 class="mb-4">Add Coupon</h6>
+                <label for="floatingInput">Coupon Name</label>
+                <input class="form-control mb-3" type="text" name="couponName" placeholder="Coupon Name"
+                    aria-label="default input example" value="<%=coup.name %>">
+                    <label for="floatingInput">Amount</label>
+                <input class="form-control mb-3" type="number" name="amount" placeholder="Amount"
+                    aria-label="default input example" value="<%-coup.amount %>">
+                    <label for="floatingInput">Min Purchase</label>
+                <input class="form-control mb-3" type="text" name="minPurchase"  placeholder="MinPurchase"
+                    aria-label="default input example" value="<%-coup.minCartAmount%>">
+                    <label for="floatingInput">Expiry Date</label>
+                <input class="form-control mb-3" type="date" name="expirydate"  placeholder="Date"
+                    aria-label="default input example" value="<%=coup.expireDate %>">
+                    <button type="submit" class="btn btn-primary mt-4">Submit</button> 
+                    <a href="/admin/coupons" class="btn btn-success mt-4"> back</a>    
+                </div>
+             </div>
+            </div>
+        </div>
+     </form>
+ </section>
