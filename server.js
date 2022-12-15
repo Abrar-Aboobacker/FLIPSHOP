@@ -42,28 +42,7 @@ mongoose.connect(process.env.DATABASE_URL);
 db.on('error',error=> console.error(error));
 db.once('open',()=> console.log('connected to mongoose'));
 
-const imageStorage = multer.diskStorage({
-    // Destination to store image     
-    destination: 'public/img/category', 
-      filename: (req, file, cb) => {
-          cb(null, file.fieldname + '_' + Date.now() 
-             + path.extname(file.originalname))
-    }
-});
 
-const imageUpload = multer({
-    storage: imageStorage,
-    limits: {
-      fileSize: 1000000 // 1000000 Bytes = 1 MB
-    },
-    fileFilter(req, file, cb) {
-      if (!file.originalname.match(/\.(png|jpg)$/)) { 
-         // upload only png and jpg format
-         return cb(new Error('Please upload a Image'))
-       }
-     cb(undefined, true)
-  }
-}) 
 
 app.use('/',userRouter)
 app.use('/admin',adminRouter)

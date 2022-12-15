@@ -17,7 +17,8 @@ const {adminLogin,
     disableCoupon,
     editCoupon,
     postEditCoupoun,
-    addProduct
+    addProduct,
+    postProduct
     }
     
     =require ('../controllers/admin-controller')
@@ -27,7 +28,8 @@ router.get('/adlogin',adminLogin)
 router.post('/adlogin',adminPostLogin)
 router.get('/dashboard',adminDashboard)
 router.get('/products',AdminProductManagment)
-router.get('addProduct',addProduct)
+router.get('/addProduct',addProduct)
+router.post('/products',postProduct)
 router.get('/categories',AdminCategoryManagment)
 router.get('/addcategory',addCategory)
 router.post('/categories',postCategory)

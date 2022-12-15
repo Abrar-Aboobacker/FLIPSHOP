@@ -81,7 +81,7 @@
                 <div class="row g-4">
                     <div class="col-12">
                         <div class="bg-secondary rounded h-100 p-4">
-                            <h6 class="mb-4">Prodicts Table</h6>
+                            <h6 class="mb-4">Products Table</h6>
                             <div class="table-responsive">
                                 <table class="table">
                                     <thead>
@@ -95,19 +95,19 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <% productList.forEach(function(ProductList,){ %> 
+                                        <% productList.forEach(function(productList,){ %> 
                                         <tr>
                                             <th scope="row"><%=1 %>  </th>
-                                            <td><%=couponList.name %> </td>
-                                            <td><%=couponList.amount %> </td>
-                                            <td><%=couponList.minCartAmount%> </td>
-                                            <td><%=couponList.expireDate%> </td>
+                                            <td><%=productList.name %> </td>
+                                            <td><%=ProductList.amount %> </td>
+                                            <td><%=ProductList.minCartAmount%> </td>
+                                            <td><%=ProductList.expireDate%> </td>
                                             <td>
-                                                <a href="/admin/couponEdit/<%=couponList._id %> " 
+                                                <a href="/admin/couponEdit/<%=productList._id %> " 
                                                     class="btn btn-success"
-                                                     onclick = "return confirm('Are you want edit <%=  couponList.name%>')">edit</a>
+                                                     onclick = "return confirm('Are you want edit <%=  productList.name%>')">edit</a>
 
-                                                <% if (couponList.access) {%> 
+                                                <!-- <% if (couponList.access) {%> 
                                                 <a href="/admin/couponDisable/<%=couponList._id %> " 
                                                     class="btn btn-danger"
                                                      onclick = "return confirm('Are you want disable <%=  couponList.name%>')">Disable</a>
@@ -115,7 +115,7 @@
                                                     <a href="/admin/couponEnable/<%=couponList._id %> " 
                                                         class="btn btn-danger" 
                                                         onclick = "return confirm('Are you want enable <%= couponList.name%>')">Enable</a>
-                                                    <% } %> 
+                                                    <% } %>  -->
                                             </td>
                                         </tr>
                                         <% }) %> 

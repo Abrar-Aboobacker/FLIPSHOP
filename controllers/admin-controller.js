@@ -1,6 +1,7 @@
 const admins =require('../models/admin');
 const category1 = require('../models/category');
-const coupons =require('../models/coupon')
+const coupons =require('../models/coupon');
+const product = require('../models/product');
 const adminDatabase = require('./adminDatabase');
 const userHelpers = require('./adminDatabase');
 
@@ -49,6 +50,26 @@ module.exports={
     },
     addProduct:(req,res)=>{
       res.render("admin/add-Product")
+    },
+    postProduct:async(req,res)=>{
+      console.log(req.body)
+      const productInformation=req.body
+      const product1 = new product ({
+        name:productInformation.name,
+        price:productInformation.price,
+        description:productInformation.description,
+        category:productInformation.cat
+      })
+      await product1.save((err,doc)=>{
+        if(err){
+          console.log(err);
+        }else{
+          console.log(doc);
+        }
+      })
+      console.log(categoryInformation);
+      res.redirect("/admin/products")
+      
     },
     AdminCategoryManagment:(req,res)=>{
       adminDatabase.getAllCategory((err,categoryList)=>{
