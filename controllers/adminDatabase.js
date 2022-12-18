@@ -1,6 +1,7 @@
 const admins =require('../models/admin')
 const category1 = require('../models/category');
 const coupons =require ('../models/coupon')
+const product = require('../models/product')
 
 module.exports={
     adminlogin:(admindata)=>{
@@ -22,6 +23,28 @@ module.exports={
                 resolve({status:false})
                 console.log('not working');
             }
+        })
+    },
+    getAllProduct:  (callback) => {
+
+        product .find().where().
+       exec((err,productList)=>{
+           
+           callback(err,productList)
+         });
+     },
+     getProductDetails:(productId)=>{
+        return new Promise((resolve,reject)=>{
+            product.findOne({_id:productId}).then((product)=>{
+                resolve(product)
+            })
+        })
+    },
+    deleteProductDetails:(productId)=>{
+        return new Promise((resolve,reject)=>{
+            product.deleteOne({_id:productId}).then((response)=>{
+                resolve(true)
+            })
         })
     },
     getAllCategory:  (callback) => {

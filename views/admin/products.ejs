@@ -1,11 +1,11 @@
 <body>
     <div class="container-fluid position-relative d-flex p-0">
         <!-- Spinner Start -->
-        <div id="spinner" class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <!-- <div id="spinner" class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
             <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
                 <span class="sr-only">Loading...</span>
             </div>
-        </div>
+        </div> -->
         <!-- Spinner End -->
 
 
@@ -74,7 +74,7 @@
             <!-- Navbar End -->
 
             <div class="col d-flex justify-content-end">
-                <a href="addcoupon" class="btn btn-danger mt-4 mb-4" >Add Products</a>
+                <a href="addProduct" class="btn btn-danger mt-4 mb-4" >Add Products</a>
           </div>
             <!-- Table Start -->
             <div class="container-fluid pt-4 px-4">
@@ -87,35 +87,44 @@
                                     <thead>
                                         <tr>
                                             <th scope="col">NO</th>
-                                            <th scope="col">Name</th>
-                                            <th scope="col">Amount</th>
-                                            <th scope="col">Min Purchase</th>
-                                            <th scope="col">Expiry Date</th>
+                                            <th scope="col">Product Name</th>
+                                            <th scope="col">Category</th>
+                                            <th scope="col">Price</th>
+                                            <th scope="col">Stock</th>
+                                            <th scope="col">Discount</th>
+                                            <th scope="col">Size</th>
+                                            <th scope="col">Image</th>
+                                            <th scope="col">Discriptiom</th>
                                             <th scope="col">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <% productList.forEach(function(productList,){ %> 
+                                        <% productList.forEach(function(productList,index){ %> 
                                         <tr>
-                                            <th scope="row"><%=1 %>  </th>
-                                            <td><%=productList.name %> </td>
-                                            <td><%=ProductList.amount %> </td>
-                                            <td><%=ProductList.minCartAmount%> </td>
-                                            <td><%=ProductList.expireDate%> </td>
+                                            <th scope="row"><%=index+1 %>  </th>
+                                            <td><%=productList.name%> </td>
+                                            <td><%=productList.category%> </td>
+                                            <td><%=productList.price%> </td>
+                                            <td><%=productList.stock%> </td>
+                                            <td><%=productList.discount%> </td>
+                                            <td><%=productList.size%> </td>
                                             <td>
-                                                <a href="/admin/couponEdit/<%=productList._id %> " 
+                                                <%   for(let z=0;z<productList.image.length;z++) {%>
+                                                    <img src="/image/productImages/<%= productList.image[z] %>" >
+                                                    <% } %> 
+                                                </td>
+                                            <td><%=productList.description%> </td>
+                                            <td>
+                                                <a href="/admin/productEdit/<%=productList._id %> " 
                                                     class="btn btn-success"
                                                      onclick = "return confirm('Are you want edit <%=  productList.name%>')">edit</a>
 
-                                                <!-- <% if (couponList.access) {%> 
-                                                <a href="/admin/couponDisable/<%=couponList._id %> " 
+                                            </td>
+                                            <td>
+                                                <a href="/admin/deleteProduct/<%=productList._id %> " 
                                                     class="btn btn-danger"
-                                                     onclick = "return confirm('Are you want disable <%=  couponList.name%>')">Disable</a>
-                                                <% }  else { %> 
-                                                    <a href="/admin/couponEnable/<%=couponList._id %> " 
-                                                        class="btn btn-danger" 
-                                                        onclick = "return confirm('Are you want enable <%= couponList.name%>')">Enable</a>
-                                                    <% } %>  -->
+                                                     onclick = "return confirm('Are you want delete <%=  productList.name%>')">Delete</a>
+
                                             </td>
                                         </tr>
                                         <% }) %> 

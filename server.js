@@ -12,13 +12,13 @@ const session = require('express-session')
 const LocalStrategy = require('passport-local').Strategy
 const nocache = require("nocache");
 const cookieParser = require('cookie-parser')
-const multer = require ("multer")
+
 const db = mongoose.connection
 mongoose.set('strictQuery', true);
 
 
 const userRouter = require ('./routes/user-router')
-const adminRouter = require ('./routes/admin-router')
+const adminRouter = require ('./routes/admin-router');
 
 app.set("view engine","ejs");
 app.set("views",__dirname +'/views');
@@ -26,7 +26,7 @@ app.set ('layout','layouts/layout');
 app.use(expresslayout);
 app.use(express.static(__dirname + '/public'));
 app.use(express.urlencoded({extended:true}));
-// app.use(express.json())
+// app.use(express.json()),
 app.use(express.json())
 app.use(flash())
 app.use(session({secret:'key',

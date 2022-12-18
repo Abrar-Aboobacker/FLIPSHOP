@@ -1,11 +1,8 @@
 const admins =require('../models/admin');
 const category1 = require('../models/category');
 const coupons =require('../models/coupon');
-const product = require('../models/product');
+const products = require('../models/product');
 const adminDatabase = require('./adminDatabase');
-const userHelpers = require('./adminDatabase');
-
-
 
 module.exports={
     adminLogin :(req, res) => {
@@ -21,7 +18,8 @@ module.exports={
     },
     adminPostLogin:(req,res)=>{
         console.log(req.body);
-        userHelpers.adminlogin(req.body).then((response)=>{
+        adminDatabase.adminlogin(req.body).then((response)=>{
+
             if(response.status){
               req.session.admin=response.admin
               req.session.adloggedIn=true
@@ -46,31 +44,121 @@ module.exports={
           }
     },
     AdminProductManagment:(req,res)=>{
-      res.render("admin/products")
+      adminDatabase.getAllProduct((err,productList)=>{
+        res.render("admin/products",{productList})
+      })
     },
     addProduct:(req,res)=>{
-      res.render("admin/add-Product")
-    },
+      adminDatabase.getAllCategory((err,categoryList)=>{
+      res.render("admin/add-Product",{categoryList})
+    })
+  },
     postProduct:async(req,res)=>{
-      console.log(req.body)
+      console.log(req.body,'product boduyyyyyyyyyyyyyyyyyyyyyyyyyyy')
+      console.log(req.body.images,'hhhhhhhhhhhhhhhhhhhhhhhhhh');
       const productInformation=req.body
-      const product1 = new product ({
+      const product1 = new products({
         name:productInformation.name,
         price:productInformation.price,
+        stock:productInformation.stock,
+        discount:productInformation.discount,
+        size:productInformation.size,
         description:productInformation.description,
-        category:productInformation.cat
+        category:productInformation.cat,
+        image:req.body.images
+
       })
-      await product1.save((err,doc)=>{
+      
+       product1.save((err,doc)=>{
         if(err){
-          console.log(err);
+          res.redirect("/admin/addProduct")
         }else{
-          console.log(doc);
+          console.log(productInformation);
+          res.redirect("/admin/products")
+          
         }
       })
-      console.log(categoryInformation);
-      res.redirect("/admin/products")
-      
+    
     },
+    editProduct: async (req,res)=>{
+      adminDatabase.getAllCategory(async (err,categoryList)=>{
+        let product =await adminDatabase.getProductDetails(req.params.id)
+      console.log(product+"iugytdytryu");
+      res.render('admin/edit-product',{product,categoryList})
+      })
+    },
+    postEditProduct: async(req,res)=>{
+      console.log("eeeeeeeeeeeeeeee"+req.params.id);
+      const id = req.params.id
+      console.log(id +"sdfhiudhsiudfhhdf");
+      console.log("ddddddddddddddddddddddddddddddddddddddddddddd");
+      console.log(req.body);
+      let pro=[]
+      const updatedProName=req.body.name
+      const updatedCategory = req.body.cat
+      const updatedPrice = req.body.price
+      const updatedStock = req.body.stock
+      const updatedDiscount=req.body.discount
+      const updatedSize=req.body.size
+      const updatedImage=req.body.images
+
+    
+      // const updatedDiscription
+
+
+      let product ={
+        name:updatedProName,
+        category:updatedCategory,
+        price:updatedPrice,
+        stock:updatedStock,
+        discount:updatedDiscount,
+        size:updatedSize,
+        image:updatedImage
+      } 
+      console.log(product);
+      // const image=req.body.images
+      if(req.body.images==""){
+        
+        const productz=await  products.updateOne({_id:id},{
+
+          $set:{
+              name:product.name,
+              category:product.category,
+              price:product.price,
+              stock:product.stock,
+              discount:product.discount,
+              size:product.size,
+              
+          }
+          
+      })
+      console.log(productz+ "pro");
+      }
+      else{
+        const productz=await  products.updateOne({_id:id},{
+
+          $set:{
+              name:product.name,
+              category:product.category,
+              price:product.price,
+              stock:product.stock,
+              discount:product.discount,
+              size:product.size,
+              image:product.image
+          }
+      })
+      }
+     
+    res.redirect('/admin/products')
+  },
+    deleteProduct:(req,res)=>{
+    let userId=req.params.id
+    adminDatabase.deleteProductDetails(userId).then((response)=>{
+      req.session.user=null
+     req.session.loggedIn=false
+      res.redirect('/admin/products')
+    }) 
+  },
     AdminCategoryManagment:(req,res)=>{
       adminDatabase.getAllCategory((err,categoryList)=>{
         res.render("admin/category",{categoryList})
@@ -141,8 +229,7 @@ module.exports={
       },
       editCoupon: async (req,res)=>{
 
-        let coupon =await adminDatabase.getCouponDetails(req.params.id)
-        let coup= coupon
+        let coup =await adminDatabase.getCouponDetails(req.params.id)
         console.log(coup);
         res.render('admin/edit-coupon',{coup})
       },

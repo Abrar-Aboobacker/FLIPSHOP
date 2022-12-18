@@ -2,11 +2,9 @@ const mongoose = require('mongoose')
 
 const productSchema = new mongoose.Schema({
     category: {
-        // type: Schema.Types.ObjectId,
-        // ref: "ProductSubCategory",
+         ref: "category",
         type:String
       },
-
       name: {
         type: String,
         required: true,
@@ -15,12 +13,26 @@ const productSchema = new mongoose.Schema({
         type: Number,
         required: true,
       },
+      stock:{
+        type: Number,
+        required:true,
+      },
+      discount:{
+        type:String,
+      },
+      size:{
+        type:Number,
+        required:true,
+      },
       is_deleted: {
         type: Boolean,
         default: false,
       },
       stock: Number,
-      imgUrl: { type: [String] },
+      image:{
+        type:Array,
+        required:true
+      },
       description: String,
       created_date: Date,
       modified_date: Date,
