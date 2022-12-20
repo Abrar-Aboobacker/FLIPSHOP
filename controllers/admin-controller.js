@@ -276,4 +276,9 @@ module.exports={
       await user.findByIdAndUpdate(id,{access:true},{})
       res.redirect('/admin/users')
     },
+    adminLogout:(req,res)=>{
+      req.session.admin=null
+      req.session.adloggedIn=false
+      res.redirect('/admin/adlogin')
+    }
 }
