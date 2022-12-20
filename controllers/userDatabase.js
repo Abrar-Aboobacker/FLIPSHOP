@@ -9,7 +9,7 @@ module.exports={
             let response={}
             let user=await users.findOne({email:userData.email})
             
-            if(user){
+            if(user && user.access){
                 
                 bcrypt.compare(userData.pass,user.password).then((status)=>{
                     if(status){

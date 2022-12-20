@@ -23,7 +23,10 @@ const {adminLogin,
     AdminProductManagment,
     editProduct,
     postEditProduct,
-    deleteProduct
+    deleteProduct,
+    AdminUserManagment,
+    BlockUser,
+    unblockUser
     }
     
     =require ('../controllers/admin-controller')
@@ -50,7 +53,9 @@ router.get('/couponDisable/:id',disableCoupon)
 router.get('/couponEnable/:id',unableCoupon)
 router.get('/couponEdit/:id',editCoupon)
 router.post('/couponEdit/:id',postEditCoupoun)
-
+router.get('/users',AdminUserManagment)
+router.get('/block/:id',BlockUser)
+router.get('/unblock/:id',unblockUser)
 
 
 module.exports =  router

@@ -2,6 +2,7 @@ const admins =require('../models/admin');
 const category1 = require('../models/category');
 const coupons =require('../models/coupon');
 const products = require('../models/product');
+const user = require ('../models/user')
 const adminDatabase = require('./adminDatabase');
 
 module.exports={
@@ -258,5 +259,21 @@ module.exports={
           }
       })
       res.redirect('/admin/coupons')
-    }
+    },
+    AdminUserManagment:(req,res)=>{
+      adminDatabase.getAllUsers((err,users)=>{
+        res.render("admin/users",{users})
+      })
+    },
+
+    BlockUser:async (req,res)=>{
+      const id=req.params.id
+      await user.findByIdAndUpdate(id,{access:false},{})
+      res.redirect('/admin/users')
+    },
+    unblockUser: async (req,res)=>{
+      const id = req.params.id
+      await user.findByIdAndUpdate(id,{access:true},{})
+      res.redirect('/admin/users')
+    },
 }

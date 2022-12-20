@@ -2,6 +2,7 @@ const admins =require('../models/admin')
 const category1 = require('../models/category');
 const coupons =require ('../models/coupon')
 const product = require('../models/product')
+const user1 = require ('../models/user.js')
 
 module.exports={
     adminlogin:(admindata)=>{
@@ -69,6 +70,14 @@ module.exports={
                 resolve(coupon)
             })
         })
+    },
+    getAllUsers:(callback)=>{
+        
+       user1.find().where().
+       exec((err,users)=>{
+           
+           callback(err,users)
+         });
     },
     
 }

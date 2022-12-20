@@ -25,6 +25,10 @@ const userSchema = new mongoose.Schema({
     cPassword:{
         type:String,
         required:true
+    },
+    access:{
+        type:Boolean,
+        default:true
     }
 })
 
