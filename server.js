@@ -22,20 +22,21 @@ const adminRouter = require ('./routes/admin-router');
 
 app.set("view engine","ejs");
 app.set("views",__dirname +'/views');
-app.set ('layout','layouts/layout');
-app.use(expresslayout);
+// app.set ('layout','layouts/layout');
+// app.use(expresslayout
 app.use(express.static(__dirname + '/public'));
+
+app.use(express.json())
 app.use(express.urlencoded({extended:true}));
 // app.use(express.json()),
-app.use(express.json())
+
 app.use(flash())
 app.use(session({secret:'key',
 cookie:{maxAge:60000000},
 resave: true,
 saveUninitialized: true}));
 app.use(cookieParser())
-app.use(passport.initialize()) 
-app.use(passport.session())
+
 app.use(nocache());
 mongoose.connect(process.env.DATABASE_URL);
 

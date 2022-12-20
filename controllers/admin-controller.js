@@ -12,7 +12,7 @@ module.exports={
           }else{
             res.render('admin/login',{adloginErr:req.session.adminLoginErr})
             req.session.adminLoginErr=false
-            console.log();
+
           
           }
     },
@@ -34,7 +34,7 @@ module.exports={
 
         if(req.session.admin){
             let adminn=req.session.admin
-            req.session.admin='dashboard'
+            // req.session.admin='dashboard'
           
             
             res.render('admin/index',{admin:true,adminn})
