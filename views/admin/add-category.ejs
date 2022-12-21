@@ -1,6 +1,9 @@
+<%-include("./layout/admin header.ejs") %>  
+
+
 <form action="/admin/categories" method="post">
     <div class="container">
-    <div class="row">
+    <div class="row justify-content-center">
 <div class="col-sm-12 col-xl-6">
     <div class="bg-secondary rounded h-100 p-4">
         <h6 class="mb-4">Add Category</h6>
@@ -11,10 +14,10 @@
                 placeholder="Enter you category">
             
         </div>
-        <div class="mb-3">
+        <!-- <div class="mb-3">
             <label for="formFile" class="form-label">Default file input example</label>
             <input class="form-control bg-dark" type="file" id="formFile">
-        </div>
+        </div> -->
         <div class="form-floating">
             <textarea class="form-control" placeholder="Leave a Description here"
                 id="floatingTextarea" name="description" style="height: 150px;"></textarea>
@@ -26,3 +29,5 @@
 </div>
 </div>
 </form>
+
+<%-include('./layout/admin footer.ejs') %> 

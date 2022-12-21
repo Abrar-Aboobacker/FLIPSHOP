@@ -5,14 +5,16 @@ const bcrypt = require('bcrypt')
 const { sendOtp, verifyOtp } = require('../middleware/otp')
 const user = require('../models/user')
 const userDatabase = require('./userDatabase')
+const adminDatabase = require ('./adminDatabase')
 
 module.exports={
     home:(req, res, next) =>{
           let users=req.session.user
           console.log(users);
-        // UserDatabase.getAllUsers().then((user)=>{
-          res.render('user/index', {users});
-        // })
+        adminDatabase.getAllProduct((err,productList)=>{
+          console.log(productList);
+          res.render('user/index', {users,productList});
+        })   
         },
     userSignUp:(req,res)=>{
         if(req.session.user){
@@ -114,6 +116,12 @@ postOtp: async (req, res) => {
           req.session.userLoginErr="Invalid username or password"
           res.redirect('/login')
         }
+      })
+    },
+    userShop:(req,res)=>{
+      let users=req.session.user
+      adminDatabase.getAllProduct((err,productList)=>{
+        res.render("user/shop",{productList,users})
       })
     },
     logout:(req,res)=>{

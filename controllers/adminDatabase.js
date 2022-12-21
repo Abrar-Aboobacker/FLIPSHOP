@@ -7,7 +7,7 @@ const user1 = require ('../models/user.js')
 module.exports={
     adminlogin:(admindata)=>{
         return new Promise(async(resolve,reject)=>{
-            let logginStatus=false
+            // let logginStatus=false
             let response={}
             let admin=await admins.find({email:admindata.email})
             if(admin.length>0){

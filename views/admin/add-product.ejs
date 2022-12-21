@@ -1,8 +1,11 @@
 
-<div class="container">
-    <div class="row">
+<%-include("./layout/admin header.ejs") %>  
+
+
+<div class="container ">
+    <div class="row justify-content-center ">
 <form action="/admin/products" method="post" enctype="multipart/form-data">
-<div class="col-sm-12 col-xl-6">
+<div class="col-sm-12 col-xl-6 mt-4">
     <div class="bg-secondary rounded h-100 p-4">
         <h6 class="mb-4">Add Product</h6>
         <div class="form-floating mb-3">
@@ -60,3 +63,5 @@
 </form>
 </div>
 </div>
+
+<%-include('./layout/admin footer.ejs') %> 

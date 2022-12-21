@@ -1,5 +1,6 @@
 const users =require ('../models/user')
 const bcrypt=require('bcrypt')
+const products = require ('../models/product')
 // var salt = bcrypt.genSaltSync(10);
 // var hash = bcrypt.hashSync("B4c0/\/", salt);
 
@@ -28,10 +29,10 @@ module.exports={
             }
         })
     },
-    // getAllUsers:()=>{
-    //     return new Promise(async(resolve,reject)=>{
-    //             users.find().where()
-    //         resolve(users)
-    //     })
-    // },
+    getAllProducts:()=>{
+        return new Promise(async(resolve,reject)=>{   
+            const product = await  products.find().where()
+            resolve(product)
+        })
+    },
 }

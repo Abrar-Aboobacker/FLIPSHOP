@@ -1,6 +1,7 @@
+<%-include("./layout/admin header.ejs") %>  
 
 <div class="container">
-    <div class="row">
+    <div class="row justify-content-center">
 <form action="/admin/productEdit/<%=product._id%>" method="post" enctype="multipart/form-data">
 <div class="col-sm-12 col-xl-6">
     <div class="bg-secondary rounded h-100 p-4">
@@ -69,3 +70,5 @@
     }
 
 </script>
+
+<%-include('./layout/admin footer.ejs') %> 
