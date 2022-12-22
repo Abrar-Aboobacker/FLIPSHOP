@@ -124,6 +124,9 @@ postOtp: async (req, res) => {
         res.render("user/shop",{productList,users})
       })
     },
+    doAddToCart:(req,res)=>{
+      
+    },
     logout:(req,res)=>{
       req.session.user=null
       req.session.loggedIn=false

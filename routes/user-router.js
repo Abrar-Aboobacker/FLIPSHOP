@@ -10,6 +10,7 @@ const {
     postLogin,
     postOtp,
     userShop,
+    doAddToCart,
     logout
 }
     =require ('../controllers/user-controller')
@@ -21,6 +22,7 @@ router.get('/signup',userSignUp)
 router.post('/signup',postUserSignUp)
 router.post('/gnenerateOtp',postOtp)
 router.get('/shop',userShop)
+router.get('/addToCart',doAddToCart)
 router.get('/logout',logout)
 
 
