@@ -10,6 +10,7 @@ const {
     postLogin,
     postOtp,
     userShop,
+    viewCart,
     doAddToCart,
     logout
 }
@@ -22,7 +23,8 @@ router.get('/signup',userSignUp)
 router.post('/signup',postUserSignUp)
 router.post('/gnenerateOtp',postOtp)
 router.get('/shop',userShop)
-router.get('/addToCart',doAddToCart)
+router.get('/viewCart',viewCart)
+router.get('/addToCart/:id',doAddToCart)
 router.get('/logout',logout)
 
 

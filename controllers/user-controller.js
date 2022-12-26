@@ -4,15 +4,16 @@ const users1 =require('../models/user')
 const bcrypt = require('bcrypt')
 const { sendOtp, verifyOtp } = require('../middleware/otp')
 const user = require('../models/user')
+const product = require ('../models/product')
 const userDatabase = require('./userDatabase')
 const adminDatabase = require ('./adminDatabase')
-
+const { response } = require('express')
 module.exports={
     home:(req, res, next) =>{
           let users=req.session.user
           console.log(users);
         adminDatabase.getAllProduct((err,productList)=>{
-          console.log(productList);
+          // console.log(productList);
           res.render('user/index', {users,productList});
         })   
         },
@@ -66,7 +67,7 @@ postOtp: async (req, res) => {
               console.log(' hhhhhhhhhh');
               pass = await bcrypt.hash(pass, 10)
               cpass = await bcrypt.hash(cpass, 10)
-              console.log('otp verifying');
+              // console.log('otp verifying');
               let members = new user({
                   fristName:fName,
                   lastName:lName,
@@ -89,7 +90,7 @@ postOtp: async (req, res) => {
               })
           } else if (verification_check.status == "pending") {
               res.redirect('/signup')
-              console.log('otp not match')
+              // console.log('otp not match')
           }
       })
 
@@ -123,9 +124,64 @@ postOtp: async (req, res) => {
       adminDatabase.getAllProduct((err,productList)=>{
         res.render("user/shop",{productList,users})
       })
+    }, 
+    //   doAddToCart:async (req,res)=>{
+    //   console.log("isComing");
+    //   const  userId =req.session.user._id
+    //   const userrs= await user.findById(userId)
+    //   const products =req.params.id
+    //   console.log(products,'ithaanu');
+    //   console.log(userrs+111111111111111);
+    //   product.findById(products).then((prducts)=>{
+    //     console.log(prducts,'Muthamni');
+    //     userrs.addToCart(prducts)
+    //     })
+    // },
+    // viewCart:async(req,res)=>{
+    //   // console.log("hy");
+    //   let users =req.session.user
+    //   // let userId=req.session.user._id
+
+    //   // // let cartpd = pro[0].product
+    //   // console.log(pro);
+    //   // res.render('user/cart',{users,pro})
+    //   console.log("isComing");
+    //   const  userId =req.session.user._id
+    //   const userrs= await user.findById(userId)
+    //   const products =req.params.id
+    //   console.log(products,'ithaanu');
+    //   console.log(userrs+111111111111111);
+    //   let pro = await user.findOne({_id:userId}).populate('cart.items.productId')
+    //   product.findById(products).then((prducts)=>{
+    //     console.log(prducts,'Muthamni');
+    //     userrs.addToCart(prducts,()=>{
+    //       res.render('user/cart',{users,pro})
+    //     })
+    //     })
+    // },
+    // doAddToCart:(req,res)=>{
+    //   const productId =req.params.id
+    // },
+    viewCart:async (req,res)=>{
+      // console.log("ethndo");
+      const users=req.session.user
+      const userId=req.session.user._id
+      const prd = await user.findOne({_id:userId}).populate('cart.items.productId')
+      console.log(prd,"dfgdfgdgf");
+      res.render('user/cart',{users,prd})
     },
-    doAddToCart:(req,res)=>{
-      
+    doAddToCart:async(req,res)=>{
+      console.log("ethndo");
+      const id =req.session.user._id
+      const usser= await user.findById(id)
+      console.log(usser);
+      const products=req.params.id
+      console.log(product);
+      product.findById(products).then((prduct)=>{
+        usser.addToCart(prduct,()=>{
+          res.redirect('/viewCart')
+        })
+      })
     },
     logout:(req,res)=>{
       req.session.user=null
