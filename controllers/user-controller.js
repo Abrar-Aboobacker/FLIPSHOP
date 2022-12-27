@@ -12,9 +12,14 @@ module.exports={
     home:(req, res, next) =>{
           let users=req.session.user
           console.log(users);
+          let count= null;
+          if(users){
+            count= users.cart.items.length
+          }
+          console.log(count);
         adminDatabase.getAllProduct((err,productList)=>{
-          // console.log(productList);
-          res.render('user/index', {users,productList});
+          
+          res.render('user/index', {users,productList,count});
         })   
         },
     userSignUp:(req,res)=>{
@@ -121,8 +126,15 @@ postOtp: async (req, res) => {
     },
     userShop:(req,res)=>{
       let users=req.session.user
+      
+      console.log(users);
+      let count= null;
+      if(users){
+        count= users.cart.items.length
+      }
+      console.log(count);
       adminDatabase.getAllProduct((err,productList)=>{
-        res.render("user/shop",{productList,users})
+        res.render("user/shop",{productList,users,count})
       })
     }, 
     //   doAddToCart:async (req,res)=>{
@@ -165,13 +177,18 @@ postOtp: async (req, res) => {
     viewCart:async (req,res)=>{
       // console.log("ethndo");
       const users=req.session.user
+      let count= null;
+      if(users){
+        count= users.cart.items.length
+      }
+      console.log(count);
       const userId=req.session.user._id
       const prd = await user.findOne({_id:userId}).populate('cart.items.productId')
-      console.log(prd,"dfgdfgdgf");
-      res.render('user/cart',{users,prd})
+      // console.log(prd,"dfgdfgdgf");
+      res.render('user/cart',{users,prd,count})
     },
     doAddToCart:async(req,res)=>{
-      console.log("ethndo");
+      // console.log("ethndo");
       const id =req.session.user._id
       const usser= await user.findById(id)
       console.log(usser);
@@ -181,6 +198,16 @@ postOtp: async (req, res) => {
         usser.addToCart(prduct,()=>{
           res.redirect('/viewCart')
         })
+      })
+    },
+    changeQuantity:async (req,res)=>{
+      console.log(req.body);
+      const id =req.session.user._id
+      const productId=req.body.productId
+      const usser = await user.findById(id)
+      usser.changeQty(productId,req.body.quantys,req.body.count,(response)=>{
+        response.access = true
+        res.json(response)
       })
     },
     logout:(req,res)=>{

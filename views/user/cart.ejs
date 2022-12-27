@@ -36,7 +36,6 @@
                             </thead>
                             <tbody>
                                 <%prd.cart.items.forEach(function(prd){%>
-  
                                 <tr>
                                     <td class="product__cart__item">
                                         <div class="product__cart__item__pic">
@@ -49,16 +48,19 @@
                                     </td>
                                     <td class="quantity__item">
                                         <div class="quantity" >
-                                            <button class="" style="border: none; background-color: white;" >
+                                            <button class="reduce-items-count" onclick="changeQuantity('<%=prd.productId._id%>','-1')" style="border: none; background-color: white;" >
                                                 <i class="bi bi-dash" style="font-size: 1em;"></i>
                                             </button>
-                                                <input type="text" value="<%=prd.qty %>" style="width: 2rem; border: none; ;">
-                                            <button style="border: none; background-color: white;">
+                                               
+                                                 <input type="text" name="qty" id="<%=prd.productId._id %>" maxlength="12" value="<%=prd.qty %>" title="Quantity:"
+                                            class="input-text qty"  style="width: 2rem; border: none; ">
+                                               
+                                            <button  class="increase-items-count" onclick="changeQuantity('<%=prd.productId._id%>','1')" style="border: none; background-color: white;">
                                                 <i class="bi bi-plus" style="font-size: 1em;"></i>
                                             </button>
                                         </div>
                                     </td>
-                                    <td class="cart__price"><%=prd.productId.price * prd.qty%> </td>
+                                    <td id=" " class="cart__price"><%=prd.productId.price * prd.qty%> </td>
                                     <a href="">
                                         <td class="cart__close"><i class="fa fa-close"></i></td>
                                     </a>
@@ -97,7 +99,7 @@
                         <h6>Cart total</h6>
                         <ul>
                             <li>Subtotal <span>$ 169.50</span></li>
-                            <li>Total <span> <%= prd.cart.totalPrice   %>  </span></li>
+                            <li>Total <span id="total"> <%= prd.cart.totalPrice   %>  </span></li>
                         </ul>
                         <a href="#" class="primary-btn">Proceed to checkout</a>
                     </div>
@@ -106,5 +108,51 @@
         </div>
     </section>
     <!-- Shopping Cart Section End -->
+<script>
+    function changeQuantity(proId,cnt,ct){
+        console.log(proId);
+        let quantity = document.getElementById(proId).value
+        console.log(quantity);
+        quantity=parseInt(quantity)
+        let cont = parseInt(cnt)
+        $.ajax({
+            url:'/changeQuantity',
+            method:'POST',
+            data:{
+                productId:proId,
+                quantys:quantity,
+                count:cont
+            },
+            success:((response)=>{
+                if(response.access){
+                    if(response.remove){
+                        Swal.fire(
+                            'Deleted!',
+                            'Your item has been deleted',
+                            'success'
+                        ) 
+                        setTimeout(()=>location.reload(),2000)                 
+                    }else{
+                        document.getElementById(proId).value=response.status
+                        document.getElementById('total').innerHTML=response.total
+                        // document.getElementById(ct).innerHTML=response.total
+                    }
+                }else{
+                    Swal.fire({
+                        title: 'Please Login',
+                        showClass: {
+                         popup: 'animate__animated animate__fadeInDown'
+                         },
+                         hideClass: {
+                          popup: 'animate__animated animate__fadeOutUp'
+                        }
+                    })
+                }
+            })
+        })
+    }
+    
+</script>
+    
 
     <%-include("./layout/user footer.ejs") %> 

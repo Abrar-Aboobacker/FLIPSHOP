@@ -86,5 +86,36 @@ userSchema.methods.addToCart = function (products,callBack){
         })
         }
 
+        userSchema.methods.changeQty= async function(productId,qty,count,cb){
+            console.log(productId+"or")
+            const cart=this.cart
+            const quantity = parseInt(qty)
+            const cnt=parseInt(count)
+            console.log(qty);
+              const response={}
+            const products = await product.findOne({_id:productId})
+            if(cnt==-1&&quantity==1){
+                const isExisting = cart.items.findIndex(objInItems=>objInItems.productId == productId)
+                cart.items.splice(isExisting,1)
+                cart.totalPrice-=products.price
+                response.remove=true
+            }else if(cnt==1){
+                const isExisting = cart.items.findIndex(objInItems=>objInItems.productId == productId)
+                console.log(isExisting + "h,,,,,,,,,,,,,,,,,,,");
+                cart.items[isExisting].qty += cnt
+                cart.totalPrice += products.price
+                response.status= cart.items[isExisting].qty
+            }else if(cnt==-1){
+                const isExisting = cart.items.findIndex(objInItems=>objInItems.productId == productId)
+                cart.items[isExisting].qty+=cnt
+                cart.totalPrice-=products.price
+                response.status=cart.items[isExisting].qty
+            }
+            this.save().then((doc)=>{
+                response.total =doc.cart.totalPrice
+                cb(response)
+            })
+        }
+
 
 module.exports=mongoose.model('users',userSchema)

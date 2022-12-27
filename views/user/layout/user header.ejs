@@ -22,6 +22,8 @@
     <link rel="stylesheet" href="/user/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="/user/css/style.css" type="text/css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -119,7 +121,7 @@
                 <div class="col-lg-6 col-md-6">
                     <nav class="header__menu mobile-menu">
                         <ul>
-                            <li class="active"><a href="./index.html">Home</a></li>
+                            <li class="active"><a href="">Home</a></li>
                             <li><a href="/shop">Shop</a></li>
                             <li><a href="#">Pages</a>
                                 <ul class="dropdown">
@@ -136,11 +138,16 @@
                     </nav>
                 </div>
                 <div class="col-lg-3 col-md-3">
-                    <div class="header__nav__option">
-                        <a href="#" class="search-switch"><img src="/user/img/icon/search.png" alt=""></a>
-                        <a href="#"><img src="/user/img/icon/heart.png" alt=""></a>
-                        <a href="/viewCart"><img src="/user/img/icon/cart.png" alt=""> <span>0</span></a>
-                        <div class="price">$0.00</div>
+                    <div class="header__nav__option" >
+                        <a href="#" class="search-switch"><i class="bi bi-search" style="color: black; font-size: 17px;"></i></a>
+                        <a href="#"><i class="bi bi-heart" style="color: black; font-size: 17px;"></i></a>
+                        <% if(users) {%> 
+                        <a href="/viewCart"><i class="bi bi-cart2" style="color: black; font-size: 20px;"></i>  <span class="position-absolute top-0 start-100 translate-middle badge bg-primary rounded-circle text-light" style="font-size: 1rem; top: 0; right: -10;"><%= count %> </span>
+                        </a>
+                        <% }else{ %> 
+                            <a href="/viewCart"><i class="bi bi-cart2" style="color: black; font-size: 20px;"></i></a>
+                            <% } %> 
+                      
                     </div>
                 </div>
             </div>
