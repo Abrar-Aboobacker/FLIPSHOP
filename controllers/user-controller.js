@@ -218,6 +218,22 @@ postOtp: async (req, res) => {
         })
 
       },
+      userProfileView:(req,res)=>{
+        let users=req.session.user
+        let count= null;
+      if(users){
+        count= users.cart.items.length
+      }
+      res.render('user/userProfile',{users,count})
+      },
+      userAddressView:(req,res)=>{
+        let users=req.session.user
+        let count= null;
+      if(users){
+        count= users.cart.items.length
+      }
+      res.render('user/address',{users,count})
+      },
     logout:(req,res)=>{
       req.session.user=null
       req.session.loggedIn=false

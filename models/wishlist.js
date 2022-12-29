@@ -29,10 +29,5 @@ const wishlistSchema =  new mongoose.Schema({
         return this.save().then(()=>callback(response))
 
     }
-    wishlistSchema.methods.deleteWishlist = function(){
-        const response={}
-        
-    }
-
 
 module.exports=mongoose.model('wishList',wishlistSchema)

@@ -13,6 +13,7 @@
   
     <link rel = "stylesheet" href = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>    
     <!-- Css Styles -->
+    <!-- <link rel="stylesheet" href="/user/css/userProfile.css"> -->
     <link rel="stylesheet" href="/user/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="/user/css/font-awesome.min.css" type="text/css">
     <link rel="stylesheet" href="/user/css/elegant-icons.css" type="text/css">
@@ -25,6 +26,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 
 <body>
@@ -124,17 +126,21 @@
                         <ul>
                             <li class="active"><a href="/">Home</a></li>
                             <li><a href="/shop">Shop</a></li>
-                            <li><a href="#">Pages</a>
-                                <ul class="dropdown">
-                                    <li><a href="./about.html">About Us</a></li>
-                                    <li><a href="./shop-details.html">Shop Details</a></li>
-                                    <li><a href="./shopping-cart.html">Shopping Cart</a></li>
-                                    <li><a href="./checkout.html">Check Out</a></li>
-                                    <li><a href="./blog-details.html">Blog Details</a></li>
-                                </ul>
-                            </li>
                             <li><a href="./blog.html">Blog</a></li>
                             <li><a href="./contact.html">Contacts</a></li>
+                            <%if(users) {%> 
+                            <li><a href="#"><%=users.fristName %> <i class="bi bi-chevron-down" style="font-size: 1.5rem;"></i></a>
+                                <ul class="dropdown">
+                                    <li><a href="/profile">Account</a></li>
+                                    <li><a href="/wishlist">Wishlist</a></li>
+                                    <li><a href="/logout">LogOut</a></li>
+                                    <!-- <li><a href="./checkout.html">Check Out</a></li>
+                                    <li><a href="./blog-details.html">Blog Details</a></li> -->
+                                </ul>
+                            </li>
+                            <%}else{ %> 
+                                <li><a href="/login"class="btn btn-danger">Login</a></li>
+                                <% } %> 
                         </ul>
                     </nav>
                 </div>

@@ -17,6 +17,8 @@ const {
     viewWishList,
     doAddToWishlist,
     doDeleteWishlist,
+    userProfileView,
+    userAddressView,
     logout
 }
     =require ('../controllers/user-controller')
@@ -34,6 +36,8 @@ router.post('/changeQuantity',AuthAjaxVerification, changeQuantity)
 router.get('/wishlist', viewWishList)
 router.get('/addToWishlist/:id',doAddToWishlist)
 router.post('/deleteWishlist',AuthAjaxVerification,doDeleteWishlist)
+router.get('/profile',userProfileView)
+router.get('/address', userAddressView)
 router.get('/logout',logout)
 
 
