@@ -14,6 +14,8 @@ const {
     viewCart,
     doAddToCart,
     changeQuantity,
+    viewWishList,
+    doAddToWishlist,
     logout
 }
     =require ('../controllers/user-controller')
@@ -25,9 +27,11 @@ router.get('/signup',userSignUp)
 router.post('/signup',postUserSignUp)
 router.post('/gnenerateOtp',postOtp)
 router.get('/shop',userShop)
-router.get('/viewCart',viewCart)
+router.get('/viewCart',userVerifyLogin,viewCart)
 router.get('/addToCart/:id',doAddToCart)
 router.post('/changeQuantity',AuthAjaxVerification, changeQuantity)
+router.get('/wishlist', viewWishList)
+router.get('/addToWishlist/:id',doAddToWishlist)
 router.get('/logout',logout)
 
 

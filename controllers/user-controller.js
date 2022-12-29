@@ -7,6 +7,7 @@ const user = require('../models/user')
 const product = require ('../models/product')
 const userDatabase = require('./userDatabase')
 const adminDatabase = require ('./adminDatabase')
+const wishlist= require('../models/wishlist')
 const { response } = require('express')
 module.exports={
     home:(req, res, next) =>{
@@ -41,20 +42,6 @@ postUserSignUp: async (req, res) => {
   if (uusser) {
       res.redirect('/login')
   } else {
-      // let {name,email,phone,password,confirmPassword}=req.session.signup
-      // password = await bcrypt.hash(password, 10)
-      // confirmPassword = await bcrypt.hash(confirmPassword, 10)
-      // console.log('otp verifying');
-      // let members = new user({
-      //     name: name,
-      //     email: email,
-      //     phone:phone,
-      //     password: password,
-      //     confirmPassword: confirmPassword
-      // })
-      // console.log(members);
-      // members.save()
-      // res.redirect('/signup')
       sendOtp(mobilenum)
       res.render('user/otp.ejs', { uzer: false, num: mobilenum, admin: false, error: false })
   }
@@ -137,43 +124,6 @@ postOtp: async (req, res) => {
         res.render("user/shop",{productList,users,count})
       })
     }, 
-    //   doAddToCart:async (req,res)=>{
-    //   console.log("isComing");
-    //   const  userId =req.session.user._id
-    //   const userrs= await user.findById(userId)
-    //   const products =req.params.id
-    //   console.log(products,'ithaanu');
-    //   console.log(userrs+111111111111111);
-    //   product.findById(products).then((prducts)=>{
-    //     console.log(prducts,'Muthamni');
-    //     userrs.addToCart(prducts)
-    //     })
-    // },
-    // viewCart:async(req,res)=>{
-    //   // console.log("hy");
-    //   let users =req.session.user
-    //   // let userId=req.session.user._id
-
-    //   // // let cartpd = pro[0].product
-    //   // console.log(pro);
-    //   // res.render('user/cart',{users,pro})
-    //   console.log("isComing");
-    //   const  userId =req.session.user._id
-    //   const userrs= await user.findById(userId)
-    //   const products =req.params.id
-    //   console.log(products,'ithaanu');
-    //   console.log(userrs+111111111111111);
-    //   let pro = await user.findOne({_id:userId}).populate('cart.items.productId')
-    //   product.findById(products).then((prducts)=>{
-    //     console.log(prducts,'Muthamni');
-    //     userrs.addToCart(prducts,()=>{
-    //       res.render('user/cart',{users,pro})
-    //     })
-    //     })
-    // },
-    // doAddToCart:(req,res)=>{
-    //   const productId =req.params.id
-    // },
     viewCart:async (req,res)=>{
       // console.log("ethndo");
       const users=req.session.user
@@ -191,9 +141,9 @@ postOtp: async (req, res) => {
       // console.log("ethndo");
       const id =req.session.user._id
       const usser= await user.findById(id)
-      console.log(usser);
+      // console.log(usser);
       const products=req.params.id
-      console.log(product);
+      // console.log(product);
       product.findById(products).then((prduct)=>{
         usser.addToCart(prduct,()=>{
           res.redirect('/viewCart')
@@ -210,9 +160,43 @@ postOtp: async (req, res) => {
         res.json(response)
       })
     },
+    viewWishList:async (req,res)=>{
+      let users=req.session.user
+      let id=req.session.user._id.toString()
+      // console.log(id);
+      const prd = await wishlist.findOne({userId:id}).populate('productItems')
+      
+      let count= null;
+      if(users){
+        count= users.cart.items.length
+      }
+      res.render('user/wishlist',{users,prd,count})
+    },
+    doAddToWishlist:async(req,res)=>{
+      const usser =req.session.user
+      const id =req.session.user._id
+      const products=req.params.id
+      const wish =await wishlist.findOne({userId:id})
+      if(wish){
+        // console.log('und');
+        wish.addToWishlist(products,async(response)=>{
+          const proDt = await wishlist.find({userId:id},{productItems:1,_id:0}).populate('productItems')
+          if(response.status){
+            wishlist.findByIdAndUpdate({userId:id},{$push:{products}})
+          }
+        })
+
+      }else{
+        const newWishlist = new wishlist({
+          userId:id,
+          productId:products
+        })
+        newWishlist.save()
+      }
+      },
     logout:(req,res)=>{
       req.session.user=null
       req.session.loggedIn=false
       res.redirect('/')
     }
-}
+  }

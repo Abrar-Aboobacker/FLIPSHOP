@@ -87,11 +87,11 @@ userSchema.methods.addToCart = function (products,callBack){
         }
 
         userSchema.methods.changeQty= async function(productId,qty,count,cb){
-            console.log(productId+"or")
+            // console.log(productId+"or")
             const cart=this.cart
             const quantity = parseInt(qty)
             const cnt=parseInt(count)
-            console.log(qty);
+            // console.log(qty);
               const response={}
             const products = await product.findOne({_id:productId})
             if(cnt==-1&&quantity==1){
