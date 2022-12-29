@@ -16,6 +16,7 @@ const {
     changeQuantity,
     viewWishList,
     doAddToWishlist,
+    doDeleteWishlist,
     logout
 }
     =require ('../controllers/user-controller')
@@ -32,6 +33,7 @@ router.get('/addToCart/:id',doAddToCart)
 router.post('/changeQuantity',AuthAjaxVerification, changeQuantity)
 router.get('/wishlist', viewWishList)
 router.get('/addToWishlist/:id',doAddToWishlist)
+router.post('/deleteWishlist',AuthAjaxVerification,doDeleteWishlist)
 router.get('/logout',logout)
 
 

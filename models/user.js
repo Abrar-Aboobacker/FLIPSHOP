@@ -94,10 +94,10 @@ userSchema.methods.addToCart = function (products,callBack){
             // console.log(qty);
               const response={}
             const products = await product.findOne({_id:productId})
-            if(cnt==-1&&quantity==1){
+            if(cnt==-1&&quantity==1 || cnt == -2){
                 const isExisting = cart.items.findIndex(objInItems=>objInItems.productId == productId)
+                cart.totalPrice-=products.price * qty
                 cart.items.splice(isExisting,1)
-                cart.totalPrice-=products.price
                 response.remove=true
             }else if(cnt==1){
                 const isExisting = cart.items.findIndex(objInItems=>objInItems.productId == productId)

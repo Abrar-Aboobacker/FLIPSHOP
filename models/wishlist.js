@@ -16,7 +16,6 @@ const wishlistSchema =  new mongoose.Schema({
     wishlistSchema.methods.addToWishlist = function(products,callback){
         let productItems = this.productItems
         const response={}
-        // const prId= products._id.toString()
         const isExisting=productItems.findIndex(objinItems=>objinItems==products)
         console.log(isExisting);
         if (isExisting>=0){
@@ -30,5 +29,10 @@ const wishlistSchema =  new mongoose.Schema({
         return this.save().then(()=>callback(response))
 
     }
+    wishlistSchema.methods.deleteWishlist = function(){
+        const response={}
+        
+    }
+
 
 module.exports=mongoose.model('wishList',wishlistSchema)

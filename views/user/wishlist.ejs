@@ -10,7 +10,7 @@
                         <div class="breadcrumb__links">
                             <a href="./index.html">Home</a>
                             <a href="./shop.html">Shop</a>
-                            <span>Shopping Cart</span>
+                            <span>Wishlist</span>
                         </div>
                     </div>
                 </div>
@@ -49,7 +49,11 @@
                                             <h5><%=prd.price %> </h5>
                                         </div>
                                     </td>
-                                    <td class="cart__close"><i class="fa fa-close"></i></td>
+                                    <td class="cart__close">
+                                        <button class="cart__close" onclick="deleting('<%=prd._id%>')" style="border: none; background-color: white;" >
+                                            <i class="fa fa-close" style="font-size: 1.5em;"></i>
+                                        </button>
+                                    </td>
                                 </tr>
                                 <%  })%>
                             </tbody>
@@ -67,5 +71,27 @@
         </div>
     </section>
     <!-- Shopping Cart Section End -->
+
+    <script>
+        function deleting(prdId){
+            $.ajax({
+                url:'/deleteWishlist',
+                method:'POST',
+                data:{
+                    productId:prdId
+                },
+                success:((response)=>{
+                    if(response.access){
+                         Swal.fire(
+                            'Deleted!',
+                            'Your item has been deleted',
+                            'success'
+                        ) 
+                        setTimeout(()=>location.reload(),1000)
+                    }
+                })
+            })
+        }
+    </script>
 
     <%-include("./layout/user footer.ejs") %> 

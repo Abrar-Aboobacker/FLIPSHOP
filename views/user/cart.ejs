@@ -58,11 +58,16 @@
                                             <button  class="increase-items-count" onclick="changeQuantity('<%=prd.productId._id%>','1')" style="border: none; background-color: white;">
                                                 <i class="bi bi-plus" style="font-size: 1em;"></i>
                                             </button>
+
                                         </div>
                                     </td>
                                     <td id=" " class="cart__price"><%=prd.productId.price * prd.qty%> </td>
                                     <a href="">
-                                        <td class="cart__close"><i class="fa fa-close"></i></td>
+                                        <td class="cart__close">
+                                            <button class="cart__close" onclick="changeQuantity('<%=prd.productId._id%>','-2')" style="border: none; background-color: white;" >
+                                                <i class="fa fa-close" style="font-size: 1.5em;"></i>
+                                            </button>
+                                        </td>
                                     </a>
 
                                 </tr>
@@ -110,7 +115,9 @@
     <!-- Shopping Cart Section End -->
 <script>
     function changeQuantity(proId,cnt,ct){
-        console.log(proId);
+        console.log(proId,55555);
+        console.log(cnt,4444444);
+        console.log(ct,8888888);
         let quantity = document.getElementById(proId).value
         console.log(quantity);
         quantity=parseInt(quantity)

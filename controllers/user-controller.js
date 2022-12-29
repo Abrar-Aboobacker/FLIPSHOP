@@ -9,6 +9,8 @@ const userDatabase = require('./userDatabase')
 const adminDatabase = require ('./adminDatabase')
 const wishlist= require('../models/wishlist')
 const { response } = require('express')
+const mongoose =require('mongoose')
+const { compareSync } = require('bcryptjs')
 module.exports={
     home:(req, res, next) =>{
           let users=req.session.user
@@ -166,6 +168,7 @@ postOtp: async (req, res) => {
       // console.log(id);
       const prd = await wishlist.findOne({userId:id}).populate('productItems')
       
+
       let count= null;
       if(users){
         count= users.cart.items.length
@@ -174,7 +177,7 @@ postOtp: async (req, res) => {
     },
     doAddToWishlist:async(req,res)=>{
       const usser =req.session.user
-      const id =req.session.user._id
+      let id =req.session.user._id
       const products=req.params.id
       const wish =await wishlist.findOne({userId:id})
       if(wish){
@@ -182,8 +185,12 @@ postOtp: async (req, res) => {
         wish.addToWishlist(products,async(response)=>{
           const proDt = await wishlist.find({userId:id},{productItems:1,_id:0}).populate('productItems')
           if(response.status){
-            wishlist.findByIdAndUpdate({userId:id},{$push:{products}})
+            console.log('entered ');
+            res.redirect('/wishlist')
+          }else{
+            res.redirect('/shop')
           }
+          
         })
 
       }else{
@@ -191,8 +198,25 @@ postOtp: async (req, res) => {
           userId:id,
           productId:products
         })
-        newWishlist.save()
+        newWishlist.save((err,doc)=>{
+          if(doc){
+            res.redirect('/wishlist')
+          }else{
+            res.redirect('/shop')
+          }
+        })
       }
+      },
+      doDeleteWishlist:(req,res)=>{
+        const id = req.session.user._id
+        const products= req.body.productId
+        console.log(products,55454545445)
+        const response={}
+        wishlist.updateOne({userId:id},{$pull:{productItems:products}}).then(()=>{
+          response.access=true
+          res.json(response)
+        })
+
       },
     logout:(req,res)=>{
       req.session.user=null
