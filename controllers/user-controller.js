@@ -8,6 +8,7 @@ const product = require ('../models/product')
 const userDatabase = require('./userDatabase')
 const adminDatabase = require ('./adminDatabase')
 const wishlist= require('../models/wishlist')
+const addresses = require('../models/address')
 const { response } = require('express')
 const mongoose =require('mongoose')
 const { compareSync } = require('bcryptjs')
@@ -226,13 +227,43 @@ postOtp: async (req, res) => {
       }
       res.render('user/userProfile',{users,count})
       },
-      userAddressView:(req,res)=>{
+      userAddressView:async (req,res)=>{
+        const id = req.session.user._id
         let users=req.session.user
         let count= null;
       if(users){
         count= users.cart.items.length
       }
-      res.render('user/address',{users,count})
+      const adds= await addresses.findOne({userId:id})
+      console.log(adds.address + "adddrtfgyhuijkolp;");
+      const add=adds.address
+      res.render('user/address',{users,count,add})
+      },
+      addAdress:async (req,res)=>{
+        const id = req.session.user._id
+        const addres = req.body
+        console.log(req.body);
+        const add= await addresses.findOne({userId:id})
+        if(add){
+          console.log("coming home");
+          addresses.updateOne({userId:id},{$push:{address:addres}}).then(()=>{
+            res.redirect("/address")
+          })
+        }else{
+          console.log('ivdeeeeeeeeeeeeee');
+          const newAddress= new addresses({
+            userId:id,
+            address:[addres]
+          })
+          newAddress.save((err,doc)=>{
+            if(doc){
+              res.redirect('/address')
+            }else{
+              console.log(err);
+            }
+            
+          })
+        }
       },
     logout:(req,res)=>{
       req.session.user=null
