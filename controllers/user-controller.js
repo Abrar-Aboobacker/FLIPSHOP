@@ -11,7 +11,7 @@ const wishlist= require('../models/wishlist')
 const addresses = require('../models/address')
 const { response } = require('express')
 const mongoose =require('mongoose')
-const { compareSync } = require('bcryptjs')
+const { compareSync, setRandomFallback } = require('bcryptjs')
 module.exports={
     home:(req, res, next) =>{
           let users=req.session.user
@@ -210,8 +210,9 @@ postOtp: async (req, res) => {
       },
       doDeleteWishlist:(req,res)=>{
         const id = req.session.user._id
+  
         const products= req.body.productId
-        console.log(products,55454545445)
+        // console.log(products,55454545445)
         const response={}
         wishlist.updateOne({userId:id},{$pull:{productItems:products}}).then(()=>{
           response.access=true
@@ -252,6 +253,7 @@ postOtp: async (req, res) => {
         if(add){
           console.log("coming home");
           addresses.updateOne({userId:id},{$push:{address:addres}}).then(()=>{
+            console.log('ithiludeeeeee');
             res.redirect("/address")
           })
         }else{
@@ -298,7 +300,19 @@ postOtp: async (req, res) => {
       })
     },
     deleteAdd:(req,res)=>{
-
+      const id = req.session.user._id
+      console.log(id + "id annnn");
+      const address=req.body.addressId
+      console.log(address +"address annnnnn");
+      const response={}
+      addresses.updateOne({userId:id},{$pull:{address:{_id:address}}})
+      .then(()=>{
+        response.access=true
+      }).catch((er)=>{
+        console.log(er);
+      }).then(()=>{
+        res.json(response)
+      })     
     },
     logout:(req,res)=>{
       req.session.user=null

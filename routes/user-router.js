@@ -43,7 +43,7 @@ router.get('/profile',userProfileView)
 router.get('/address', userAddressView)
 router.post('/address',addAdress)
 router.post('/addresses/:id',editAddress)
-router.get('/deleteAddress',deleteAdd)
+router.post('/deleteAddress',deleteAdd)
 router.get('/logout',logout)
 
 
