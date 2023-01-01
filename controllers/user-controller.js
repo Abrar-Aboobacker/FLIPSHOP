@@ -231,13 +231,18 @@ postOtp: async (req, res) => {
         const id = req.session.user._id
         let users=req.session.user
         let count= null;
+       
       if(users){
         count= users.cart.items.length
       }
       const adds= await addresses.findOne({userId:id})
-      console.log(adds.address + "adddrtfgyhuijkolp;");
+    if(adds == null){
       const add=adds.address
       res.render('user/address',{users,count,add})
+    }else{
+      const add=adds.address
+        res.render('user/address',{users,count,add})
+    }
       },
       addAdress:async (req,res)=>{
         const id = req.session.user._id
@@ -265,6 +270,36 @@ postOtp: async (req, res) => {
           })
         }
       },
+    editAddress:async (req,res)=>{
+      console.log(req.body.name+"bodyyyyyyyyyyyyyyyyyyyyyy")
+      const addId=req.params.id
+      // console.log(addId + "idddddddddddddddd");
+      const userId= req.session.user._id
+      console.log(userId+ "useeeeeeeeeeeee");
+      const update={
+        name:req.body.name,
+        mobile:req.body.mobile,
+        pin:req.body.pin,
+        locality:req.body.locality,
+        addressDetails:req.body.addressDetails,
+        district:req.body.district,
+        state :req.body.state,
+        landmarkrk:req.body.landmark,
+        optmob:req.body.optmob
+      }
+     console.log(update.name);
+     console.log(update.mobile);
+     console.log(typeof update+'5555555555555555');
+
+      const addCheck=await addresses.findOne({userId:userId})
+      addCheck.editAdd(update,addId).then((doc)=>{
+        console.log(doc);
+        res.redirect('/address')
+      })
+    },
+    deleteAdd:(req,res)=>{
+
+    },
     logout:(req,res)=>{
       req.session.user=null
       req.session.loggedIn=false

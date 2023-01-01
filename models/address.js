@@ -37,6 +37,11 @@ const addressSchema = new mongoose.Schema({
 
     }
 })
-
+addressSchema.methods.editAdd= async function(data,id){
+    const address = this.address
+    const Existing= await address.findIndex(obj=>obj._id==id)
+    address[Existing]=data
+    return this.save()
+}
 
 module.exports=mongoose.model('address',addressSchema)

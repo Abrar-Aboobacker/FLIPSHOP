@@ -20,6 +20,8 @@ const {
     userProfileView,
     userAddressView,
     addAdress,
+    editAddress,
+    deleteAdd,
     logout
 }
     =require ('../controllers/user-controller')
@@ -40,6 +42,8 @@ router.post('/deleteWishlist',AuthAjaxVerification,doDeleteWishlist)
 router.get('/profile',userProfileView)
 router.get('/address', userAddressView)
 router.post('/address',addAdress)
+router.post('/addresses/:id',editAddress)
+router.get('/deleteAddress',deleteAdd)
 router.get('/logout',logout)
 
 

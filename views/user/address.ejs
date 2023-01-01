@@ -152,7 +152,10 @@
     </header>
     <!-- Header Section End -->
     <div class="container">
-        <% add.forEach(function(add,index)  {%> 
+    
+     
+        <% if (add!==null) { %>
+        <% add.forEach(function(adds,index)  {%> 
         <section class="row justify-content-center " style="margin-top: 2em;">
             <div class="col-9 col-sm-8 col-md-8 col-lg-8">
                 <div class="card ">
@@ -163,8 +166,8 @@
                                 <i class="bi bi-trash text-danger" style="font-size: 1.3em;"></i>
                             </a>
                         </div>
-                        <p class="card-text w-75"><%=add.name %> ,<%=add.addressDetails%> ,<%=add.locality%>, <%=add.district %>
-                           ,<%=add.pin%>
+                        <p class="card-text w-75"><%=adds.name %> ,<%=adds.addressDetails%> ,<%=adds.locality%>, <%=adds.district %>
+                           ,<%=adds.pin%>
                         </p>
                         <div class="d-flex justify-content-between">
                             <a href="#" class="btn btn-warning" data-toggle="modal"
@@ -182,7 +185,7 @@
                                                         </button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <form action="/address" method="post">
+                                                        <form action="/addresses/<%=adds._id%>" method="post">
                                                             <div class="row">
                                                                 <div class="col-md-6 mb-4">
                                                                 <div class="form-outline mb-4 text-left">
@@ -269,9 +272,13 @@
                 </div>
             </div>
         </section>
-        <% }) %> 
-
-        <section class="row mt-5 mb-5 justify-content-center">
+        <% }) %>
+        <% }else{ %>
+            <div>
+                hiiiiiiiiiiiiii
+            </div>
+            <% } %> 
+        <!-- <section class="row mt-5 mb-5 justify-content-center">
 
             <div class="card justify-content-center" style="width: 18rem; height: 15rem;">
                 <a href="#"  data-toggle="modal"
@@ -373,7 +380,112 @@
                                 </div>
                             </div>
                        </div>
-                 </section>
+                 </section> -->
+                
+                    <section class="row mt-5 mb-5 justify-content-center">
+
+                        <div class="card justify-content-center" style="width: 18rem; height: 15rem;">
+                            <a href="#"  data-toggle="modal"
+                            data-target="#exampleModalCenter1">
+                                <div class="card-body d-flex justify-content-center align-items-center">
+                                    <i class="bi bi-plus" style="font-size: 8em; color: gray;"></i>
+                                </div>
+                            </a>
+                                <div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog"
+                                            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLongTitle">Add Address</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form action="/address" method="post">
+                                                            <div class="row">
+                                                                <div class="col-md-6 mb-4">
+                                                                <div class="form-outline mb-4 text-left">
+                                                                  <label class="form-label" for="form3Example3">Name</label>
+                                                                  <input type="text" id="form3Example3" class="form-control" name="name" />
+                                                                </div>
+                                                                </div>
+                                                  
+                                                                <div class="col-md-6 mb-4">
+                                                                <div class="form-outline mb-4 text-left">
+                                                                  <label class="form-label" for="form3Example3">Phone no</label>
+                                                                  <input type="tel" id="form3Example3" class="form-control" name="mobile" />
+                                                                  
+                                                                </div>
+                                                              </div>
+                                                              </div>
+                                                              <div class="row">
+                                                                <div class="col-md-6 mb-4">
+                                                                <div class="form-outline mb-4 text-left">
+                                                                  <label class="form-label" for="form3Example3">Pincode</label>
+                                                                  <input type="text" id="form3Example3" class="form-control" name="pin" />
+                                                                </div>
+                                                                </div>
+                                                  
+                                                                <div class="col-md-6 mb-4">
+                                                                <div class="form-outline mb-4 text-left">
+                                                                  <label class="form-label" for="form3Example3">Locality</label>
+                                                                  <input type="text" id="form3Example3" class="form-control" name="locality" />
+                                                                  
+                                                                </div>
+                                                              </div>
+                                                              </div>
+            
+                                                              <div class="form-group">
+                                                                <label for="exampleInputPassword1">Address</label>
+                                                                <input type="text" class="form-control" id="exampleInputPassword1" placeholder="address" name="addressDetails">
+                                                              </div>
+            
+                                                              <div class="row">
+                                                                <div class="col-md-6 mb-4">
+                                                                <div class="form-outline mb-4 text-left">
+                                                                  <label class="form-label" for="form3Example3">City</label>
+                                                                  <input type="text" id="form3Example3" class="form-control" name="district" />
+                                                                </div>
+                                                                </div>
+                                                  
+                                                                <div class="col-md-6 mb-4">
+                                                                <div class="form-outline mb-4 text-left">
+                                                                  <label class="form-label" for="form3Example3">State</label>
+                                                                  <input type="text" id="form3Example3" class="form-control" name="state" />
+                                                                  
+                                                                </div>
+                                                              </div>
+                                                              </div>
+                                                              <div class="row">
+                                                                <div class="col-md-6 mb-4">
+                                                                <div class="form-outline mb-4 text-left">
+                                                                  <label class="form-label" for="form3Example3">Landmark</label>
+                                                                  <input type="text" id="form3Example3" class="form-control" name="landmark" />
+                                                                </div>
+                                                                </div>
+                                                  
+                                                                <div class="col-md-6 mb-4">
+                                                                <div class="form-outline mb-4 text-left">
+                                                                  <label class="form-label" for="form3Example3">Alternative Phone</label>
+                                                                  <input type="text" id="form3Example3" class="form-control" name="optmob" />
+                                                                </div>
+                                                              </div>
+                                                              </div>
+                                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                                          </form>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Close</button>
+                                                        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                   </div>
+                             </section>
+                            
              </div>
  <!-- Footer Section Begin -->
  <footer class="footer">
