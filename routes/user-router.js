@@ -22,6 +22,9 @@ const {
     addAdress,
     editAddress,
     deleteAdd,
+    checkoutView,
+    placeorder,
+    orderSuccessPageView,
     logout
 }
     =require ('../controllers/user-controller')
@@ -44,6 +47,8 @@ router.get('/address', userAddressView)
 router.post('/address',addAdress)
 router.post('/addresses/:id',editAddress)
 router.post('/deleteAddress',deleteAdd)
+router.get('/checkout',userVerifyLogin,checkoutView)
+router.post('/placeOrder',placeorder)
 router.get('/logout',logout)
 
 

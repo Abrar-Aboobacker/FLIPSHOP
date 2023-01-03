@@ -238,11 +238,11 @@ postOtp: async (req, res) => {
       }
       const adds= await addresses.findOne({userId:id})
     if(adds == null){
-      const add=adds.address
-      res.render('user/address',{users,count,add})
+      // const add=adds.address
+      res.render('user/address',{users,count,adds})
     }else{
       const add=adds.address
-        res.render('user/address',{users,count,add})
+        res.render('user/address',{users,count,add,adds})
     }
       },
       addAdress:async (req,res)=>{
@@ -313,6 +313,34 @@ postOtp: async (req, res) => {
       }).then(()=>{
         res.json(response)
       })     
+    },
+    checkoutView:async (req,res)=>{
+      const id = req.session.user._id
+      let users=req.session.user
+      const prd = await user.findOne({_id:id}).populate('cart.items.productId')
+      let count= null;
+      if(users){
+        count= users.cart.items.length
+      }
+      const adds = await addresses.findOne({userId:id})
+      if(adds==null){
+        res.render('user/checkout',{users,count,adds,prd})
+      }else{
+        const add=adds.address
+        res.render('user/checkout',{users,count,adds,add,prd})
+      }
+      // res.render('user/checkout',{users,count,adds,prd})
+    },
+    placeorder:(req,res)=>{
+      
+      console.log('reaching');
+      console.log(req.body);
+      UserDatabase.placeOrder(req.body).then((response)=>{
+
+      })
+    },
+    orderSuccessPageView:(req,res)=>{
+
     },
     logout:(req,res)=>{
       req.session.user=null

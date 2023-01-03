@@ -101,7 +101,6 @@ userSchema.methods.addToCart = function (products,callBack){
                 response.remove=true
             }else if(cnt==1){
                 const isExisting = cart.items.findIndex(objInItems=>objInItems.productId == productId)
-                console.log(isExisting + "h,,,,,,,,,,,,,,,,,,,");
                 cart.items[isExisting].qty += cnt
                 cart.totalPrice += products.price
                 response.status= cart.items[isExisting].qty

@@ -31,7 +31,7 @@
     <link href="/css/style.css" rel="stylesheet">
 </head>
 
-<body>/
+<body>
     <div class="container-fluid position-relative d-flex p-0">
         <!-- Spinner Start -->
         <div id="spinner" class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
@@ -46,25 +46,33 @@
   <!-- Sign In Start -->
   <div class="container-fluid">
     <div class="row h-100 align-items-center justify-content-center" style="min-height: 100vh;">
+        
         <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
+            
             <div class="bg-secondary rounded p-4 p-sm-5 my-4 mx-3">
-                <div class="d-flex align-items-center justify-content-between mb-3">
-                    <a href="index.html" class="">
+               
+                <div class="d-flex align-items-center justify-content-between mb-3 ">
+                    <% if(adminLoginErr){ %>
+                        <p
+                         class="position-absolute  translate-middle  badge rounded-pill bg-danger"
+                          ><%=adminLoginErr  %> </p>
+                        <% }  else{  %>
+                      <% } %> 
+                    <!-- <a href="index.html" class="">
                         <h3 class="text-primary"><i class="fa fa-user-edit me-2"></i>DarkPan</h3>
-                    </a>
-                    <h3>Sign In</h3>
-                  
+                    </a> -->
+                   
+                        <h3 class=>Sign In</h3>
+                    
+                   
                 </div>
+             
                 <form action="/admin/adlogin" method="post" >
-                  <% if(adloginErr){ %>
-                      <span
-                        class="position-absolute top-0 end-0 translate-middle badge rounded-pill bg-danger"
-                        ><%=adloginErr  %> </span
-                      >
-                      <% }  else{  %>
-                    <% } %>   
-                        
+                 
+                      
                 <div class="form-floating mb-3">
+                     
+                   
                     <input name="email" type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
                     <label for="floatingInput">Email address</label>
                 </div>

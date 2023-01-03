@@ -11,8 +11,10 @@ module.exports={
     
             res.redirect('/admin/dashboard')
           }else{
-            res.render('admin/login',{adloginErr:req.session.adminLoginErr})
+            var adminLoginErr =  req.session.adminLoginErr
             req.session.adminLoginErr=false
+            res.render('admin/login',{adminLoginErr})
+         
 
           
           }
@@ -26,6 +28,7 @@ module.exports={
               req.session.adloggedIn=true
               res.redirect('/admin/dashboard')
             }else{
+              
               req.session.adminLoginErr="INCORECT"
               res.redirect('/admin/adlogin')
             }
