@@ -9,6 +9,7 @@ const userDatabase = require('./userDatabase')
 const adminDatabase = require ('./adminDatabase')
 const wishlist= require('../models/wishlist')
 const addresses = require('../models/address')
+const orders2 = require('../models/orders')
 const { response } = require('express')
 const mongoose =require('mongoose')
 const { compareSync, setRandomFallback } = require('bcryptjs')
@@ -329,18 +330,45 @@ postOtp: async (req, res) => {
         const add=adds.address
         res.render('user/checkout',{users,count,adds,add,prd})
       }
-      // res.render('user/checkout',{users,count,adds,prd})
     },
-    placeorder:(req,res)=>{
-      
+     placeorder:(req,res)=>{     
       console.log('reaching');
       console.log(req.body);
-      UserDatabase.placeOrder(req.body).then((response)=>{
+      var totalPrice = req.body.totalPrice
+      var totalPrice=Number(totalPrice)
+      console.log(totalPrice," intttttttttttttttt");
+      UserDatabase.placeOrder(req.body).then((orderId)=>{
+        console.log(orderId + "ith enthaaaaa");
+       if (req.body.payment=='cod'){
+        // res.json({response})
+        res.json({codSuccess:true})
+        } else{
+        userDatabase.generateRazorpay(orderId,totalPrice).then((response)=>{
+            res.json(response)
+        })
+       }
+      })
+    },
+    verifyPayment:(req,res)=>{
+      console.log(req.body,"venoooooooooo");
+      userDatabase.verifyPayment(req.body).then(()=>{
+        userDatabase.changePaymentStatus(req.body.order.receipt).then(()=>{
+          console.log('payment nadanne');
+          res.json({status:true})
 
+        })
+      }).catch((err)=>{
+        console.log(err);
+        res.json({status:false,erMsg:""})
       })
     },
     orderSuccessPageView:(req,res)=>{
-
+      res.render('user/orderSuccessPage')
+    },
+    orderDetailsPageView:(req,res)=>{
+      id=req.session.user._id
+      const ord =orders2.findOne({userid:id})
+      res.render('user/',{ord})
     },
     logout:(req,res)=>{
       req.session.user=null

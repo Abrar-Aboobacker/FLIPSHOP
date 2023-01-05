@@ -22,15 +22,13 @@
     <!-- Shopping Cart Section Begin -->
     <section class="shopping-cart spad">
         <div class="container">
-          
             <div class="row">
-
+                
                 <div class="col-lg-8">
                     <div class="shopping__cart__table">
-                        <% if(prd.cart.items.length<=0){ %> 
                         <table>
                             <thead>
-                              
+                                <% if(prd.cart.items.length<=0){ %> 
                                     <h1>vellow</h1>
                                     <% }else{ %>
                                         
@@ -83,7 +81,7 @@
                                 
 
                             <% }) %>   
-                            <% } %>
+                            <% } %> 
                             </tbody>
                         </table>
                        
@@ -114,7 +112,6 @@
                     </div>
                 </div>
             </div>
-           
         </div>
     </section>
     <!-- Shopping Cart Section End -->

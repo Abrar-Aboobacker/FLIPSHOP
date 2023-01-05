@@ -92,11 +92,7 @@ module.exports={
       })
     },
     postEditProduct: async(req,res)=>{
-      console.log("eeeeeeeeeeeeeeee"+req.params.id);
       const id = req.params.id
-      console.log(id +"sdfhiudhsiudfhhdf");
-      console.log("ddddddddddddddddddddddddddddddddddddddddddddd");
-      console.log(req.body);
       let pro=[]
       const updatedProName=req.body.name
       const updatedCategory = req.body.cat
@@ -105,11 +101,7 @@ module.exports={
       const updatedDiscount=req.body.discount
       const updatedSize=req.body.size
       const updatedImage=req.body.images
-
-    
-      // const updatedDiscription
-
-
+      
       let product ={
         name:updatedProName,
         category:updatedCategory,

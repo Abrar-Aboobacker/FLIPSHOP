@@ -151,7 +151,9 @@
                                 <%prd.cart.items.forEach(function(prd,index){%>
                                 <!-- <li>Total <span><%= x+=prd.productId.price * prd.qty%></span></li> -->
                                 <% }) %> 
-                                <li>Total <span><%=x%></span></li>
+                                <li >Total <span  ><%=x%></span></li>
+                                <input type="text" name="totalPrice" value="<%=x %>" hidden>
+                              
                             </ul>
                            
                             <p>Dear Customer, Kindly select your payment method given below:</p>
@@ -185,14 +187,71 @@
             url:'/placeOrder',
             method:'post',
             data:$('#checkOut').serialize(),
+            encode:true,
+            type:JSON,
             success:(response)=>{
                 alert(response)
-                if(response.status){
+                if(response.codSuccess){
+                    console.log('suuuuuuuuuuuuu');
+                  alert('success')  
                 location.href='/orderSuccess'
+                }else{
+                    razorpayPayment(response)
                 }
             }
         })
     })
+    
+    function razorpayPayment(order) {
+        var options = {
+    "key": "rzp_test_c9LwPhNzbwNWJ6", // Enter the Key ID generated from the Dashboard
+    "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    "currency": "INR",
+    "name": "FlipShop",
+    "description": "Test Transaction",
+    "image": "https://example.com/your_logo",
+    "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+    "callback_url": "https://eneqd3r9zrjok.x.pipedream.net/",
+    "handler": function (response){
+    alert(response.razorpay_payment_id);
+    alert(response.razorpay_order_id);
+    alert(response.razorpay_signature)
+
+        verifyPayment(response,order)
+    },
+    "prefill": {
+        "name": "Gaurav Kumar",
+        "email": "gaurav.kumar@example.com",
+        "contact": "9999999999"
+    },
+    "notes": {
+        "address": "Razorpay Corporate Office"
+    },
+    "theme": {
+        "color": "#3399cc"
+    }
+};
+    var rzp1 = new Razorpay(options);
+    rzp1.open();
+    }
+   
+    function verifyPayment(payment,order){
+        $.ajax({
+            url:'/verifyPayment',
+            data:{
+                payment,
+                order
+            },
+            method:'post',
+            success:(response)=>{
+                if(response.status){
+                    location.href='/orderSuccess'
+                }else{
+                    alert("payment failed")
+                }
+            }
+        })
+    }
 </script>
 <style>
     *,

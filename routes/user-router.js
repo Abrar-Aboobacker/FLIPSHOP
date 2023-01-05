@@ -25,6 +25,8 @@ const {
     checkoutView,
     placeorder,
     orderSuccessPageView,
+    orderDetailsPageView,
+    verifyPayment,
     logout
 }
     =require ('../controllers/user-controller')
@@ -49,6 +51,9 @@ router.post('/addresses/:id',editAddress)
 router.post('/deleteAddress',deleteAdd)
 router.get('/checkout',userVerifyLogin,checkoutView)
 router.post('/placeOrder',placeorder)
+router.get('/orderSuccess',orderSuccessPageView)
+router.get('/orders',orderDetailsPageView)
+router.post('/verifyPayment',verifyPayment)
 router.get('/logout',logout)
 
 

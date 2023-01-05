@@ -111,7 +111,7 @@ userSchema.methods.addToCart = function (products,callBack){
                 response.status=cart.items[isExisting].qty
             }
             this.save().then((doc)=>{
-                response.total =doc.cart.totalPrice
+                response.total = doc.cart.totalPrice
                 cb(response)
             })
         }
