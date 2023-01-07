@@ -18,10 +18,12 @@ const {
     doAddToWishlist,
     doDeleteWishlist,
     userProfileView,
+    profileChanges,
     userAddressView,
     addAdress,
     editAddress,
     deleteAdd,
+    couponCheck,
     checkoutView,
     placeorder,
     orderSuccessPageView,
@@ -44,11 +46,13 @@ router.post('/changeQuantity',AuthAjaxVerification, changeQuantity)
 router.get('/wishlist', viewWishList)
 router.get('/addToWishlist/:id',doAddToWishlist)
 router.post('/deleteWishlist',AuthAjaxVerification,doDeleteWishlist)
-router.get('/profile',userProfileView)
+router.get('/profile',userVerifyLogin,userProfileView)
+router.post('/profile',profileChanges)
 router.get('/address', userAddressView)
 router.post('/address',addAdress)
 router.post('/addresses/:id',editAddress)
 router.post('/deleteAddress',deleteAdd)
+router.post('/couponCheck',couponCheck)
 router.get('/checkout',userVerifyLogin,checkoutView)
 router.post('/placeOrder',placeorder)
 router.get('/orderSuccess',orderSuccessPageView)

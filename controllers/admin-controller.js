@@ -197,16 +197,16 @@ module.exports={
       addCoupon:(req,res)=>{
         res.render("admin/add-coupon")
       },
-      postCoupon:async(req,res)=>{
+      postCoupon:(req,res)=>{
 
         let couponInformation=req.body
         // couponInformation.expirydate=couponInformation.expirydate.
-        const coupon = new coupons({name:couponInformation.couponName,amount:couponInformation.amount,minCartAmount:couponInformation.minPurchase
+        const coupon = new coupons({code:couponInformation.couponName,amount:couponInformation.amount,minCartAmount:couponInformation.minPurchase
         ,expireDate:couponInformation.expirydate})
-         await coupon.save((err,doc)=>{
-          if(err){
+         coupon.save((err, doc) => {
+          if (err) {
             console.log(err);
-          }else{
+          } else {
             console.log(doc);
           }
         })

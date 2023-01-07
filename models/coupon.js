@@ -1,10 +1,10 @@
 const mongoose =require('mongoose')
 
 const couponSchema = new mongoose.Schema({
-    name:{
+    code:{
         type:String,
         required:true,
-        
+        unique:true   
     },
     isPercent:{
         type:Boolean,
@@ -35,6 +35,13 @@ const couponSchema = new mongoose.Schema({
         type:Boolean,
         default:true
     },
-
+    userUsed: [
+        {
+          userId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'users',
+          },
+        },
+      ],
 })
 module.exports =mongoose.model('coupons',couponSchema)

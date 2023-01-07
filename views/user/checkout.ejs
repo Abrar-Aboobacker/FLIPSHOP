@@ -147,12 +147,13 @@
                                 
                             </ul>
                             <ul class="checkout__total__all">
+
                             <% var x=0 %> 
                                 <%prd.cart.items.forEach(function(prd,index){%>
                                 <!-- <li>Total <span><%= x+=prd.productId.price * prd.qty%></span></li> -->
                                 <% }) %> 
-                                <li >Total <span  ><%=x%></span></li>
-                                <input type="text" name="totalPrice" value="<%=x %>" hidden>
+                                <li >Total <span  ><%=total%></span></li>
+                                <input type="text" name="totalPrice" value="<%=total%>" hidden>
                               
                             </ul>
                            

@@ -10,7 +10,7 @@
                 <h6 class="mb-4">Add Coupon</h6>
                 <label for="floatingInput">Coupon Name</label>
                 <input class="form-control mb-3" type="text" name="couponName" placeholder="Coupon Name"
-                    aria-label="default input example" value="<%=coup.name %>">
+                    aria-label="default input example" value="<%=coup.code %>">
                     <label for="floatingInput">Amount</label>
                 <input class="form-control mb-3" type="number" name="amount" placeholder="Amount"
                     aria-label="default input example" value="<%-coup.amount %>">
@@ -19,7 +19,7 @@
                     aria-label="default input example" value="<%-coup.minCartAmount%>">
                     <label for="floatingInput">Expiry Date</label>
                 <input class="form-control mb-3" type="date" name="expirydate"  placeholder="Date"
-                    aria-label="default input example" value="<%=coup.expireDate %>">
+                    aria-label="default input example" value="<%-coup.expireDate %>">
                     <button type="submit" class="btn btn-primary mt-4">Submit</button> 
                     <a href="/admin/coupons" class="btn btn-success mt-4"> back</a>    
                 </div>

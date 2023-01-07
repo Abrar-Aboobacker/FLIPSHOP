@@ -94,21 +94,40 @@
                         </div>
                     </div>
                 </div>
+                
                 <div class="col-lg-4">
+
                     <div class="cart__discount">
+                        
+                          
                         <h6>Discount codes</h6>
-                        <form action="#">
-                            <input type="text" placeholder="Coupon code">
+                        <div id="error" class="alert alert-danger" role="alert" style="display: none; height: 30px; font-size: 1.5em; padding-bottom:1.5EM ; ">
+               
+                        </div>
+                        <div id="success" class="alert alert-success" role="alert" style="display: none;  height: 30px; font-size: 1.5em; padding-bottom:1.5EM ;">
+                           
+                        </div>
+                        <form action="" id="couponForm">
+                            <input type="text" placeholder="Coupon code" name="code" id="code">
+                            <!-- <input type="number" name="total" value="<%= prd.cart.totalPrice%>" hidden> -->
                             <button type="submit">Apply</button>
                         </form>
+                            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                              Available Offers
+                            </button>
+                          </p>
+                          <% for(i=0;i<couponz.length;i++) {%> 
+                          <div class="collapse" id="collapseExample">
+                            <input type="text" value="<%=couponz[i].code%> ">
                     </div>
+                    <% } %> 
                     <div class="cart__total">
                         <h6>Cart total</h6>
                         <ul>
-                           
-                            <li>Total <span id="total"> <%= prd.cart.totalPrice   %>  </span></li>
+                          
+                            <li>Total <span id="total"> <%= prd.cart.totalPrice%>  </span></li>
                         </ul>
-                        <a href="/checkout" class="primary-btn">Proceed to checkout</a>
+                        <button id="button" onclick="checkout('<%=userId%>')" class="primary-btn">Proceed to checkout</button>
                     </div>
                 </div>
             </div>
@@ -157,6 +176,48 @@
             })
         })
     }
+    let clicked =false;
+    $('#couponForm').submit((e)=>{
+        e.preventDefault()
+        const code =document.getElementById('code').value
+        const total =document.getElementById('total').innerHTML
+        if(code==""){
+            document.getElementById('error').style.display='inline'
+            setTimeout(()=>document.getElementById('error').style.display='none',2000)
+        }else{
+            $.ajax({
+                url:'/couponCheck',
+                method:'post',
+                dataType:"json",
+                encode:true,
+                data:
+                $('#couponForm').serialize()+'&total='+total,
+                success:((response)=>{
+                    if(response.status&& clicked==false){
+                        document.getElementById('success').innerHTML="Coupon Entered"
+                        document.getElementById('success').style.display='inline'
+                        document.getElementById('total').innerHTML=response.total
+                        setTimeout(()=>document.getElementById('success').style.display='none',2000)
+                        clicked=true
+                    }else{
+                        document.getElementById('error').innerHTML="already entered"
+                        document.getElementById('error').style.display='inline'
+                        setTimeout(()=>document.getElementById('error').style.display='none',4000)
+
+                    }
+
+                })
+            })
+        }
+    })
+
+    function checkout(userId){
+        const code = document.getElementById('code').value
+        const total = document.getElementById('total').innerHTML
+        location.href=`/checkout?user=${userId}&code=${code}&total=${total}`
+    }
+
+
     
 </script>
     

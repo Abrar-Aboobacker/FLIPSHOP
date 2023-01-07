@@ -27,10 +27,10 @@
                                         <% couponList.forEach(function(couponList,index){ %> 
                                         <tr>
                                             <th scope="row"><%=index+1 %>  </th>
-                                            <td><%=couponList.name %> </td>
+                                            <td><%=couponList.code %> </td>
                                             <td><%=couponList.amount %> </td>
                                             <td><%=couponList.minCartAmount%> </td>
-                                            <td><%=couponList.expireDate%> </td>
+                                            <td><%=couponList.expireDate.toLocaleString()%></td>
                                             <td>
                                                 <a href="/admin/couponEdit/<%=couponList._id %> " 
                                                     class="btn btn-success"

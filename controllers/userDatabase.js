@@ -82,7 +82,8 @@ module.exports={
                 }
               },(err,order)=>{
                 if(err){
-                    console.log(err);
+                    console.log(err + "ivdeno preshnam");
+
                 }else{
                     resolve(order)
                     
@@ -91,7 +92,7 @@ module.exports={
         })
     },
     verifyPayment:(details)=>{
-        console.log(details);
+        
         return new Promise(async (resolve,reject)=>{
             const {
                 createHmac,
@@ -99,8 +100,7 @@ module.exports={
             let hmac = createHmac('sha256',secret_key);
             hmac.update(details.payment.razorpay_order_id+'|'+details.payment.razorpay_payment_id);
             hmac=hmac.digest('hex')
-            console.log(hmac,"hmac");
-            console.log(details.payment.razorpay_signature,"dddddddddd");
+           
             if(hmac==details.payment.razorpay_signature){
                 console.log("hy");
                 resolve()

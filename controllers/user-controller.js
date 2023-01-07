@@ -10,9 +10,11 @@ const adminDatabase = require ('./adminDatabase')
 const wishlist= require('../models/wishlist')
 const addresses = require('../models/address')
 const orders2 = require('../models/orders')
+const coupon = require('../models/coupon')
 const { response } = require('express')
 const mongoose =require('mongoose')
-const { compareSync, setRandomFallback } = require('bcryptjs')
+// const { compareSync, setRandomFallback } = require('bcryptjs')
+// const { findOne } = require('../models/product')
 module.exports={
     home:(req, res, next) =>{
           let users=req.session.user
@@ -128,6 +130,20 @@ postOtp: async (req, res) => {
         res.render("user/shop",{productList,users,count})
       })
     }, 
+    couponCheck:async (req,res)=>{
+      let codes=req.body.code
+      let code1 = codes.trim()
+      let total = req.body.total
+      let total1 =parseInt(total) 
+      const coupons = await coupon.findOne({code:code1})
+      if(coupons&& coupons.minCartAmount<=total1){
+        const amount = coupons.amount
+        const carttotal = total1 - amount
+        res.json({status:true,total:carttotal})
+      }else{
+        res.json({status:false,message:'No such coupon'})
+      }
+    },
     viewCart:async (req,res)=>{
       // console.log("ethndo");
       const users=req.session.user
@@ -137,17 +153,15 @@ postOtp: async (req, res) => {
       }
       console.log(count);
       const userId=req.session.user._id
+       const couponz= await coupon.find().where() 
+       console.log(couponz);
       const prd = await user.findOne({_id:userId}).populate('cart.items.productId')
-      // console.log(prd,"dfgdfgdgf");
-      res.render('user/cart',{users,prd,count})
+      res.render('user/cart',{users,prd,count,userId,couponz})
     },
     doAddToCart:async(req,res)=>{
-      // console.log("ethndo");
       const id =req.session.user._id
       const usser= await user.findById(id)
-      // console.log(usser);
       const products=req.params.id
-      // console.log(product);
       product.findById(products).then((prduct)=>{
         usser.addToCart(prduct,()=>{
           res.redirect('/viewCart')
@@ -221,13 +235,36 @@ postOtp: async (req, res) => {
         })
 
       },
-      userProfileView:(req,res)=>{
+      userProfileView:async (req,res)=>{
         let users=req.session.user
+        let id = req.session.user._id
+        console.log(id,"iddddddddddd");
+        const userz= await  user.findOne({_id:id})
+        console.log(userz,'ffffffffffff');
         let count= null;
       if(users){
         count= users.cart.items.length
       }
-      res.render('user/userProfile',{users,count})
+
+      res.render('user/userProfile',{users,count,userz})
+      },
+      profileChanges:(req,res)=>{
+        console.log(req.body,"loooooooooo");
+        const changeInformation = req.body
+        const user1 = new user({
+          fristName:changeInformation.fName,
+          lastName:changeInformation.lName,
+          email:changeInformation.email,
+          phone:changeInformation.no
+        })
+        user1.save((err,doc)=>{
+          if(err){
+            console.log(err);
+            // res.redirect('/')
+          }else{
+            res.redirect('/profile')
+          }
+        })
       },
       userAddressView:async (req,res)=>{
         const id = req.session.user._id
@@ -316,31 +353,46 @@ postOtp: async (req, res) => {
       })     
     },
     checkoutView:async (req,res)=>{
-      const id = req.session.user._id
+      // const id = req.session.user._id
       let users=req.session.user
+      const id = req.query.user
+      let couponCode =req.query.code
+      let couponCode1=couponCode.trim()
+      let total = req.query.total
+      if(couponCode1!==""){
+        const couponz = await coupon.findOne({code:couponCode1})
+        const index = await couponz.userUsed.findIndex(obj=>obj.userId==id)
+        if(index>=0){
+          req.flash('error','You are already used the coupon')
+        }else{
+          const userz = {userId:''}
+          userz.userId =id
+          await coupon.findOneAndUpdate({code:couponCode1},{$addToSet:{userUsed:userz}})
+          const userr = await user.findOne({_id:id})
+          total=parseInt(total)
+          userr.cart.totalPrice=total
+        const news =  await userr.save()
+        }
+      }
       const prd = await user.findOne({_id:id}).populate('cart.items.productId')
       let count= null;
       if(users){
         count= users.cart.items.length
       }
       const adds = await addresses.findOne({userId:id})
+      const error=req.flash('error')
       if(adds==null){
-        res.render('user/checkout',{users,count,adds,prd})
+        res.render('user/checkout',{users,count,adds,prd,error,total})
       }else{
         const add=adds.address
-        res.render('user/checkout',{users,count,adds,add,prd})
+        res.render('user/checkout',{users,count,adds,add,prd,error,total})
       }
     },
      placeorder:(req,res)=>{     
-      console.log('reaching');
-      console.log(req.body);
       var totalPrice = req.body.totalPrice
       var totalPrice=Number(totalPrice)
-      console.log(totalPrice," intttttttttttttttt");
       UserDatabase.placeOrder(req.body).then((orderId)=>{
-        console.log(orderId + "ith enthaaaaa");
        if (req.body.payment=='cod'){
-        // res.json({response})
         res.json({codSuccess:true})
         } else{
         userDatabase.generateRazorpay(orderId,totalPrice).then((response)=>{
@@ -350,10 +402,8 @@ postOtp: async (req, res) => {
       })
     },
     verifyPayment:(req,res)=>{
-      console.log(req.body,"venoooooooooo");
       userDatabase.verifyPayment(req.body).then(()=>{
         userDatabase.changePaymentStatus(req.body.order.receipt).then(()=>{
-          console.log('payment nadanne');
           res.json({status:true})
 
         })

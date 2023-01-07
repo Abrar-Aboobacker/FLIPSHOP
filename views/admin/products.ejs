@@ -43,7 +43,7 @@
                                             <td><%=productList.discount%> </td>
                                             <td><%=productList.size%> </td>
                                             <td>
-                                                <%   for(let z=0;z<productList.image.length;z++) {%>
+                                                <%for(let z=0;z<productList.image.length;z++) {%>
                                                     <img src="/image/productImages/<%= productList.image[z] %>" >
                                                     <% } %> 
                                                 </td>
@@ -69,6 +69,7 @@
                     </div>
                 </div>
             </div>
+            
                     
             <!-- Table End -->
             <%-include('./layout/admin footer.ejs') %> 

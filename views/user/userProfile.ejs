@@ -163,25 +163,38 @@
                         <i class="bi bi-person-circle" style="font-size: 4em;"></i>
                     </div>
                     <div class="col-9" style="margin-top: 2em;">
-                        <form id="signupForm">
+                        <form id="signupForm" action="/profile" method="post" enctype="multipart/form-data ">
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                  <div class="form-outline text-left">
+                                    <label class="form-label" for="form3Example1">First name</label>
+                                    <input type="text" id="form3Example1" class="form-control" name="fName" value="<%=userz.fristName%>" />
+                                    
+                                  </div>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                  <div class="form-outline text-left">
+                                    <label class="form-label" for="form3Example2">Last name</label>
+                                    <input type="text" id="form3Example2" class="form-control" name="lName" value="<%=userz.lastName %>" />
+                                  </div>
+                                </div>
+                              </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Email address</label>
                                 <input type="email" class="form-control mt-2 rounded-0" id="exampleInputEmail1"
-                                    aria-describedby="emailHelp" placeholder="Enter email">
+                                    aria-describedby="emailHelp" name="email" placeholder="Enter email" value="<%=userz.email %> " >
                             </div>
-                            <div class="form-group mt-4">
-                                <label for="exampleInputPassword1">Password</label>
-                                <input type="password" class="form-control mt-2 rounded-0" id="exampleInputPassword1"
-                                    placeholder="Password">
-                            </div>
+                           
                             <div class="form-group mt-4">
                                 <label for="exampleInputphone1">Phone</label>
                                 <input type="tel" class="form-control mt-2 rounded-0" id="exampleInputphone1"
-                                    placeholder="Phone">
+                                    placeholder="Phone" name="no" value="<%=userz.phone %> ">
                             </div>
-                            <button type="submit" class="d-none"></button>
-                        </form>
-                        <button type="button" class="btn btn-warning mt-3" onclick="submitForm()">Save changes</button>
+                            <!-- <button type="submit" class="d-none"></button> -->
+                        
+                        <button type="submit" class="btn btn-warning mt-3">Save changes</button>
+                    </form>                                <!-- onclick="submitForm()" -->
+                               
                     </div>
                 </div>
             </div>
@@ -203,7 +216,7 @@
                     <div class="form-group mt-4">
                         <label for="exampleInputphone1">Confirm Pasword</label>
                         <input type="password" class="form-control mt-2 rounded-0" id="exampleInputCPassword1"
-                            placeholder="Phone">
+                            placeholder="Confirm Password">
                     </div>
                     <button type="submit" class="d-none"></button>
                 </form>
