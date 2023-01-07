@@ -1,0 +1,148 @@
+
+<%-include("./layout/user header.ejs") %> 
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__text">
+                    <h4>Shopping Cart</h4>
+                    <div class="breadcrumb__links">
+                        <a href="/">Home</a>
+                        <a href="/shop">Shop</a>
+                        <span>Orders</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+
+<!-- Shopping Cart Section Begin -->
+
+<section class="shopping-cart spad" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shopping__cart__table">
+                    <table class="table">
+                        <thead>
+                       
+                            <tr>
+                                <th scope="col">Date</th>
+                                <th scope="col">Address</th>
+                                <th scope="col">Total Price</th>
+                                <th scope="col">Payment</th>
+                                <th scope="col">Status</th>
+                               
+                            </tr>
+                        </thead>
+                            <% orders.forEach((ord)=>{ %>
+                                <tbody>   
+                            <tr >
+                             
+                                <td  style="font-weight: bold; font-size: 15px;">
+                                    <%=ord.date.toString().substring(0,15)%> 
+                                </td>
+                                <td style="width: 200px; font-size: 15px; font-weight: bold">
+                                    <%=ord.address %> 
+                                </td>
+                                <td style="font-weight: bold; font-size: 13px; ">
+                                    <%=ord.total %> 
+                                </td>
+                                <td style="font-weight: bold; font-size: 20px; margin-left: -50px; ">
+                                    <%=ord.payment %> 
+                                </td>
+                                <td style="font-weight: bold; font-size: 15px;">
+                                    <%=ord.status %> 
+                                </td>
+                                <td>
+                                   
+       
+                                    <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal<%=ord._id%>">
+    View More
+  </button>
+</td>
+</tr>
+</tbody>
+<% })%>
+</table>
+  <!-- Modal -->
+  <% orders.forEach((order)=>{ %>
+
+  <div class="modal fade" id="exampleModal<%=order._id%>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Product</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <% order.products.forEach((val)=>{ %> 
+
+                <div class="row">
+                  <div class="col-3" style="width: 14px;">
+                    <img src="/image/productImages/<%=val.productId.image[0] %>" class="card-img-top" alt="...">
+
+                  </div>
+                  <div class="col-9">
+                    <h5>
+                        <%=val.productId.name %>
+
+                    </h5>
+                    <p>
+                        <%=val.productId.price %>
+                    </p>
+                    <h6>
+                        <%=val.productId.description%>
+                    </h6>
+                  </div>
+                  <% })%>
+                </div>
+                <br>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        </div>
+                                     </div>
+                                 </div>
+                             </div>
+                     <% })%>
+                 </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Shopping Cart Section End -->
+
+<!-- <script>
+    function deleting(prdId){
+        $.ajax({
+            url:'/deleteWishlist',
+            method:'POST',
+            data:{
+                productId:prdId
+            },
+            success:((response)=>{
+                if(response.access){
+                     Swal.fire(
+                        'Deleted!',
+                        'Your item has been deleted',
+                        'success'
+                    ) 
+                    setTimeout(()=>location.reload(),1000)
+                }
+            })
+        })
+    }
+</script> -->
+
+<%-include("./layout/user footer.ejs") %> 
+
+
+
+  

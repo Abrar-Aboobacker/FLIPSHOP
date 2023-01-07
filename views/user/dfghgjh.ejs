@@ -1,0 +1,96 @@
+<div class="container-fluid pt-4 px-4">
+  <div class="row ">
+      <div class="col-xl-2">
+
+      </div>
+<div class="col-sm-12 col-xl-6 ml-5">
+<table class="table table-bordered mt-3">
+  <thead>
+    <tr>
+      <th scope="col">Date</th>
+      <th scope="col">Address</th>
+      <th scope="col">Pincode</th>
+      <th scope="col">Amount</th>
+      <th scope="col">Payment</th>
+      <th scope="col">Status</th>
+    </tr>
+  </thead>
+  <% orders.forEach((order)=>{ %>
+  <tbody>
+    <tr>
+      <td><%= order.date %> </td>
+      <td><%= order.address %> </td>
+      <td><%= order.pinCode %> </td>
+      <td><%= order.totalPrice%> </td>
+      <td><%= order.paymentMethod %> </td>
+      <td><%= order.Status %> </td>
+      <td><button onclick="prdShow('<%=order._id%>')" type="button" class="btn btn-primary" data-toggle="modal" data-target="#bt<%= order._id %> ">
+        View Products
+      </button></td>
+    </tr>
+  </tbody>
+  <% }) %> 
+</table>
+
+
+<% orders.forEach((order)=>{ %>
+    <div class="modal fade" id="bt<%=order._id%>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <table class="table table-bordered mt-3">
+              <thead>
+                <tr>
+                  <th scope="col">Name</th>
+                  <th scope="col">Price</th>
+                  <th scope="col">Type</th>
+                  <th scope="col">image</th>
+                </tr>
+              </thead>
+              <% order.products.forEach((prd)=>{ %> 
+                  <tbody>
+                <tr>
+                  <td><%= prd.productId.name %></td>
+                  <td><%= prd.productId.price %></td>
+                  <td><%= prd.productId.type %></td>
+                  <td></td>
+                </tr>
+              </tbody>
+              <% }) %> 
+          </table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+</div>
+</div>
+<% }) %> 
+
+
+<head>
+  <script>
+   function prdShow (id){
+    $.ajax({
+      method:'post',
+      url:'/prdModal',
+      data:{
+        productId:id
+      },
+      success:(order)=>{
+        console.log(order);
+      }
+    })
+   }
+  </script>
+</head>

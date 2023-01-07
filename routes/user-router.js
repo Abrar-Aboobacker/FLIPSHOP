@@ -56,7 +56,7 @@ router.post('/couponCheck',couponCheck)
 router.get('/checkout',userVerifyLogin,checkoutView)
 router.post('/placeOrder',placeorder)
 router.get('/orderSuccess',orderSuccessPageView)
-router.get('/orders',orderDetailsPageView)
+router.get('/orders',userVerifyLogin,orderDetailsPageView)
 router.post('/verifyPayment',verifyPayment)
 router.get('/logout',logout)
 

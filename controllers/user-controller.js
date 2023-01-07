@@ -415,10 +415,19 @@ postOtp: async (req, res) => {
     orderSuccessPageView:(req,res)=>{
       res.render('user/orderSuccessPage')
     },
-    orderDetailsPageView:(req,res)=>{
+    orderDetailsPageView:async (req,res)=>{
+      let users=req.session.user
+      
+      let count= null;
+      if(users){
+        count= users.cart.items.length
+      }
       id=req.session.user._id
-      const ord =orders2.findOne({userid:id})
-      res.render('user/',{ord})
+      const orders = await orders2.find({userid:id}).populate('products.productId')
+      // pro = ord[0].products
+      console.log(typeof(ord),'llllllllll');
+      // console.log(ord.productId+"orders")
+      res.render('user/ordersView',{orders,count,users})
     },
     logout:(req,res)=>{
       req.session.user=null

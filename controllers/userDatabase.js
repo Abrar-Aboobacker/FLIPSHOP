@@ -48,14 +48,14 @@ module.exports={
     placeOrder:(order)=>{
         return new Promise(async (resolve,reject)=>{
             const prd = await users.findOne({_id:order.userId})
-            console.log(prd.cart.items);
+            console.log(prd.cart.items+"prddddd");
             const status = order.payment== 'cod'?'Placed':'Pending'
             const orders = new orders1({
-                userid:order._id,
+                userid:prd._id,
                 total:prd.cart.totalPrice,
                 payment:order.payment,
                 address:order.address,
-                products:prd.cart,
+                products:prd.cart.items,
                 status,
                 date:new Date()
             })
