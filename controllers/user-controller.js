@@ -248,23 +248,34 @@ postOtp: async (req, res) => {
 
       res.render('user/userProfile',{users,count,userz})
       },
-      profileChanges:(req,res)=>{
-        console.log(req.body,"loooooooooo");
+      profileChanges:async (req,res)=>{
+        // console.log(req.body,"loooooooooo");
+        // const user1 = new user({
+        //   fristName:changeInformation.fName,
+        //   lastName:changeInformation.lName,
+        //   email:changeInformation.email,
+        //   phone:changeInformation.no
+        // })
+        // user1.save((err,doc)=>{
+        //   if(err){
+        //     console.log(err);
+        //     // res.redirect('/')
+        //   }else{
+        //     res.redirect('/profile')
+        //   }
+        // })
+        const id = req.params.id
         const changeInformation = req.body
-        const user1 = new user({
-          fristName:changeInformation.fName,
-          lastName:changeInformation.lName,
-          email:changeInformation.email,
-          phone:changeInformation.no
-        })
-        user1.save((err,doc)=>{
-          if(err){
-            console.log(err);
-            // res.redirect('/')
-          }else{
-            res.redirect('/profile')
+        const userz = await user.updateOne({_id:id},{
+          $set:{
+            fristName:changeInformation.fName,
+            lastName:changeInformation.lName,
+            email:changeInformation.email,
+            phone:changeInformation.no
           }
         })
+     
+        res.redirect("/profile")
       },
       userAddressView:async (req,res)=>{
         const id = req.session.user._id
@@ -424,9 +435,6 @@ postOtp: async (req, res) => {
       }
       id=req.session.user._id
       const orders = await orders2.find({userid:id}).populate('products.productId')
-      // pro = ord[0].products
-      console.log(typeof(ord),'llllllllll');
-      // console.log(ord.productId+"orders")
       res.render('user/ordersView',{orders,count,users})
     },
     logout:(req,res)=>{
