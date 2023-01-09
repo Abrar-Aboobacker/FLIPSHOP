@@ -4,6 +4,7 @@ const coupons =require ('../models/coupon')
 const product = require('../models/product')
 const user1 = require ('../models/user.js')
 const orders = require('../models/orders')
+const banner = require('../models/banner')
 
 module.exports={
     adminlogin:(admindata)=>{
@@ -84,6 +85,14 @@ module.exports={
         orders.find().populate('products.productId').exec((err,orders)=>{
            
            callback(err,orders)
-         })
+         }),
+    getAllBanners:(callback)=>{
+        
+        banner.find().where().
+        exec((err,banners)=>{
+                
+        callback(err,banners)
+              });
+         },
      
 }

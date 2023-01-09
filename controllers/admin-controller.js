@@ -50,6 +50,7 @@ module.exports={
     },
     AdminProductManagment:(req,res)=>{
       adminDatabase.getAllProduct((err,productList)=>{
+        category1.findById()
         res.render("admin/products",{productList})
       })
     },
@@ -293,6 +294,17 @@ module.exports={
         res.json(response)
       })
     }
+    },
+    bannerDetailsView:async (req,res)=>{
+      adminDatabase.getAllBanners((err,banners)=>{
+        res.render("admin/banner",{banners})
+      })
+     
+    },
+    addBanner:(req,res)=>{
+      adminDatabase.getAllCategory((err,categoryList)=>{
+        res.render("admin/add-banner",{categoryList})
+      })
     },
     adminLogout:(req,res)=>{
       req.session.admin=null

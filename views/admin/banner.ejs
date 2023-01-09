@@ -1,0 +1,63 @@
+<%-include("./layout/admin header.ejs") %> 
+
+
+            
+            <!-- Table Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    <div class="col-12">
+                        <div class="col d-flex justify-content-end">
+                            <a href="addcoupon" class="btn btn-danger mt-4 mb-4" >Add Coupons</a>
+                      </div>
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <h6 class="mb-4">Coupon Table</h6>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">NO</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Amount</th>
+                                            <th scope="col">Min Purchase</th>
+                                            <th scope="col">Expiry Date</th>
+                                            <th scope="col">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% banners.forEach(function(banners,index){ %> 
+                                        <tr>
+                                            <th scope="row"><%=index+1 %>  </th>
+                                            <td><%=banners.code %> </td>
+                                            <td><%=banners.amount %> </td>
+                                            <td><%=banners.minCartAmount%> </td>
+                                            <td><%=banners.expireDate.toLocaleString()%></td>
+                                            <td>
+                                                <a href="/admin/couponEdit/<%=banners._id %> " 
+                                                    class="btn btn-success"
+                                                     onclick = "return confirm('Are you want edit <%=  banners.name%>')">edit</a>
+
+                                                <% if (banners.access) {%> 
+                                                <a href="/admin/couponDisable/<%=banners._id %> " 
+                                                    class="btn btn-danger"
+                                                     onclick = "return confirm('Are you want disable <%=  banners.name%>')">Disable</a>
+                                                <% }  else { %> 
+                                                    <a href="/admin/couponEnable/<%=banners._id %> " 
+                                                        class="btn btn-danger" 
+                                                        onclick = "return confirm('Are you want enable <%= banners.name%>')">Enable</a>
+                                                    <% } %> 
+                                            </td>
+                                        </tr>
+                                        <% }) %> 
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                    
+            <!-- Table End -->
+
+        <!-- Content End -->
+
+        <%-include('./layout/admin footer.ejs') %> 

@@ -30,6 +30,8 @@ const {adminLogin,
     unblockUser,
     orderDetailsPageView,
     changeStatus,
+    bannerDetailsView,
+    addBanner,
     adminLogout
     }
     
@@ -62,6 +64,8 @@ router.get('/block/:id',BlockUser)
 router.get('/unblock/:id',unblockUser)
 router.get('/order',orderDetailsPageView)
 router.get('/changeStatus',changeStatus)
+router.get('/banner',bannerDetailsView)
+router.get('/addBanner',addBanner)
 router.get('/logout',adminLogout)
 
 
