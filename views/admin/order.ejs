@@ -114,22 +114,7 @@
 
         <script>
             function status(e,od){
-                    $.ajax({
-                    
-                    url:`changeStatus?s=${e.value}&id=${od}`,
-                    method:'get',
-                    success:((response)=>{
-                        console.log(response);
-                        if(response.status){
-                            Swal.fire({
-                            // position: 'top-end',
-                            icon: 'success',
-                            title: 'Your work has been saved',
-                            showConfirmButton: false,
-                            timer: 1500
-                        })
-                        }else{
-                            Swal.fire({
+                Swal.fire({
                             title: 'Do you want to save the changes?',
                             showDenyButton: true,
                             showCancelButton: true,
@@ -139,16 +124,27 @@
                             /* Read more about isConfirmed, isDenied below */
                             if (result.isConfirmed) {
                                 Swal.fire('Saved!', '', 'success')
-                                document.getElementById(od).innerHTML = response.value
-                            } else if (result.isDenied) {
-                                Swal.fire('Changes are not saved', '', 'info')
-                            }
-                            
-                            })
+                                
+                     
+                    $.ajax({
+                    
+                    url:`changeStatus?s=${e.value}&id=${od}`,
+                    method:'get',
+                    success:((response)=>{
+                        console.log(response);
+                        if(response.status){
+                        }else{
+                            document.getElementById(od).innerHTML = response.value
                             
                         }
                     })
                 })
+
+            } else if (result.isDenied) {
+                Swal.fire('Changes are not saved', '', 'info')
+            }
+                            
+            })
             }
         </script> 
         
