@@ -28,6 +28,7 @@ const {adminLogin,
     AdminUserManagment,
     BlockUser,
     unblockUser,
+    orderDetailsPageView,
     adminLogout
     }
     
@@ -58,6 +59,7 @@ router.post('/couponEdit/:id',postEditCoupoun)
 router.get('/users',adminVerifyLogin,AdminUserManagment)
 router.get('/block/:id',BlockUser)
 router.get('/unblock/:id',unblockUser)
+router.get('/order',orderDetailsPageView)
 router.get('/logout',adminLogout)
 
 

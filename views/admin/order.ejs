@@ -5,63 +5,52 @@
     <div class="row g-4">
         <div class="col-12">
             <div class="col d-flex justify-content-end">
-                <a href="addProduct" class="btn btn-danger mt-4 mb-4" >Add Products</a>
           </div>
             <div class="bg-secondary rounded h-100 p-4">
-                <h6 class="mb-4">Products Table</h6>
+                <h6 class="mb-4">Order Table</h6>
                 <div class="table-responsive">
                     <table class="table">
                         <thead>
                             <tr>
                                 <th scope="col">NO</th>
-                                <th scope="col">Product Name</th>
-                                <th scope="col">Category</th>
-                                <th scope="col">Price</th>
-                                <th scope="col">Stock</th>
-                                <th scope="col">Discount</th>
-                                <th scope="col">Size</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Address</th>
+                                <th scope="col">Total Price</th>
+                                <th scope="col">Paymnet</th>
+                                <th scope="col">Status</th>
+                                <!-- <th scope="col">Size</th>
                                 <th scope="col">Image</th>
-                                <th scope="col">Discriptiom</th>
+                                <th scope="col">Discriptiom</th> -->
                                 <th scope="col">Actions</th>
                             </tr>
                         </thead>
+                        <% orders.forEach((ord ,index)=>{ %>
                         <tbody>
-                            <% productList.forEach(function(productList,index){ %> 
+                           
                             <tr>
                                 <th scope="row"><%=index+1 %>  </th>
-                                <td><%=productList.name%> </td>
-                                <td><%=productList.category%> </td>
-                                <td><%=productList.price%> </td>
-                                <td><%=productList.stock%> </td>
-                                <td><%=productList.discount%> </td>
-                                <td><%=productList.size%> </td>
+                                <td><%=ord.date.toString().substring(0,15)%> </td>
+                                <td style="width: 400px;"><%=ord.address%> </td>
+                                <td><%=ord.total%> </td>
+                                <td><%=ord.payment%> </td>
+                                <td><%=ord.status%> </td>
                                 <td>
-                                    <%for(let z=0;z<productList.image.length;z++) {%>
-                                        <img src="/image/productImages/<%= productList.image[z] %>" >
-                                        <% } %> 
-                                    </td>
-                                <td><%=productList.description%> </td>
-                                <td>
-                                    <a href="/admin/productEdit/<%=productList._id %> " 
-                                        class="btn btn-success"
-                                         onclick = "return confirm('Are you want edit <%=  productList.name%>')">edit</a>
-
-                                </td>
-                                <td>
-                                    <a href="/admin/deleteProduct/<%=productList._id %> " 
-                                        class="btn btn-danger"
-                                         onclick = "return confirm('Are you want delete <%=  productList.name%>')">Delete</a>
-
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal<%=ord._id%>">
+                                        View More
+                                      </button>
                                 </td>
                             </tr>
-                            <% }) %> 
                         </tbody>
+                        <% }) %> 
                     </table>
+                     <!-- Modal -->
+                                     </div>
+                                 </div>
+                                </div>
+                            </div>
+                     </section>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
+      
 
         
 <!-- Table End -->

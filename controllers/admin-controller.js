@@ -3,6 +3,7 @@ const category1 = require('../models/category');
 const coupons =require('../models/coupon');
 const products = require('../models/product');
 const user = require ('../models/user')
+const orders2=require('../models/orders')
 const adminDatabase = require('./adminDatabase');
 
 module.exports={
@@ -128,7 +129,7 @@ module.exports={
           }
           
       })
-      console.log(productz+ "pro");
+     
       }
       else{
         const productz=await  products.updateOne({_id:id},{
@@ -270,6 +271,11 @@ module.exports={
       const id = req.params.id
       await user.findByIdAndUpdate(id,{access:true},{})
       res.redirect('/admin/users')
+    },
+    orderDetailsPageView:async (req,res)=>{
+      adminDatabase.getAllOrders((err,orders)=>{
+        res.render("admin/order",{orders})
+      })
     },
     adminLogout:(req,res)=>{
       req.session.admin=null

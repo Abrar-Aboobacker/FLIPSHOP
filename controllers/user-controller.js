@@ -249,21 +249,6 @@ postOtp: async (req, res) => {
       res.render('user/userProfile',{users,count,userz})
       },
       profileChanges:async (req,res)=>{
-        // console.log(req.body,"loooooooooo");
-        // const user1 = new user({
-        //   fristName:changeInformation.fName,
-        //   lastName:changeInformation.lName,
-        //   email:changeInformation.email,
-        //   phone:changeInformation.no
-        // })
-        // user1.save((err,doc)=>{
-        //   if(err){
-        //     console.log(err);
-        //     // res.redirect('/')
-        //   }else{
-        //     res.redirect('/profile')
-        //   }
-        // })
         const id = req.params.id
         const changeInformation = req.body
         const userz = await user.updateOne({_id:id},{

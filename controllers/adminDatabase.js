@@ -3,6 +3,7 @@ const category1 = require('../models/category');
 const coupons =require ('../models/coupon')
 const product = require('../models/product')
 const user1 = require ('../models/user.js')
+const orders = require('../models/orders')
 
 module.exports={
     adminlogin:(admindata)=>{
@@ -79,5 +80,11 @@ module.exports={
            callback(err,users)
          });
     },
-    
+    getAllOrders:  (callback) => 
+        orders.find().where().
+       exec((err,orders)=>{
+           
+           callback(err,orders)
+         })
+     
 }
