@@ -18,6 +18,7 @@
                                             <th scope="col">NO</th>
                                             <th scope="col">Category</th>
                                             <th scope="col">Description</th>
+                                            <th scope="col">Image</th>
                                             <th scope="col">Actions</th>
                                         </tr>
                                     </thead>
@@ -27,6 +28,10 @@
                                             <th scope="row"><%=index+1 %>  </th>
                                             <td><%=categoryList.name %> </td>
                                             <td><%=categoryList.description %> </td>
+                                            <td>
+                                                <%for(let z=0;z<categoryList.image.length;z++){%>
+                                                    <img height="90px" src="/image/productImages/<%=categoryList.image[z] %>" > 
+                                            </td>   <%} %> 
                                             <td>
                                                 <% if (categoryList.access) {%> 
                                                 <a href="/admin/disable/<%=categoryList._id %> " 

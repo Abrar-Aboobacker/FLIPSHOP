@@ -10,6 +10,9 @@ const addCategory = new mongoose.Schema({
         required:true,
         maxlength:100
     },
+    image:{
+        type:Array
+    },
     access:{
         type:Boolean,
         default:true

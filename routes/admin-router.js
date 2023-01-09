@@ -49,7 +49,7 @@ router.post('/productEdit/:id',store.uploadImages,store.resizeImages, postEditPr
 router.get('/deleteProduct/:id',store.uploadImages,store.resizeImages,deleteProduct)
 router.get('/categories',adminVerifyLogin,AdminCategoryManagment)
 router.get('/addcategory',adminVerifyLogin,addCategory)
-router.post('/categories',postCategory)
+router.post('/categories',store.uploadImages,store.resizeImages,postCategory)
 router.get('/disable/:id',disableCategory)
 router.get('/enable/:id',unableCategory)
 router.get('/coupons',adminVerifyLogin,AdminCouponManagment)

@@ -1,7 +1,7 @@
 <%-include("./layout/admin header.ejs") %>  
 
 
-<form action="/admin/categories" method="post">
+<form action="/admin/categories" method="post" enctype="multipart/form-data">
     <div class="container">
     <div class="row justify-content-center">
 <div class="col-sm-12 col-xl-6">
@@ -9,15 +9,15 @@
         <h6 class="mb-4">Add Category</h6>
         <div class="form-floating mb-3">
             
-            <label for="floatingInput">Category Name</label>
+            
             <input type="text" class="form-control" id="floatingInput" name="category"
                 placeholder="Enter you category">
-            
+                <label for="floatingInput">Category Name</label>
         </div>
-        <!-- <div class="mb-3">
-            <label for="formFile" class="form-label">Default file input example</label>
-            <input class="form-control bg-dark" type="file" id="formFile">
-        </div> -->
+        <div class="mb-3">
+            <label for="formFile" class="form-label">Upload your Image</label>
+            <input class="form-control bg-dark" type="file"  name="image" id="image">
+        </div>
         <div class="form-floating">
             <textarea class="form-control" placeholder="Leave a Description here"
                 id="floatingTextarea" name="description" style="height: 150px;"></textarea>

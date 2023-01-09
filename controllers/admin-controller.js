@@ -60,8 +60,7 @@ module.exports={
     })
   },
     postProduct:async(req,res)=>{
-      console.log(req.body,'product boduyyyyyyyyyyyyyyyyyyyyyyyyyyy')
-      console.log(req.body.images,'hhhhhhhhhhhhhhhhhhhhhhhhhh');
+     
       const productInformation=req.body
       const product1 = new products({
         name:productInformation.name,
@@ -167,10 +166,15 @@ module.exports={
       res.render("admin/add-category")
     },
     postCategory:async(req,res)=>{
-
+       
         const categoryInformation=req.body
-        const category = new category1({name:categoryInformation.category,description:categoryInformation.description})
-        await category.save((err,doc)=>{
+        console.log(req.body.images);
+        const category = new category1({
+          name:categoryInformation.category,
+          description:categoryInformation.description,
+          image:req.body.images
+        })
+          category.save((err,doc)=>{
           if(err){
             console.log(err);
           }else{
