@@ -277,6 +277,23 @@ module.exports={
         res.render("admin/order",{orders})
       })
     },
+    changeStatus:(req,res)=>{
+      const status = req.query.s
+      const orederId = req.query.id
+      const response = {}
+      if(status == 'Delivered' || status == 'Cancelled'){
+        orders2.findOneAndUpdate({_id:orederId},{$set:{status:status}}).then(()=>{
+          response.status = false;
+          response.value = status
+          res.json(response)
+        })
+      }else{
+      orders2.findOneAndUpdate({_id:orederId},{$set:{status:status}}).then(()=>{
+        response.status = true
+        res.json(response)
+      })
+    }
+    },
     adminLogout:(req,res)=>{
       req.session.admin=null
       req.session.adloggedIn=false

@@ -21,7 +21,7 @@
                                 <!-- <th scope="col">Size</th>
                                 <th scope="col">Image</th>
                                 <th scope="col">Discriptiom</th> -->
-                                <th scope="col">Actions</th>
+                                <th scope="col"></th>
                             </tr>
                         </thead>
                         <% orders.forEach((ord ,index)=>{ %>
@@ -33,7 +33,24 @@
                                 <td style="width: 400px;"><%=ord.address%> </td>
                                 <td><%=ord.total%> </td>
                                 <td><%=ord.payment%> </td>
-                                <td><%=ord.status%> </td>
+                                <% if(ord.status=="Cancelled"||ord.status=='Delivered'){%>
+                                    
+                                    <td id="<%= ord._id %>"><%=ord.status%></td>
+                                    <%}else{%>
+                                        <td id="<%= ord._id %>">
+                                            <select name="" onchange="status(this,'<%=ord._id%>') " id="status">
+                                            <option value="<%=ord.status%>" selected> <%=ord.status%> </option>
+                                            <option id="" value="Confirmed">Confirmed</option>
+                                            <option value="Cancelled">Cancelled</option>
+                                            <option value="Delivered">delivered</option>
+                                            <option value="Shipped">Shipped</option>
+                                            <option value="Pedning">pending</option>
+                                            <option value="Placed">Placed</option>
+                                        </select>
+                                        </td>
+                                        
+                               
+                                <%} %> 
                                 <td>
                                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal<%=ord._id%>">
                                         View More
@@ -44,6 +61,49 @@
                         <% }) %> 
                     </table>
                      <!-- Modal -->
+                     <% orders.forEach((order)=>{ %>
+
+                        <div class="modal fade" id="exampleModal<%=order._id%>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Product</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                  <% order.products.forEach((val)=>{ %> 
+                      
+                                      <div class="row">
+                                        <div class="col-3">
+                                          <img src="/image/productImages/<%=val.productId.image[0] %>" class="card-img-top" alt="...">
+                      
+                                        </div>
+                                        <div class="col-9">
+                                          <h5 style="color: black;">
+                                              <%=val.productId.name %>
+                      
+                                          </h5>
+                                          <p>
+                                              <%=val.productId.price %>
+                                          </p>
+                                          <h6 style="color: black;">
+                                              <%=val.productId.description%>
+                                          </h6>
+                                        </div>
+                                      
+                                      </div>
+                                      <br>
+                                      <% })%>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                              </div>
+                                                           </div>
+                                                       </div>
+                                                   </div>
+                                           <% })%>
                                      </div>
                                  </div>
                                 </div>
@@ -52,7 +112,47 @@
                 </div>
       
 
+        <script>
+            function status(e,od){
+                    $.ajax({
+                    
+                    url:`changeStatus?s=${e.value}&id=${od}`,
+                    method:'get',
+                    success:((response)=>{
+                        console.log(response);
+                        if(response.status){
+                            Swal.fire({
+                            // position: 'top-end',
+                            icon: 'success',
+                            title: 'Your work has been saved',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                        }else{
+                            Swal.fire({
+                            title: 'Do you want to save the changes?',
+                            showDenyButton: true,
+                            showCancelButton: true,
+                            confirmButtonText: 'Save',
+                            denyButtonText: `Don't save`,
+                            }).then((result) => {
+                            /* Read more about isConfirmed, isDenied below */
+                            if (result.isConfirmed) {
+                                Swal.fire('Saved!', '', 'success')
+                                document.getElementById(od).innerHTML = response.value
+                            } else if (result.isDenied) {
+                                Swal.fire('Changes are not saved', '', 'info')
+                            }
+                            
+                            })
+                            
+                        }
+                    })
+                })
+            }
+        </script> 
         
 <!-- Table End -->
 
 <%-include('./layout/admin footer.ejs') %> 
+

@@ -81,8 +81,7 @@ module.exports={
          });
     },
     getAllOrders:  (callback) => 
-        orders.find().where().
-       exec((err,orders)=>{
+        orders.find().populate('products.productId').exec((err,orders)=>{
            
            callback(err,orders)
          })

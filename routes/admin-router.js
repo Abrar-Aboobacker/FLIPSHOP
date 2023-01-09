@@ -29,6 +29,7 @@ const {adminLogin,
     BlockUser,
     unblockUser,
     orderDetailsPageView,
+    changeStatus,
     adminLogout
     }
     
@@ -60,6 +61,7 @@ router.get('/users',adminVerifyLogin,AdminUserManagment)
 router.get('/block/:id',BlockUser)
 router.get('/unblock/:id',unblockUser)
 router.get('/order',orderDetailsPageView)
+router.get('/changeStatus',changeStatus)
 router.get('/logout',adminLogout)
 
 
