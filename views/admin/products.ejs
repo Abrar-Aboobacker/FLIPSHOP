@@ -42,23 +42,28 @@
                                             <td><%=productList.stock%> </td>
                                             <td><%=productList.discount%> </td>
                                             <td><%=productList.size%> </td>
-                                            <td>
+                                            <td >
                                                 <%for(let z=0;z<productList.image.length;z++) {%>
-                                                    <img src="/image/productImages/<%= productList.image[z] %>" >
+                                                    <img height="110px" src="/image/productImages/<%= productList.image[z] %>" >
                                                     <% } %> 
                                                 </td>
                                             <td><%=productList.description%> </td>
                                             <td>
-                                                <a href="/admin/productEdit/<%=productList._id %> " 
+                                                <a href="/admin/productEdit/<%=productList._id %>" 
                                                     class="btn btn-success"
-                                                     onclick = "return confirm('Are you want edit <%=  productList.name%>')">edit</a>
+                                                     onclick = "return confirm('Are you want edit <%=productList.name%>')">edit</a>
 
                                             </td>
                                             <td>
-                                                <a href="/admin/deleteProduct/<%=productList._id %> " 
+                                                <% if (productList.access) {%> 
+                                                <a href="/admin/productDisable/<%=productList._id %>" 
                                                     class="btn btn-danger"
-                                                     onclick = "return confirm('Are you want delete <%=  productList.name%>')">Delete</a>
-
+                                                     onclick = "return confirm('Are you want disable <%=productList.name%>')">Disable</a>
+                                                <% }  else { %> 
+                                                    <a href="/admin/productEnable/<%=productList._id %>" 
+                                                        class="btn btn-danger" 
+                                                        onclick = "return confirm('Are you want enable <%=productList.name%>')">Enable</a>
+                                                    <% } %> 
                                             </td>
                                         </tr>
                                         <% }) %> 

@@ -24,7 +24,9 @@ const {adminLogin,
     AdminProductManagment,
     editProduct,
     postEditProduct,
-    deleteProduct,
+    // deleteProduct,
+    disableProduct,
+    unableProduct,
     AdminUserManagment,
     BlockUser,
     unblockUser,
@@ -46,7 +48,9 @@ router.get('/addProduct',adminVerifyLogin,store.uploadImages, store.resizeImages
 router.post('/products',store.uploadImages, store.resizeImages,postProduct)
 router.get('/productEdit/:id',adminVerifyLogin,editProduct)
 router.post('/productEdit/:id',store.uploadImages,store.resizeImages, postEditProduct)
-router.get('/deleteProduct/:id',store.uploadImages,store.resizeImages,deleteProduct)
+// router.get('/deleteProduct/:id',store.uploadImages,store.resizeImages,deleteProduct)
+router.get('/productDisable/:id',disableProduct)
+router.get('/productEnable/:id',unableProduct)
 router.get('/categories',adminVerifyLogin,AdminCategoryManagment)
 router.get('/addcategory',adminVerifyLogin,addCategory)
 router.post('/categories',store.uploadImages,store.resizeImages,postCategory)

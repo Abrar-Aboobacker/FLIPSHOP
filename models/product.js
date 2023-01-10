@@ -20,10 +20,10 @@ const productSchema = new mongoose.Schema({
       discount:{
         type:String,
       },
-      size:{
-        type:Number,
-        required:true,
-      },
+      // size:{
+      //   type:Number,
+      //   required:true,
+      // },
       is_deleted: {
         type: Boolean,
         default: false,
@@ -33,6 +33,10 @@ const productSchema = new mongoose.Schema({
         type:Array,
         required:true
       },
+      access:{
+        type:Boolean,
+        default:true
+    },
       description: String,
       created_date: Date,
       modified_date: Date,

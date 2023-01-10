@@ -5,6 +5,7 @@ const products = require('../models/product');
 const user = require ('../models/user')
 const orders2=require('../models/orders')
 const adminDatabase = require('./adminDatabase');
+const product = require('../models/product');
 
 module.exports={
     adminLogin :(req, res) => {
@@ -76,7 +77,8 @@ module.exports={
       })
       
        product1.save((err,doc)=>{
-        if(err){
+        if(err){ 
+          
           res.redirect("/admin/addProduct")
         }else{
           console.log(productInformation);
@@ -149,13 +151,23 @@ module.exports={
      
     res.redirect('/admin/products')
   },
-    deleteProduct:(req,res)=>{
-    let userId=req.params.id
-    adminDatabase.deleteProductDetails(userId).then((response)=>{
-      req.session.user=null
-     req.session.loggedIn=false
-      res.redirect('/admin/products')
-    }) 
+  //   deleteProduct:(req,res)=>{
+  //   let userId=req.params.id
+  //   adminDatabase.deleteProductDetails(userId).then((response)=>{
+  //     req.session.user=null
+  //    req.session.loggedIn=false
+  //     res.redirect('/admin/products')
+  //   }) 
+  // },
+  disableProduct:async (req,res)=>{
+    const id=req.params.id
+    await product.findByIdAndUpdate(id,{access:false},{})
+    res.redirect('/admin/products')
+  },
+  unableProduct: async (req,res)=>{
+    const id = req.params.id
+    await product.findByIdAndUpdate(id,{access:true},{})
+    res.redirect('/admin/products')
   },
     AdminCategoryManagment:(req,res)=>{
       adminDatabase.getAllCategory((err,categoryList)=>{
