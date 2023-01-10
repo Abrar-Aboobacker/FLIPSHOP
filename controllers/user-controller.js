@@ -13,20 +13,20 @@ const orders2 = require('../models/orders')
 const coupon = require('../models/coupon')
 const { response } = require('express')
 const mongoose =require('mongoose')
+const category = require('../models/category')
 // const { compareSync, setRandomFallback } = require('bcryptjs')
 // const { findOne } = require('../models/product')
 module.exports={
-    home:(req, res, next) =>{
+    home:async (req, res, next) =>{
           let users=req.session.user
-          console.log(users);
           let count= null;
           if(users){
             count= users.cart.items.length
           }
-          console.log(count);
-        adminDatabase.getAllProduct((err,productList)=>{
-          
-          res.render('user/index', {users,productList,count});
+          const categories = await category.find().where()
+          // console.log(categories+"undeeeeeeeee");
+        adminDatabase.getAllProduct((err,productList)=>{ 
+          res.render('user/index', {users,productList,count,categories});
         })   
         },
     userSignUp:(req,res)=>{
@@ -116,6 +116,18 @@ postOtp: async (req, res) => {
           res.redirect('/login')
         }
       })
+    },
+    productShow: async (req,res)=>{
+      let users=req.session.user
+      let count= null;
+      if(users){
+        count= users.cart.items.length
+      }
+      const id = req.params.id
+      const cat = await category.findById(id)
+      const pro = await product.find({category:cat.name})
+      console.log(pro);
+      res.render("user/catProduct",{pro,users})
     },
     userShop:(req,res)=>{
       let users=req.session.user

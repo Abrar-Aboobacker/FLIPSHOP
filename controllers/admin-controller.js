@@ -62,6 +62,7 @@ module.exports={
     postProduct:async(req,res)=>{
      
       const productInformation=req.body
+      console.log(productInformation);
       const product1 = new products({
         name:productInformation.name,
         price:productInformation.price,

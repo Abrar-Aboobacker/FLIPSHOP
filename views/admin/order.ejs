@@ -112,42 +112,42 @@
                 </div>
       
 
-        <script>
-            function status(e,od){
-                Swal.fire({
-                            title: 'Do you want to save the changes?',
-                            showDenyButton: true,
-                            showCancelButton: true,
-                            confirmButtonText: 'Save',
-                            denyButtonText: `Don't save`,
-                            }).then((result) => {
-                            /* Read more about isConfirmed, isDenied below */
-                            if (result.isConfirmed) {
-                                Swal.fire('Saved!', '', 'success')
-                                
-                     
-                    $.ajax({
-                    
-                    url:`changeStatus?s=${e.value}&id=${od}`,
-                    method:'get',
-                    success:((response)=>{
-                        console.log(response);
-                        if(response.status){
+                <script>
+                    function status(e,od){
+                        Swal.fire({
+                                    title: 'Do you want to save the changes?',
+                                    showDenyButton: true,
+                                    showCancelButton: true,
+                                    confirmButtonText: 'Save',
+                                    denyButtonText: `Don't save`,
+                                    }).then((result) => {
+                                    /* Read more about isConfirmed, isDenied below */
+                                    if (result.isConfirmed) {
+                                        Swal.fire('Saved!', '', 'success')
+                                        
+                             
+                            $.ajax({
                             
-                        }else{
-                            document.getElementById(od).innerHTML = response.value
-                            
-                        }
+                            url:`changeStatus?s=${e.value}&id=${od}`,
+                            method:'get',
+                            success:((response)=>{
+                                console.log(response);
+                                if(response.status){
+                                    
+                                }else{
+                                    document.getElementById(od).innerHTML = response.value
+                                    
+                                }
+                            })
+                        })
+        
+                    } else if (result.isDenied) {
+                        Swal.fire('Changes are not saved', '', 'info')
+                    }
+                                    
                     })
-                })
-
-            } else if (result.isDenied) {
-                Swal.fire('Changes are not saved', '', 'info')
-            }
-                            
-            })
-            }
-        </script> 
+                    }
+                </script> 
         
 <!-- Table End -->
 

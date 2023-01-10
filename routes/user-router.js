@@ -10,6 +10,7 @@ const {
     postUserSignUp,
     postLogin,
     postOtp,
+    productShow,
     userShop,
     viewCart,
     doAddToCart,
@@ -39,6 +40,7 @@ router.post('/login',postLogin)
 router.get('/signup',userSignUp)
 router.post('/signup',postUserSignUp)
 router.post('/gnenerateOtp',postOtp)
+router.get('/productShow/:id',productShow)
 router.get('/shop',userShop)
 router.get('/viewCart',userVerifyLogin,viewCart)
 router.get('/addToCart/:id',doAddToCart)

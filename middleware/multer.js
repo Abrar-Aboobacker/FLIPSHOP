@@ -41,9 +41,9 @@ const resizeImages = async (req, res, next) => {
       const newFilename = `${file.fieldname}-${Date.now()}-${Math.random()}.jpeg`;
 
       await sharp(file.buffer)
-        .resize(736, 1000)
+        .resize(1000, 1000)
         .toFormat("jpeg")
-        .jpeg({ quality: 90 })
+        .jpeg({ quality: 100 })
         .toFile(`./public/image/productImages/${newFilename}`);
       console.log(newFilename, "filenmae");
       req.body.images.push(newFilename);
