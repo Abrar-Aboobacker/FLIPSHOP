@@ -29,6 +29,11 @@
             <label for="formFile" class="form-label">Upload your Image</label>
             <input class="form-control bg-dark" onchange="viewImage(event)" type="file" id="image" value="<%=banner.image%>"  name="image" multiple>
         </div>
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control"  
+                placeholder="Enter Product Name" name="url" value="<%=banner.mainTitle%>">
+            <label for="floatingInput">Enter URL</label>
+        </div>
         <div class="form-floating">
             <textarea class="form-control" placeholder="Leave a comment here"
                 id="floatingTextarea" style="height: 150px;" name="description"></textarea>

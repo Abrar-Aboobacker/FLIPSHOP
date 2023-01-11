@@ -14,8 +14,7 @@ const coupon = require('../models/coupon')
 const { response } = require('express')
 const category = require('../models/category')
 const mongoose =require('mongoose')
-// const { compareSync, setRandomFallback } = require('bcryptjs')
-// const { findOne } = require('../models/product')
+const banner = require ('../models/banner')
 module.exports={
     home:async (req, res, next) =>{
           let users=req.session.user
@@ -24,9 +23,10 @@ module.exports={
             count= users.cart.items.length
           }
           const categories = await category.find().where()
+          const bannerzz = await banner.find().where()
           // console.log(categories+"undeeeeeeeee");
         adminDatabase.getAllProduct((err,productList)=>{ 
-          res.render('user/index', {users,productList,count,categories});
+          res.render('user/index', {users,productList,count,categories,bannerzz});
         })   
         },
     userSignUp:(req,res)=>{

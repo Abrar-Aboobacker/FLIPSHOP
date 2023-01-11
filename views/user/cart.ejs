@@ -29,11 +29,11 @@
                         <table>
                             <thead>
                                 <% if(prd.cart.items.length<=0){ %> 
-                                    <h1>vellow</h1>
+                                    
                                     <% }else{ %>
                                         
                                         
-                                    <%prd.cart.items.forEach(function(prd){%>
+                                    
                                 <tr>
                                     <th>Product</th>
                                     <th>Quantity</th>
@@ -42,11 +42,11 @@
                                 </tr>
                             </thead>
                             <tbody>
-                              
+                                <%prd.cart.items.forEach(function(prd){%>
                                 <tr>
                                     <td class="product__cart__item">
                                         <div class="product__cart__item__pic">
-                                            <img src="/image/productImages/<%= prd.productId.image %>" alt="">
+                                            <img src="/image/productImages/<%= prd.productId.image[0] %>" height="100px" alt="">
                                         </div>
                                         <div class="product__cart__item__text">
                                              <h5><%= prd.productId.name %></h5>

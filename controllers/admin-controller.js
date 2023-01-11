@@ -329,6 +329,7 @@ module.exports={
         title:bannerInformation.cat,
         mainTitle:bannerInformation.names,
         description:bannerInformation.description,
+        url:bannerInformation.url,
         image:req.body.images
       })
       
@@ -360,7 +361,8 @@ module.exports={
           $set:{
             title:bannerInformation.cat,
             mainTitle:bannerInformation.names,
-            description:bannerInformation.description,       
+            description:bannerInformation.description,
+            url:bannerInformation.url,       
           }
           
       })
@@ -373,6 +375,7 @@ module.exports={
             title:bannerInformation.cat,
             mainTitle:bannerInformation.names,
             description:bannerInformation.description,
+            url:bannerInformation.url,       
             image:req.body.images
           }
       })
