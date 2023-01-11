@@ -26,6 +26,7 @@ const {
     deleteAdd,
     couponCheck,
     checkoutView,
+    addAdressInCheckout,
     placeorder,
     orderSuccessPageView,
     orderDetailsPageView,
@@ -56,6 +57,7 @@ router.post('/addresses/:id',editAddress)
 router.post('/deleteAddress',deleteAdd)
 router.post('/couponCheck',couponCheck)
 router.get('/checkout',userVerifyLogin,checkoutView)
+router.post('/addressCheck',addAdressInCheckout)
 router.post('/placeOrder',placeorder)
 router.get('/orderSuccess',orderSuccessPageView)
 router.get('/orders',userVerifyLogin,orderDetailsPageView)

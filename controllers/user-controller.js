@@ -171,7 +171,7 @@ postOtp: async (req, res) => {
       const cart=prd.cart.totalPrice
       console.log(cart,4444444444);
       // const cart = await user.findOne({cart:})
-      if (cart=='0'){
+      if (cart==null){
       console.log('hjgfhds');
         res.render('user/cart-empty',{users,count})
       }else{
@@ -300,8 +300,9 @@ postOtp: async (req, res) => {
       },
       addAdress:async (req,res)=>{
         const id = req.session.user._id
+        console.log(req.body+"bodyyyyyyyyyyyyyyyyyyy");
         const addres = req.body
-        console.log(req.body);
+       
         const add= await addresses.findOne({userId:id})
         if(add){
           console.log("coming home");
@@ -401,6 +402,41 @@ postOtp: async (req, res) => {
       }else{
         const add=adds.address
         res.render('user/checkout',{users,count,adds,add,prd,error,total})
+      }
+    },
+    addAdressInCheckout:async (req,res)=>{
+      let users=req.session.user
+      const id = req.session.user._id
+      let total = req.query.total
+      console.log(req.body+"bodyyyyyyyyyyyyyyyyyyy");
+      const addres = req.body
+      let count= null;
+      if(users){
+        count= users.cart.items.length
+      }
+      const adds= await addresses.findOne({userId:id})
+      const prd = await user.findOne({_id:id}).populate('cart.items.productId')
+      if(adds){
+        const add=adds.address
+        console.log("coming home");
+        addresses.updateOne({userId:id},{$push:{address:addres}}).then(()=>{
+          console.log('ithiludeeeeee');
+          res.render("user/checkout",{users,count,add,adds,prd,total})
+        })
+      }else{
+        console.log('ivdeeeeeeeeeeeeee');
+        const newAddress= new addresses({
+          userId:id,
+          address:[addres]
+        })
+        newAddress.save((err,doc)=>{
+          if(doc){
+            res.render("user/checkout",{users,count,adds,prd,total})
+          }else{
+            console.log(err);
+          }
+          
+        })
       }
     },
      placeorder:(req,res)=>{     
