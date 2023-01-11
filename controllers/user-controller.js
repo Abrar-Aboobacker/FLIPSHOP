@@ -127,7 +127,7 @@ postOtp: async (req, res) => {
       const cat = await category.findById(id)
       const pro = await product.find({category:cat.name})
       console.log(pro);
-      res.render("user/catProduct",{pro,users})
+      res.render("user/catProduct",{pro,users,count})
     },
     userShop:(req,res)=>{
       let users=req.session.user
@@ -163,12 +163,19 @@ postOtp: async (req, res) => {
       if(users){
         count= users.cart.items.length
       }
-      console.log(count);
+      
       const userId=req.session.user._id
        const couponz= await coupon.find().where() 
        console.log(couponz);
       const prd = await user.findOne({_id:userId}).populate('cart.items.productId')
-      res.render('user/cart',{users,prd,count,userId,couponz})
+      const cart=prd.cart.totalPrice
+      console.log(cart,4444444444);
+      // const cart = await user.findOne({cart:})
+      if (cart=='0'){
+      console.log('hjgfhds');
+        res.render('user/cart-empty',{users,count})
+      }else{
+      res.render('user/cart',{users,prd,count,userId,couponz})}
     },
     doAddToCart:async(req,res)=>{
       const id =req.session.user._id
