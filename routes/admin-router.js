@@ -34,6 +34,11 @@ const {adminLogin,
     changeStatus,
     bannerDetailsView,
     addBanner,
+    postBanner,
+    editBanner,
+    postEditBanner,
+    disableBanner,
+    unableBanner,
     adminLogout
     }
     
@@ -70,6 +75,11 @@ router.get('/order',orderDetailsPageView)
 router.get('/changeStatus',changeStatus)
 router.get('/banner',bannerDetailsView)
 router.get('/addBanner',addBanner)
+router.post('/addBanner',store.uploadImages,store.resizeImages,postBanner)
+router.get('/bannerEdit/:id',editBanner)
+router.post('/bannerEdit/:id',store.uploadImages,store.resizeImages,postEditBanner)
+router.get('/bannerDisable/:id',disableBanner)
+router.get('/bannerEnable/:id',unableBanner)
 router.get('/logout',adminLogout)
 
 

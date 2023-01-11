@@ -86,13 +86,11 @@ module.exports={
            
            callback(err,orders)
          }),
-    getAllBanners:(callback)=>{
-        
-        banner.find().where().
-        exec((err,banners)=>{
-                
-        callback(err,banners)
-              });
-         },
-     
+         getBannerDetails:(bannerId)=>{
+            return new Promise((resolve,reject)=>{
+                banner.findOne({_id:bannerId}).then((banner)=>{
+                    resolve(banner)
+                })
+            })
+        },
 }

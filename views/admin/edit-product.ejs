@@ -5,7 +5,7 @@
 <form action="/admin/productEdit/<%=product._id%>" method="post" enctype="multipart/form-data">
 <div class="col-sm-12 col-xl-6">
     <div class="bg-secondary rounded h-100 p-4">
-        <h6 class="mb-4">Add Product</h6>
+        <h6 class="mb-4">Edit Product</h6>
         <div class="form-floating mb-3">
             <input type="text" class="form-control" id="floatingInput"
                 placeholder="Enter Product Name" name="name" value="<%=product.name %> ">
@@ -47,10 +47,10 @@
                 placeholder="Pa" name="size" value="<%=product.size %>">
             <label for="floatingPassword">Size</label>
         </div>
-        <img src="/image/productImages/<%=product.image %> " id="imgView" class="mb-3" width="100px" height="100px" alt="">
+        <img src="/image/productImages/<%=product.image[0]%>" id="imgView" class="mb-3" width="100px" height="100px" alt="">
         <div class="mb-3">
             <label for="formFile" class="form-label">Upload your Image</label>
-            <input class="form-control bg-dark" onchange="viewImage(event)" type="file" id="image"  value="<%=product.image %> " name="image" multiple>
+            <input class="form-control bg-dark" onchange="viewImage(event)" type="file" id="image"  value="<%=product.image%>" name="image" multiple>
         </div>
         <div class="form-floating">
             <textarea class="form-control" placeholder="Leave a comment here"

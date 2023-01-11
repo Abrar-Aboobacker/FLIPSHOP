@@ -7,19 +7,19 @@
                 <div class="row g-4">
                     <div class="col-12">
                         <div class="col d-flex justify-content-end">
-                            <a href="addcoupon" class="btn btn-danger mt-4 mb-4" >Add Coupons</a>
+                            <a href="addBanner" class="btn btn-danger mt-4 mb-4" >Add Banner</a>
                       </div>
                         <div class="bg-secondary rounded h-100 p-4">
-                            <h6 class="mb-4">Coupon Table</h6>
+                            <h6 class="mb-4">Banner Table</h6>
                             <div class="table-responsive">
                                 <table class="table">
                                     <thead>
                                         <tr>
                                             <th scope="col">NO</th>
-                                            <th scope="col">Name</th>
-                                            <th scope="col">Amount</th>
-                                            <th scope="col">Min Purchase</th>
-                                            <th scope="col">Expiry Date</th>
+                                            <th scope="col">Title</th>
+                                            <th scope="col">Main Title</th>
+                                            <th scope="col">Image</th>
+                                            <th scope="col">Description</th>
                                             <th scope="col">Actions</th>
                                         </tr>
                                     </thead>
@@ -27,21 +27,27 @@
                                         <% banners.forEach(function(banners,index){ %> 
                                         <tr>
                                             <th scope="row"><%=index+1 %>  </th>
-                                            <td><%=banners.code %> </td>
-                                            <td><%=banners.amount %> </td>
-                                            <td><%=banners.minCartAmount%> </td>
-                                            <td><%=banners.expireDate.toLocaleString()%></td>
+                                            <td><%=banners.title%> </td>
+                                            <td><%=banners.mainTitle%> </td>
+                                            <td >
+                                                <%for(let z=0;z<banners.image.length;z++) {%>
+                                                    <img height="110px" src="/image/productImages/<%=banners.image[z] %>" >
+                                                    <% } %> 
+                                                </td>
+                                            <td><%=banners.description%> </td>
+                                          
                                             <td>
-                                                <a href="/admin/couponEdit/<%=banners._id %> " 
+                                                <a href="/admin/bannerEdit/<%=banners._id %>" 
                                                     class="btn btn-success"
                                                      onclick = "return confirm('Are you want edit <%=  banners.name%>')">edit</a>
-
+                                            </td>
+                                            <td>
                                                 <% if (banners.access) {%> 
-                                                <a href="/admin/couponDisable/<%=banners._id %> " 
+                                                <a href="/admin/bannerDisable/<%=banners._id %>" 
                                                     class="btn btn-danger"
                                                      onclick = "return confirm('Are you want disable <%=  banners.name%>')">Disable</a>
                                                 <% }  else { %> 
-                                                    <a href="/admin/couponEnable/<%=banners._id %> " 
+                                                    <a href="/admin/bannerEnable/<%=banners._id %>" 
                                                         class="btn btn-danger" 
                                                         onclick = "return confirm('Are you want enable <%= banners.name%>')">Enable</a>
                                                     <% } %> 

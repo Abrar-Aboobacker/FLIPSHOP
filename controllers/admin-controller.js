@@ -6,6 +6,7 @@ const user = require ('../models/user')
 const orders2=require('../models/orders')
 const adminDatabase = require('./adminDatabase');
 const product = require('../models/product');
+const banner = require('../models/banner');
 
 module.exports={
     adminLogin :(req, res) => {
@@ -81,7 +82,6 @@ module.exports={
           
           res.redirect("/admin/addProduct")
         }else{
-          console.log(productInformation);
           res.redirect("/admin/products")
           
         }
@@ -313,16 +313,83 @@ module.exports={
     }
     },
     bannerDetailsView:async (req,res)=>{
-      adminDatabase.getAllBanners((err,banners)=>{
-        res.render("admin/banner",{banners})
-      })
-     
+      const banners= await banner.find()
+
+      res.render("admin/banner",{banners})
     },
-    addBanner:(req,res)=>{
+    addBanner:(req,res)=>{    
       adminDatabase.getAllCategory((err,categoryList)=>{
         res.render("admin/add-banner",{categoryList})
       })
     },
+    postBanner:(req,res)=>{
+      console.log(req.body);
+      const bannerInformation=req.body
+      const banners = new banner({
+        title:bannerInformation.cat,
+        mainTitle:bannerInformation.names,
+        description:bannerInformation.description,
+        image:req.body.images
+      })
+      
+       banners.save((err,doc)=>{
+        if(err){ 
+          console.log(err);
+          res.redirect("/admin/addBanner")
+        }else{
+          res.redirect("/admin/banner")
+          
+        }
+      })
+    
+    },
+    editBanner: async (req,res)=>{
+      adminDatabase.getAllCategory(async (err,categoryList)=>{
+        let banner =await adminDatabase.getBannerDetails(req.params.id)
+      console.log(banner+"iugytdytryu");
+      res.render('admin/edit-banner',{banner,categoryList})
+      })
+    },
+    postEditBanner: async(req,res)=>{
+      const id = req.params.id
+      const bannerInformation=req.body
+      if(req.body.images==""){
+        
+        const bannerz=await  banner.updateOne({_id:id},{
+
+          $set:{
+            title:bannerInformation.cat,
+            mainTitle:bannerInformation.names,
+            description:bannerInformation.description,       
+          }
+          
+      })
+     
+      }
+      else{
+        const bannerz=await  banner.updateOne({_id:id},{
+
+          $set:{
+            title:bannerInformation.cat,
+            mainTitle:bannerInformation.names,
+            description:bannerInformation.description,
+            image:req.body.images
+          }
+      })
+      }
+     
+    res.redirect('/admin/banner')
+  },
+  disableBanner:async (req,res)=>{
+    const id=req.params.id
+    await banner.findByIdAndUpdate(id,{access:false},{})
+    res.redirect('/admin/banner')
+  },
+  unableBanner: async (req,res)=>{
+    const id = req.params.id
+    await banner.findByIdAndUpdate(id,{access:true},{})
+    res.redirect('/admin/banner')
+  },
     adminLogout:(req,res)=>{
       req.session.admin=null
       req.session.adloggedIn=false

@@ -1,12 +1,17 @@
 const mongoose = require('mongoose')
-const bannerschema = new mongoose.Schema({
+
+const bannerCchema = new mongoose.Schema({
     title: {
         type: String,
         required: [true, 'A banner must have a title'],
         unique: true,
       },
+      mainTitle:{
+        type:String,
+        required:true
+      },
       image: {
-        type: String,
+        type: Array,
         // default: 'banner_logo.jpg',
       },
       url: {
@@ -15,5 +20,9 @@ const bannerschema = new mongoose.Schema({
       description: {
         type: String,
       },
+      access:{
+        type:Boolean,
+        default:true
+    },
 })
-mongoose.exports = mongoose.model('banner',bannerschema)
+module.exports = mongoose.model('banner',bannerCchema)
