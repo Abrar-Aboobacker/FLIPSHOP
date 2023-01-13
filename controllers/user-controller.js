@@ -171,7 +171,7 @@ postOtp: async (req, res) => {
       const cart=prd.cart.totalPrice
       console.log(cart,4444444444);
       // const cart = await user.findOne({cart:})
-      if (cart==null){
+      if (cart==null||cart==0){
       console.log('hjgfhds');
         res.render('user/cart-empty',{users,count})
       }else{
@@ -439,7 +439,9 @@ postOtp: async (req, res) => {
         })
       }
     },
-     placeorder:(req,res)=>{     
+     placeorder:(req,res)=>{    
+      console.log(req.body+"hmmmmmmm"); 
+      
       var totalPrice = req.body.totalPrice
       var totalPrice=Number(totalPrice)
       UserDatabase.placeOrder(req.body).then((orderId)=>{
@@ -453,6 +455,7 @@ postOtp: async (req, res) => {
       })
     },
     verifyPayment:(req,res)=>{
+      console.log(req.body+"houiiiiiiiiiii");
       userDatabase.verifyPayment(req.body).then(()=>{
         userDatabase.changePaymentStatus(req.body.order.receipt).then(()=>{
           res.json({status:true})

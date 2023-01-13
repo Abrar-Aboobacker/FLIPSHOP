@@ -13,7 +13,7 @@ const orderSchema = new mongoose.Schema(
       ref: 'users',
     },
     date: {
-      type: String,
+    
     },
     total: {
       type: Number,
@@ -23,7 +23,7 @@ const orderSchema = new mongoose.Schema(
     },
     address: {
       type: String,
-      // required: true,
+      required: true,
     },
     products: [
       {
@@ -33,7 +33,9 @@ const orderSchema = new mongoose.Schema(
         },
         qty: {
           type: Number,
-
+        },
+        ProductPrice:{
+          type:Number
         },
         _id: {
           type: mongoose.Schema.Types.ObjectId,

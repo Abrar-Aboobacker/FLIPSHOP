@@ -39,6 +39,9 @@ const {adminLogin,
     postEditBanner,
     disableBanner,
     unableBanner,
+    salesReport,
+    monthReport,
+    yearReport,
     adminLogout
     }
     
@@ -80,6 +83,9 @@ router.get('/bannerEdit/:id',editBanner)
 router.post('/bannerEdit/:id',store.uploadImages,store.resizeImages,postEditBanner)
 router.get('/bannerDisable/:id',disableBanner)
 router.get('/bannerEnable/:id',unableBanner)
+router.get('/dayReport',salesReport)
+router.get('/monthReport',monthReport)
+router.get('/yearReport',yearReport)
 router.get('/logout',adminLogout)
 
 

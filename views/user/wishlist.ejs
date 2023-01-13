@@ -38,9 +38,9 @@
                                     <%prd.productItems.forEach(function(prd){ %> 
                                
                                 <tr align="center">
-                                    <td class="product__cart__item">
+                                    <td class="product__cart__item" style="width: 150px;">
                                         <div class="product__cart__item__pic">
-                                            <img src="/image/productImages/<%=prd.image %> " alt="">
+                                            <img src="/image/productImages/<%=prd.image[0]%>" height="100px" alt="">
                                         </div>           
                                     </td>
                                     <td class="product__cart__item">
@@ -48,6 +48,9 @@
                                             <h6><%=prd.name %> </h6>
                                             <h5><%=prd.price %> </h5>
                                         </div>
+                                    </td>
+                                    <td>
+                                        <a href="/addToCart/<%=prd._id %> " class="add-cart" style="color: black; font-size: 12px; text-decoration: none;">+ Add To Cart</a>
                                     </td>
                                     <td class="cart__close">
                                         <button class="cart__close" onclick="deleting('<%=prd._id%>')" style="border: none; background-color: white;" >

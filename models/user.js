@@ -39,7 +39,10 @@ const userSchema = new mongoose.Schema({
             },
             qty:{
                 type:Number,
-            }
+            },
+            // productPrice:{
+            //     type:Number
+            // }
         }],
         totalPrice:Number
     }
@@ -68,6 +71,7 @@ const userSchema = new mongoose.Schema({
 
 userSchema.methods.addToCart = function (products,callBack){
     let cart = this.cart;
+    console.log(cart ,"annnnnnnnnnn");
     const prId=products._id.toString()
     const isExisting = cart.items.findIndex(objInItems=>objInItems.productId ==prId)
          console.log(isExisting);

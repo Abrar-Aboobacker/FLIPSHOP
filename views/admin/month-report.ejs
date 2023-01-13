@@ -1,0 +1,45 @@
+<%-include("./layout/admin header.ejs") %> 
+
+
+            
+            <!-- Table Start --> 
+            <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    <div class="col-12">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <h6 class="mb-4">Month sales Report</h6>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">NO</th>
+                                            <th scope="col">Date</th>
+                                            <th scope="col">Items</th>
+                                            <th scope="col">Count</th>
+                                            <th scope="col">Total price</th>
+                                            <!-- <th scope="col">Actions</th> -->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% sales.forEach(function(sale,index){ %> 
+                                        <tr>
+                                            <th scope="row"><%=index+1 %>  </th>
+                                            <td><%=sale._id.month.toUpperCase()%>   </td>
+                                            <td><%=sale.items%> </td>
+                                            <td><%=sale.count%> </td>
+                                            <td><%=sale.totalPrice%></td>
+                                        </tr>
+                                        <% }) %> 
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                    
+            <!-- Table End -->
+
+        <!-- Content End -->
+
+        <%-include('./layout/admin footer.ejs') %> 

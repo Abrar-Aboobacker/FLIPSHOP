@@ -393,6 +393,78 @@ module.exports={
     await banner.findByIdAndUpdate(id,{access:true},{})
     res.redirect('/admin/banner')
   },
+  salesReport:async (req,res)=>{
+    const sales =await orders2.aggregate([
+      {$match:{status:{$eq:'Delivered'}}},
+      {
+        $group:{
+          _id:{
+            year:{$year:'$date'},
+            month:{$month:'$date'},
+            day:{$dayOfMonth:'$date'},
+          },
+          totalPrice:{$sum:'$total'},
+          items:{$sum:{$size:'$products'}},
+          count:{$sum:1},
+        },
+      },{
+        $sort:{
+          '_id.year':-1,
+          '_id.month':-1,
+          '_id.day':-1,
+        },
+      },
+    ]);
+    res.render('admin/day-report',{sales});
+  },
+  monthReport:async (req,res)=>{
+    const months = [
+      'January', 'February', 'March', 
+      'April', 'May', 'June',
+      'July', 'August', 'September',
+      'October', 'November', 'December'
+    ];
+    const sale= await orders2.aggregate([
+      {$match:{status:{$eq:'Delivered'}}},
+      {
+        $group:{
+          _id:{
+            month:{$month:'$date'},
+          },
+          totalPrice:{$sum:'$total'},
+          items:{$sum:{$size:'$products'}},
+          count:{$sum:1},
+        }
+      },
+      {$sort:{date:1}}
+    ]);
+    const sales =sale.map((el)=>{
+      const newOne ={...el}
+      newOne._id.month=months[newOne._id.month-1]
+      return newOne
+    })
+    res.render('admin/month-report',{sales})
+  },
+  yearReport:async (req,res)=>{
+    const sales=await orders2.aggregate([
+      {$match:{status:{$eq:'Delivered'}}},
+      {
+        $group:{
+          _id:{
+            year:{$year:'$date'},
+          },
+          totalPrice:{$sum:'$total'},
+          items:{$sum:{$size:'$products'}},
+          count:{$sum:1},
+        }
+      },
+      {
+        $sort:{'_id.year':-1}
+      }
+    ])
+    console.log(sales);
+    res.render('admin/year-report',{sales})
+  },
     adminLogout:(req,res)=>{
       req.session.admin=null
       req.session.adloggedIn=false
