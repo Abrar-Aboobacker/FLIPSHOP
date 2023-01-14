@@ -12,7 +12,7 @@
                         <div class="bg-secondary rounded h-100 p-4">
                             <h6 class="mb-4">Banner Table</h6>
                             <div class="table-responsive">
-                                <table class="table">
+                                <table class="table" id="bannerTable">
                                     <thead>
                                         <tr>
                                             <th scope="col">NO</th>
@@ -23,10 +23,11 @@
                                             <th scope="col">Actions</th>
                                         </tr>
                                     </thead>
+                                    <% banners.forEach(function(banners,index){ %> 
                                     <tbody>
-                                        <% banners.forEach(function(banners,index){ %> 
+                                        
                                         <tr>
-                                            <th scope="row"><%=index+1 %>  </th>
+                                            <td scope="row"><%=index+1 %>  </td>
                                             <td><%=banners.title%> </td>
                                             <td><%=banners.mainTitle%> </td>
                                             <td >
@@ -53,8 +54,9 @@
                                                     <% } %> 
                                             </td>
                                         </tr>
-                                        <% }) %> 
+                                       
                                     </tbody>
+                                    <% }) %>
                                 </table>
                             </div>
                         </div>
@@ -63,7 +65,11 @@
             </div>
                     
             <!-- Table End -->
-
+            <script>
+                $(document).ready( function () {
+                    var table = $('#bannerTable').DataTable();
+                } );
+            </script>
         <!-- Content End -->
 
         <%-include('./layout/admin footer.ejs') %> 
