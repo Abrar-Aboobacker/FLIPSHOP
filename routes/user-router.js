@@ -10,6 +10,10 @@ const {
     postUserSignUp,
     postLogin,
     postOtp,
+    forgetPassword,
+    PostforgotPassword,
+    newPassword,
+    postNewPassword,
     productShow,
     userShop,
     viewCart,
@@ -41,6 +45,10 @@ router.post('/login',postLogin)
 router.get('/signup',userSignUp)
 router.post('/signup',postUserSignUp)
 router.post('/gnenerateOtp',postOtp)
+router.get('/forgetPassword',forgetPassword)
+router.post('/forgetPassword',PostforgotPassword)
+router.get('/reset',newPassword)
+router.post('/reset',postNewPassword)
 router.get('/productShow/:id',productShow)
 router.get('/shop',userShop)
 router.get('/viewCart',userVerifyLogin,viewCart)

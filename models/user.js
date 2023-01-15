@@ -27,6 +27,8 @@ const userSchema = new mongoose.Schema({
         type:String,
         // required:true
     },
+    resetToken:String,
+    resetTokenExpiration:Date,
     access:{
         type:Boolean,
         default:true 

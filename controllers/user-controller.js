@@ -1,4 +1,4 @@
-
+const crypto =require('crypto')
 const UserDatabase= require('./userDatabase')
 const users1 =require('../models/user')
 const bcrypt = require('bcrypt')
@@ -15,6 +15,22 @@ const { response } = require('express')
 const category = require('../models/category')
 const mongoose =require('mongoose')
 const banner = require ('../models/banner')
+const nodemailer = require('nodemailer')
+const nodeUser= process.env.nodeMailer_User
+const nodePass = process.env.SMTP_key_value
+const port =  process.env.SMTP_PORT
+const host = process.env.host
+
+
+const mailer = nodemailer.createTransport({
+ 
+  host:host,
+  port:port,
+  auth:{
+      user:nodeUser,
+      pass:nodePass
+  }
+})
 module.exports={
     home:async (req, res, next) =>{
           let users=req.session.user
@@ -116,6 +132,84 @@ postOtp: async (req, res) => {
           res.redirect('/login')
         }
       })
+    },
+    forgetPassword:(req,res)=>{
+      res.render('user/forget-password')
+    },
+    PostforgotPassword:async(req,res)=>{
+      crypto.randomBytes(32,(err,buffer)=>{
+        if(err){
+          console.log(err+"err");
+         return  res.redirect('/forgetPassword')
+        }
+        const token =buffer.toString('hex')
+        user.findOne({email:req.body.email}).then(users=>{
+          console.log(users+"users");
+          if (!users) {
+            req.flash('error',
+            'sorry No such account with this email,Please enter a valid email id')
+            return res.redirect('/forgetPassword')
+          }
+          users.resetToken=token;
+          users.resetTokenExpiration=Date.now()+3600000
+          users.save()
+        })
+        .then(result=>{
+          console.log(result);
+           res.redirect('/')
+          var emails = {
+            to:req.body.email,
+            from:nodeUser,
+            subject: 'password reseted',
+            html: `
+              <p>You Requested  a Password reset </p>
+               <p>Click this <a href="http://localhost:3000/reset?token=${token}">link</a> to set a passwor</p>
+       `
+        }
+        mailer.sendMail(emails, function(err, res) {
+          if (err) { 
+              console.log(err) 
+          }else{
+            console.log(res.response
+              +'email sended');
+          }
+        })
+        })
+        .catch(err=>{
+          console.log(err);
+        })
+      })
+    },
+    newPassword:(req,res)=>{
+      const token = req.query.token;
+       user.findOne({resetToken:token,resetTokenExpiration:{$gt:Date.now()}})
+       .then(usserz=>{
+        res.render('user/new-password',{userid:usserz._id,passwordToken:token})
+       })
+       .catch(err=>{
+        console.log(err);
+       })
+    },
+    postNewPassword:(req,res)=>{
+      let updatedUser;
+      const newpassword = req.body.pass;
+      const userId = req.body.userid;
+      const passwordToken = req.body.passwordToken
+      user.findOne({
+        resetToken:passwordToken,
+        resetTokenExpiration:{$gt:Date.now()},
+        _id:userId}).then(users=>{
+      updatedUser = users
+     return bcrypt.hash(newpassword,12)
+    }).then(hashedpassword=>{
+      updatedUser.password = hashedpassword
+      updatedUser.conform = hashedpassword
+      updatedUser.resetToken=undefined
+      updatedUser.resetTokenExpiration = undefined
+      return updatedUser.save()
+    }).then(result=>{
+      res.redirect('/login')
+    })
     },
     productShow: async (req,res)=>{
       let users=req.session.user
