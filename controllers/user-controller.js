@@ -580,6 +580,35 @@ postOtp: async (req, res) => {
       const orderDetials = await orders2.findOne({ _id: orderId }).populate('products.productId')
       res.render('user/invoice', {  orderDetials, })
     },
+  search: async (req, res) => {
+    const sResult = [];
+    const skey = req.body.payload;
+    const regex = new RegExp(`^${skey}.*`, 'i');
+    const pros = await product.aggregate([{
+      $match: {
+        $or: [{ name: regex },
+          { description: regex }],
+      },
+    }]);
+    pros.forEach((val) => {
+      sResult.push({ name: val.name, type: 'Products', id: val._id });
+    });
+   
+    const catlist = await category.aggregate([{
+      $match: {
+        $or: [{ name: regex },
+          { description: regex }],
+      },
+    }]);
+    catlist.forEach((val) => {
+      sResult.push({ title: val.name, type: 'category', id: val._id });
+    });
+
+    res.send({ payload: sResult });
+  },
+  error: (req, res) => {
+    res.render('user/error');
+  },
     logout:(req,res)=>{
       req.session.user=null
       req.session.loggedIn=false

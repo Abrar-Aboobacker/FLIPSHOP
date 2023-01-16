@@ -1,5 +1,5 @@
 function searched() {
-    console.log('keri')
+  console.log('keriiii');
     const myDiv = document.createElement('div')
     myDiv.id = 'div_id'
     myDiv.innerHTML = '<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">' +
@@ -24,7 +24,6 @@ function searched() {
     document.body.appendChild(myDiv)
   }
   function sendData (e) {
-    console.log('searchil kero'+e.value)
     const searchResults = document.getElementById('searching')
     const exp = e.value.toString()
     const match = exp.match(/^[a-zA-z ]*/)
@@ -46,11 +45,12 @@ function searched() {
           return
         }
         suggestion.forEach((element, i) => {
-          if (element.type == 'Product') {
+          console.log(element+"ghjk");
+          if (element.type == 'products') {
             console.log('ivde product' + element.title)
             searchResults.innerHTML += `<a href='/shop?q=${element.id}'>${element.title}</a>` +
             `<p class="text-muted m-0">  ${element.type}</p>`
-          } else if (element.type == 'Category') {
+          } else if (element.type == 'category') {
             console.log('cate')
             searchResults.innerHTML += `<a href='/shop?cat=${element.id}'>${element.title}</a>` +
             `<p class="text-muted m-0">  ${element.type}</p>`

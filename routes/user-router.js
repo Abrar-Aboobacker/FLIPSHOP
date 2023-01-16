@@ -36,6 +36,7 @@ const {
     orderDetailsPageView,
     invoice,
     verifyPayment,
+    search,
     logout
 }
     =require ('../controllers/user-controller')
@@ -72,6 +73,7 @@ router.get('/orderSuccess',orderSuccessPageView)
 router.get('/orders',userVerifyLogin,orderDetailsPageView)
 router.get('/invoice',invoice)
 router.post('/verifyPayment',verifyPayment)
+router.post('/search', search)
 router.get('/logout',logout)
 
 

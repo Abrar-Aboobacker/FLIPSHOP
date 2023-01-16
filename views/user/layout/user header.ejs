@@ -149,7 +149,8 @@
                 </div>
                 <div class="col-lg-3 col-md-3">
                     <div class="header__nav__option" >
-                        <a href="#" class="search-switch"><i class="bi bi-search" style="color: black; font-size: 17px;"></i></a>
+                        <button class="search" data-toggle="modal" data-target="#exampleModalCenter" onclick="searched()" style=" background-color: white; border: none;"><i class="bi bi-search" style="color: black; font-size: 17px;"></i></button>
+                       
                         <a href="/wishlist"><i class="bi bi-heart" style="color: black; font-size: 17px;"></i></a>
                         <% if(users) {%> 
                         <a href="/viewCart"><i class="bi bi-cart2" style="color: black; font-size: 20px;"></i>  <span class="position-absolute top-0 start-100 translate-middle badge bg-primary rounded-circle text-light" style="font-size: 1rem; top: 0; right: -10;"><%= count %> </span>
@@ -164,4 +165,5 @@
             <div class="canvas__open"><i class="fa fa-bars"></i></div>
         </div>
     </header>
+    
     <!-- Header Section End -->
