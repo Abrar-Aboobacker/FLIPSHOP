@@ -5,7 +5,7 @@ const product = require('../models/product')
 const user1 = require ('../models/user.js')
 const orders = require('../models/orders')
 const banner = require('../models/banner')
-
+const ITEMS_PER_PAGE = 6;
 module.exports={
     adminlogin:(admindata)=>{
         return new Promise(async(resolve,reject)=>{
@@ -28,14 +28,14 @@ module.exports={
             }
         })
     },
-    getAllProduct:  (callback) => {
-
-        product .find().where().
-       exec((err,productList)=>{
+    // getAllProduct:  (callback) => {
+    //     const page = req.query.page||1
+    //     product .find().skip((page-1)*ITEMS_PER_PAGE).limit(ITEMS_PER_PAGE).where().
+    //    exec((err,productList)=>{
            
-           callback(err,productList)
-         });
-     },
+    //        callback(err,productList)
+    //      });
+    //  },
      getProductDetails:(productId)=>{
         return new Promise((resolve,reject)=>{
             product.findOne({_id:productId}).then((product)=>{

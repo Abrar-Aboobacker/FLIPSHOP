@@ -41,10 +41,9 @@ module.exports={
           }
           const categories = await category.find().where()
           const bannerzz = await banner.find().where()
-          // console.log(categories+"undeeeeeeeee");
-        adminDatabase.getAllProduct((err,productList)=>{ 
+          const productList = await product.find()
           res.render('user/index', {users,productList,count,categories,bannerzz});
-        })   
+          
         },
     userSignUp:(req,res)=>{
         if(req.session.user){
@@ -224,18 +223,25 @@ postOtp: async (req, res) => {
       console.log(pro);
       res.render("user/catProduct",{pro,users,count})
     },
-    userShop:(req,res)=>{
+    userShop:async (req,res)=>{
       let users=req.session.user
-      
+      const page = +req.query.page||1
+      const items_per_page = 6;
+
       console.log(users);
       let count= null;
       if(users){
         count= users.cart.items.length
       }
       console.log(count);
-      adminDatabase.getAllProduct((err,productList)=>{
-        res.render("user/shop",{productList,users,count})
-      })
+      const totalproducts = await product.find().countDocuments()
+      const productList = await product.find().skip((page - 1) * items_per_page).limit(items_per_page);
+
+      
+        res.render("user/shop",{productList,users,count,page,curentPage:page,hasNextPage: items_per_page * page < totalproducts,
+          hasPreviousPage: page > 1,nextPage:page+1,lastPage:Math.ceil(totalproducts/items_per_page),
+          PreviousPage: page - 1})
+  
     }, 
     couponCheck:async (req,res)=>{
       let codes=req.body.code
