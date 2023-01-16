@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>invoice</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">'
+    <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+    integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+></script>'
+  </head>
+  <body>
+    
+<div class="container"  id="invoice">
+    <div class="row justify-content-end">
+        <button style=" width: 200px;"  id="download-button" class="btn btn-light"> <i class="bi bi-printer"></i> Download as PDF</button>
+    </div>
+    <div class="row">
+        <div class="span4">
+        
+            <img src="http://webivorous.com/wp-content/uploads/2020/06/brand-logo-webivorous.png" class="img-rounded logo">
+            <address>
+                <strong>FlipShop Pvt. Ltd.</strong>
+                <br>
+             
+               35, Lajpat Nagar<br>
+              Gurugram, Haryana-122001 (India)
+            </address>
+        </div>
+        <div class="span4 well">
+            <table class="invoice-head">
+                <tbody>
+                    <tr>
+                        <% const random = Math.floor(Math.random() * 9000 + 1000) %>
+                        <td class="pull-right"><strong>Order Id</strong></td>
+                        <td><%=orderDetials._id %> </td>
+                    </tr>
+                    <tr>
+                        <td class="pull-right"><strong>Invoice #</strong></td>
+                        <td><%=random %></td>
+                    </tr>
+                    <tr>
+                        <td class="pull-right"><strong>Date</strong></td>
+                        <td><%=orderDetials.createdAt.toLocaleString()%></td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="span8">
+            <h2>Invoice</h2>
+        </div>
+    </div>
+    <div class="row">
+          <div class="span8 well invoice-body">
+              <table class="table table-bordered">
+                <thead>
+                    <tr>
+                      <th>Product</th>
+                        <th>Description</th>
+                      <th>Quantity</th>
+                        <th>Amount</th>
+                        <th >Address</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                    <td rowspan="2" style="width: 300px;"><%=orderDetials.address%> </td>
+                    <%orderDetials.products.forEach((val)=>{ %>
+                       
+                    <td style="width: 250px;"><%=val.productId.name %></td>
+                    <td style="width: 250px;"> <%=val.productId.description%></td>
+                    <td> <%=val.qty%></td>
+                    <td> <%=val.productId.price %></td>
+                </tr>
+              
+                    <% })%>
+                   
+                       
+                  
+        <tr><td colspan="4"></td></tr>
+<tr>
+                        <td colspan="2">&nbsp;</td>
+                        <td><strong>Total</strong></td>
+                        <td><strong><%=orderDetials.total %> </strong></td>
+                    </tr>
+                </tbody>
+            </table>
+          </div>
+      </div>
+      <div class="row">
+          <div class="span8 well invoice-thank">
+              <h5 style="text-align:center;">Thank You!</h5>
+          </div>
+      </div>
+      <div class="row">
+          <div class="span3">
+              <strong>Phone:</strong>+91-81569-86050
+          </div>
+          <div class="span3">
+              <strong>Email:</strong> <a href="abrarabikk@gmail.com">hy@gmail.com</a>
+          </div>
+          <div class="span3">
+              <strong>Website:</strong> <a href="http://webivorous.com">http://webivorous.com</a>
+          </div>
+      </div>
+</div>
+</div>
+<style>
+    .invoice-head td {
+  padding: 0 8px;
+}
+.container {
+  padding-top:30px;
+}
+.invoice-body{
+  background-color:transparent;
+}
+.invoice-thank{
+  margin-top: 60px;
+  padding: 5px;
+}
+address{
+  margin-top:15px;
+}
+</style>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <script>
+        const button = document.getElementById('download-button');
+
+        function generatePDF() {
+            // Choose the element that your content will be rendered to.
+            const element = document.getElementById('invoice');
+            // Choose the element and save the PDF for your user.
+            html2pdf().from(element).save();
+        }
+
+        button.addEventListener('click', generatePDF);
+    </script>
+  </body>
+</html>

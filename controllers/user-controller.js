@@ -16,6 +16,7 @@ const category = require('../models/category')
 const mongoose =require('mongoose')
 const banner = require ('../models/banner')
 const nodemailer = require('nodemailer')
+const address2 = require('../models/address')
 const nodeUser= process.env.nodeMailer_User
 const nodePass = process.env.SMTP_key_value
 const port =  process.env.SMTP_PORT
@@ -163,7 +164,7 @@ postOtp: async (req, res) => {
             subject: 'password reseted',
             html: `
               <p>You Requested  a Password reset </p>
-               <p>Click this <a href="http://localhost:3000/reset?token=${token}">link</a> to set a passwor</p>
+               <p>Click this <a href="http://localhost:3000/reset?token=${token}">link</a> to set a password.</p>
        `
         }
         mailer.sendMail(emails, function(err, res) {
@@ -574,6 +575,22 @@ postOtp: async (req, res) => {
       const orders = await orders2.find({userid:id}).populate('products.productId')
       res.render('user/ordersView',{orders,count,users})
     },
+    invoice: async (req, res) => {
+      const orderId = req.query.id
+      const orderDetials = await orders2.findOne({ _id: orderId }).populate('products.productId')
+      console.log(orderDetials+"jjjjjjjjjj");
+  
+      // const addressId = orderDetials.address
+      // console.log(addressId,'kkkkkkkkkkkkkkk');
+      // const addressz= await address2.findOne({ userId: orderDetials.userid })
+  
+      // const index = addressz.address.findIndex(obj => obj._id == addressId)
+  
+      // const finalAddress = addressz.address[index]
+      // console.log(finalAddress);
+  console.log(orderDetials.products[0],'koiiiiiiiiiiiiiiiiiiiiiii',orderDetials.products[1],'poiiiiiiiiiiiiiii');
+      res.render('user/invoice', {  orderDetials, })
+    },
     logout:(req,res)=>{
       req.session.user=null
       req.session.loggedIn=false

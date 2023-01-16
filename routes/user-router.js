@@ -34,6 +34,7 @@ const {
     placeorder,
     orderSuccessPageView,
     orderDetailsPageView,
+    invoice,
     verifyPayment,
     logout
 }
@@ -69,6 +70,7 @@ router.post('/addressCheck',addAdressInCheckout)
 router.post('/placeOrder',placeorder)
 router.get('/orderSuccess',orderSuccessPageView)
 router.get('/orders',userVerifyLogin,orderDetailsPageView)
+router.get('/invoice',invoice)
 router.post('/verifyPayment',verifyPayment)
 router.get('/logout',logout)
 

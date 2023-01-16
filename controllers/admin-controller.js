@@ -415,6 +415,7 @@ module.exports={
         },
       },
     ]);
+    console.log(sales);
     res.render('admin/day-report',{sales});
   },
   monthReport:async (req,res)=>{
