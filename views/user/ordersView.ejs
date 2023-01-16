@@ -54,11 +54,14 @@
                                 <td style="font-weight: bold; font-size: 20px; margin-left: -50px; ">
                                     <%=ord.payment %> 
                                 </td>
-                                <td style="font-weight: bold; font-size: 15px;">
+                                <td style="font-weight: bold; font-size: 15px;" id="<%=ord._id%>">
                                     <%=ord.status %> 
                                 </td>
                                 <td>
                                     <a href="/invoice/?id=<%=ord._id%>" class="btn btn-light text-capitalize" style="font-size: 20px;"> <i class="bi bi-printer"></i></a>
+                                </td>
+                                <td>
+                                    <button type="button" value="Cancelled"  onclick="status(this,'<%=ord._id %>') " class="btn btn-danger"  role="button">Cancel</button>
                                 </td>
                                 <td>
                                    
@@ -123,28 +126,45 @@
 </section>
 <!-- Shopping Cart Section End -->
 
-<!-- <script>
-    function deleting(prdId){
-        $.ajax({
-            url:'/deleteWishlist',
-            method:'POST',
-            data:{
-                productId:prdId
-            },
+
+<script>
+    function status(e,od){
+        Swal.fire({
+                    title: 'Do you want to save the changes?',
+                    showDenyButton: true,
+                    showCancelButton: true,
+                    confirmButtonText: 'Save',
+                    denyButtonText: `Don't save`,
+                    }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        Swal.fire('Saved!', '', 'success')
+                        
+             
+            $.ajax({
+            
+            url:`/admin/changeStatus?s=${e.value}&id=${od}`,
+            method:'get',
             success:((response)=>{
-                if(response.access){
-                     Swal.fire(
-                        'Deleted!',
-                        'Your item has been deleted',
-                        'success'
-                    ) 
-                    setTimeout(()=>location.reload(),1000)
+                console.log(response.value+"sdxfgyhuijko");
+                if(response.status){
+                    
+                }else{
+                   
+                    console.log(od);
+                    document.getElementById(od).innerHTML = response.value
+                    
                 }
             })
         })
-    }
-</script> -->
 
+    } else if (result.isDenied) {
+        Swal.fire('Changes are not saved', '', 'info')
+    }
+                    
+    })
+    }
+</script> 
 <%-include("./layout/user footer.ejs") %> 
 
 
