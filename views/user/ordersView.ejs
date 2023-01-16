@@ -60,9 +60,14 @@
                                 <td>
                                     <a href="/invoice/?id=<%=ord._id%>" class="btn btn-light text-capitalize" style="font-size: 20px;"> <i class="bi bi-printer"></i></a>
                                 </td>
+                                <% if(ord.status!='Cancelled'){%> 
                                 <td>
                                     <button type="button" value="Cancelled"  onclick="status(this,'<%=ord._id %>') " class="btn btn-danger"  role="button">Cancel</button>
                                 </td>
+                                <%}else if (ord.status !='Delivered') {%>
+
+                                    <% }else {%>
+                                        <% } %>   
                                 <td>
                                    
        

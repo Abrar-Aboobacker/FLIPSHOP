@@ -299,7 +299,7 @@ module.exports={
       const status = req.query.s
       const orederId = req.query.id
       const response = {}
-      if(status == 'Delivered' || status == 'Cancelled'){
+      if(status == "Delivered" || status == 'Cancelled'){
         orders2.findOneAndUpdate({_id:orederId},{$set:{status:status}}).then(()=>{
           response.status = false;
           response.value = status

@@ -578,17 +578,6 @@ postOtp: async (req, res) => {
     invoice: async (req, res) => {
       const orderId = req.query.id
       const orderDetials = await orders2.findOne({ _id: orderId }).populate('products.productId')
-      console.log(orderDetials+"jjjjjjjjjj");
-  
-      // const addressId = orderDetials.address
-      // console.log(addressId,'kkkkkkkkkkkkkkk');
-      // const addressz= await address2.findOne({ userId: orderDetials.userid })
-  
-      // const index = addressz.address.findIndex(obj => obj._id == addressId)
-  
-      // const finalAddress = addressz.address[index]
-      // console.log(finalAddress);
-  console.log(orderDetials.products[0],'koiiiiiiiiiiiiiiiiiiiiiii',orderDetials.products[1],'poiiiiiiiiiiiiiii');
       res.render('user/invoice', {  orderDetials, })
     },
     logout:(req,res)=>{
