@@ -15,6 +15,7 @@ const {
     newPassword,
     postNewPassword,
     productShow,
+    getsingleProduct,
     userShop,
     viewCart,
     doAddToCart,
@@ -53,6 +54,7 @@ router.get('/reset',newPassword)
 router.post('/reset',postNewPassword)
 router.get('/productShow/:id',productShow)
 router.get('/shop',userShop)
+router.get('/singleView',getsingleProduct)
 router.get('/viewCart',userVerifyLogin,viewCart)
 router.get('/addToCart/:id',doAddToCart)
 router.post('/changeQuantity',AuthAjaxVerification, changeQuantity)

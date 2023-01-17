@@ -227,7 +227,7 @@ postOtp: async (req, res) => {
       let users=req.session.user
       const page = +req.query.page||1
       const items_per_page = 6;
-
+      const categories = await category.find().where()
       console.log(users);
       let count= null;
       if(users){
@@ -240,9 +240,20 @@ postOtp: async (req, res) => {
       
         res.render("user/shop",{productList,users,count,page,curentPage:page,hasNextPage: items_per_page * page < totalproducts,
           hasPreviousPage: page > 1,nextPage:page+1,lastPage:Math.ceil(totalproducts/items_per_page),
-          PreviousPage: page - 1})
+          PreviousPage: page - 1,categories})
   
     }, 
+    getsingleProduct :async (req, res) => {
+      const users = req.session.user;
+      let count= null;
+      if(users){
+        count= user.cart.items.length
+      }
+      
+      const viewId= req.query.id
+      const viewproduct = await product.findById(viewId).populate('category');
+        res.render('user/productDetails',{viewproduct,count,users});
+    },
     couponCheck:async (req,res)=>{
       let codes=req.body.code
       let code1 = codes.trim()
