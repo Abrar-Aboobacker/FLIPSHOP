@@ -224,18 +224,27 @@ postOtp: async (req, res) => {
       res.render("user/catProduct",{pro,users,count})
     },
     userShop:async (req,res)=>{
+      let productList;
       let users=req.session.user
       const page = +req.query.page||1
       const items_per_page = 6;
       const categories = await category.find().where()
-      console.log(users);
       let count= null;
       if(users){
         count= users.cart.items.length
       }
-      console.log(count);
+      
       const totalproducts = await product.find().countDocuments()
-      const productList = await product.find().skip((page - 1) * items_per_page).limit(items_per_page);
+      if(req.query.q){
+         const Id=req.query.q
+         productList = await product.find({_id:Id})
+      }if (req.query.cat) {
+        const cat = req.query.cat
+        productList = await product.find({_id:cat})
+      } else {
+        productList= await product.find().skip((page - 1) * items_per_page).limit(items_per_page);
+      }
+     
 
       
         res.render("user/shop",{productList,users,count,page,curentPage:page,hasNextPage: items_per_page * page < totalproducts,
@@ -247,11 +256,10 @@ postOtp: async (req, res) => {
       const users = req.session.user;
       let count= null;
       if(users){
-        count= user.cart.items.length
+        count= users.cart.items.length
       }
-      
-      const viewId= req.query.id
-      const viewproduct = await product.findById(viewId).populate('category');
+      const id= req.params.id
+      const viewproduct = await product.findById(id)
         res.render('user/productDetails',{viewproduct,count,users});
     },
     couponCheck:async (req,res)=>{

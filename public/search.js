@@ -39,16 +39,18 @@ function searched() {
         body: JSON.stringify({ payload: e.value })
       }).then((res) => { return res.json() }).then(data => {
         const suggestion = data.payload
+        console.log(suggestion,'paaaaaaaaa');
         searchResults.innerHTML = ''
         if (suggestion.length < 1) {
+          console.log('kali');
           searchResults.innerHTML = '<p>Sorry. Nothing Found.</p>'
           return
         }
         suggestion.forEach((element, i) => {
           console.log(element+"ghjk");
-          if (element.type == 'products') {
+          if (element.type == 'Products') {
             console.log('ivde product' + element.title)
-            searchResults.innerHTML += `<a href='/shop?q=${element.id}'>${element.title}</a>` +
+            searchResults.innerHTML += `<a href='/shop?q=${element.id}'>${element.name}</a>` +
             `<p class="text-muted m-0">  ${element.type}</p>`
           } else if (element.type == 'category') {
             console.log('cate')

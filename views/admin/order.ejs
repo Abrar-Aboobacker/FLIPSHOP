@@ -38,6 +38,7 @@
                                     <td id="<%= ord._id %>"><%=ord.status%></td>
                                     <%}else{%>
                                         <td id="<%= ord._id %>">
+                                           <p><% this %></p>  
                                             <select name="" onchange="status(this,'<%=ord._id%>') " id="status">
                                             <option value="<%=ord.status%>" selected> <%=ord.status%> </option>
                                             <option id="" value="Confirmed">Confirmed</option>

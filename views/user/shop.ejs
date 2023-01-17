@@ -43,15 +43,6 @@
                                                     <% for(var i = 0 ;i<categories.length;i++){ %>
                                                         <li><a href="/productShow/<%=categories[1]._id%>"><%=categories[i].name%> </a></li>
                                                   <%  } %> 
-                                                   
-                                                    <!-- <li><a href="#">Women (20)</a></li>
-                                                    <li><a href="#">Bags (20)</a></li>
-                                                    <li><a href="#">Clothing (20)</a></li>
-                                                    <li><a href="#">Shoes (20)</a></li>
-                                                    <li><a href="#">Accessories (20)</a></li>
-                                                    <li><a href="#">Kids (20)</a></li>
-                                                    <li><a href="#">Kids (20)</a></li>
-                                                    <li><a href="#">Kids (20)</a></li> -->
                                                 </ul>
                                             </div>
                                         </div>
@@ -89,7 +80,7 @@
                                 <div class="product__item__pic set-bg" data-setbg="/image/productImages/<%=productList.image[0] %> ">
                                     <ul class="product__hover">
                                         <li><a href="/addToWishlist/<%= productList._id %> "><img src="/user/img/icon/heart.png" alt=""></a></li>
-                                        <li><a href="/singleView/<%=productList._id%>"></a> <i style="background-color: white; font-size: 18px; padding: 10px; margin-top: 2000px;" class="bi bi-arrows-move"></i></li>
+                                        <li><a href="/singleView/<%=productList._id%>"> <i style="background-color: white; font-size: 18px; padding: 10px; margin-top: 2000px;" class="bi bi-arrows-move"></i></a></li>
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
