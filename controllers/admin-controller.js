@@ -178,14 +178,12 @@ module.exports={
         }
     },
     AdminProductManagment:(req,res,next)=>{
-      try{
+     
       adminDatabase.getAllProduct((err,productList)=>{
         category1.findById()
         res.render("admin/products",{productList})
       })
-    }catch(e){
-      next(new Error(e))
-    }
+   
     },
     addProduct:(req,res,next)=>{
       try{

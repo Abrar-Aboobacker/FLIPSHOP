@@ -42,6 +42,13 @@ module.exports={
             })
         })
     },
+    getAllProduct:  (callback) => {
+            product .find().where().
+           exec((err,productList)=>{
+               
+               callback(err,productList)
+             });
+         },
     getAllCategory:  (callback) => {
 
        category1 .find().where().
