@@ -34,6 +34,28 @@ const mailer = nodemailer.createTransport({
 })
 module.exports={
     home:async (req, res, next) =>{
+//       const moment = require("moment");
+// const orderModule = require("../models/orders");
+
+// async function getFirstMonthOrders() {
+//   // const startDate = moment().subtract(0, "months").startOf("month");
+//   const startDate = moment().startOf('months').format('DD-MM-YYYY hh:mm');
+// const endDate   = moment().endOf('months').format('YYYY-MM-DD hh:mm');
+//   console.log(startDate+("ith nthaaa"));
+//   // const endDate = moment().subtract(0, "months").endOf("month");
+//   console.log(endDate+"whattttttttt");
+//   const orders = await orderModule.find({
+//     $and: [{ createdAt: { $gt: startDate } }, { createdAt: { $lt: endDate } }],
+//   });
+//   const totalSale = orders.reduce((total, order) => {
+//     total += order.total;
+//     return total;
+//   }, 0);
+//   return totalSale;
+// }
+
+// let first= await getFirstMonthOrders()
+// console.log(first,'firstfirstfirstfirstfirstfirstfirstfirstfirst');
           let users=req.session.user
           let count= null;
           if(users){

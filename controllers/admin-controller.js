@@ -7,21 +7,18 @@ const orders2=require('../models/orders')
 const adminDatabase = require('./adminDatabase');
 const product = require('../models/product');
 const banner = require('../models/banner');
+// const { months } = require('moment');
 
 module.exports={
-    adminLogin :(req, res) => {
-        if(req.session.admin){
-    
-            res.redirect('/admin/dashboard')
-          }else{
-            var adminLoginErr =  req.session.adminLoginErr
-            req.session.adminLoginErr=false
-            res.render('admin/login',{adminLoginErr})
-         
-
-          
-          }
-    },
+  adminLogin :(req, res) => {
+    if(req.session.admin){
+        res.redirect('/admin/dashboard')
+      }else{
+        var adminLoginErr =  req.session.adminLoginErr
+        req.session.adminLoginErr=false
+        res.render('admin/login',{adminLoginErr})
+      }
+},
     adminPostLogin:(req,res)=>{
         console.log(req.body);
         adminDatabase.adminlogin(req.body).then((response)=>{
@@ -37,14 +34,133 @@ module.exports={
             }
           })
     },
-    adminDashboard:(req,res)=>{
-
+    adminDashboard:async (req,res)=>{
         if(req.session.admin){
-            let adminn=req.session.admin
-            // req.session.admin='dashboard'
-          
-            
-            res.render('admin/index',{admin:true,adminn})
+            let admins=req.session.admin 
+            let userCount;
+            let categoryCount;
+            let proCount = 0;
+            let orderCount;
+            const query = user.find();
+            query.count((err, count) => {
+              userCount = count;
+          });
+            const category = category1.find();
+            category.count((err, count) => {
+              categoryCount = count;
+          });
+            const Pro = product.find();
+            Pro.count((err, count) => {
+            proCount = count;
+          });
+
+            const revenue = await orders2.aggregate([
+          {
+        $match: {
+            $or: [{ $and: [{ status: { $eq: 'Delivered' }, payment: { $eq: 'cod' } }] },
+            { $and: [{ status: { $eq: 'Delivered' }, payment: { $eq: 'razorPay' } }] },
+            { $and: [{ status: { $eq: 'Placed' }, payment: { $eq: 'razorPay' } }] }],
+         },
+      },
+
+      {
+        $group: {
+          _id: {
+         },
+            totalPrice: { $sum: '$total' },
+            items: { $sum: { $size: '$products' } },
+            count: { $sum: 1 },
+
+        },
+          }, { $sort: { createdAt: -1 } },
+      ]);
+        const date = new Date();
+        const day = date.getDate();
+        let month = date.getMonth();
+        month += 1;
+        const year = date.getFullYear();
+        const todayrevenue = await orders2.aggregate([
+      {
+       $match: {
+          $or: [{ $and: [{ status: { $eq: 'Delivered' }, payment: { $eq: 'cod' } }] },
+        { $and: [{ status: { $eq: 'Delivered' }, payment: { $eq: 'razorPay' } }] },
+        { $and: [{ status: { $eq: 'Placed' }, payment: { $eq: 'razorPay' } }] }],
+    },
+  }, {
+    $addFields: { Day: { $dayOfMonth: '$date' }, Month: { $month: '$date' }, Year: { $year: '$date' } },
+  },
+  { $match: { Day: day, Year: year, Month: month } },
+
+  {
+    $group: {
+
+      _id: {
+        day: { $dayOfMonth: '$date' },
+
+      },
+      totalPrice: { $sum: '$total' },
+      items: { $sum: { $size: '$products' } },
+      count: { $sum: 1 },
+
+    },
+  },
+]);
+
+const todaySales = await orders2.aggregate([
+  {
+    $match: { status: { $ne: 'Cancelled' } },
+  }, {
+    $addFields: { Day: { $dayOfMonth: '$date' }, Month: { $month: '$date' }, Year: { $year: '$date' } },
+  },
+  { $match: { Day: day, Year: year, Month: month } },
+
+  {
+    $group: {
+
+      _id: {
+        day: { $dayOfMonth: '$date' },
+
+      },
+      totalPrice: { $sum: '$total' },
+      items: { $sum: { $size: '$products' } },
+      count: { $sum: 1 },
+
+    },
+  },
+]);
+const allSales = await orders2.aggregate([
+  {
+    $match: { status: { $ne: 'Cancelled' } },
+  },
+
+  {
+    $group: {
+      _id: {
+      },
+      totalPrice: { $sum: '$total' },
+      items: { $sum: { $size: '$products' } },
+      count: { $sum: 1 },
+
+    },
+  }, { $sort: { date: -1 } },
+]);
+
+const orders = orders2.find();
+orders.count((err, count) => {
+  orderCount = count;
+  res.render('admin/index', {
+    admins,
+    userCount,
+    categoryCount,
+    proCount,
+    orderCount,
+    revenue,
+    allSales,
+    todaySales,
+    todayrevenue,
+  });
+});         
+         
           
           }else{
             res.redirect('/admin/adlogin')
@@ -465,6 +581,55 @@ module.exports={
     ])
     console.log(sales);
     res.render('admin/year-report',{sales})
+  },
+  chart1: async (req, res) => {
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      const sale = await orders2.aggregate([
+        { $match: { status: { $eq: 'Delivered' } } },
+        {
+          $group: {
+            _id: {
+
+              month: { $month: '$date' },
+
+            },
+            totalPrice: { $sum: '$total' },
+            items: { $sum: { $size: '$products' } },
+            count: { $sum: 1 },
+
+          },
+        }, { $sort: { '_id.month': -1 } }]);
+        console.log(sale[0].count+"ssale");
+      const salesRep = sale.map((el) => {
+        const newOne = { ...el };
+        newOne._id.month = months[newOne._id.month - 1]; 
+        console.log(newOne._id.month+"llllllllll");
+          return newOne;
+         
+      });
+
+      res.json({ salesRep });
+  },
+
+  chart2: async (req, res) => {
+    // const months = 
+      const payment = await orders2.aggregate([
+        { $match: { status: { $eq: 'Delivered' } } },
+        {
+          $group: {
+            _id: {
+
+              payment: '$payment',
+
+            },
+            // totalPrice: { $sum: '$total' },
+            // items: { $sum: { $size: '$products' } },
+            count: { $sum: 1 },
+
+          },
+        }, { $sort: { '_id.month': -1 } }]);
+        console.log(payment,"djfkls;a");
+      res.json({ payment });
   },
     adminLogout:(req,res)=>{
       req.session.admin=null

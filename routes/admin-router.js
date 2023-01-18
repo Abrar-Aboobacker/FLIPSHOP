@@ -42,6 +42,8 @@ const {adminLogin,
     salesReport,
     monthReport,
     yearReport,
+    chart1,
+    chart2,
     adminLogout
     }
     
@@ -86,6 +88,8 @@ router.get('/bannerEnable/:id',unableBanner)
 router.get('/dayReport',salesReport)
 router.get('/monthReport',monthReport)
 router.get('/yearReport',yearReport)
+router.get('/chart1',chart1)
+router.get('/chart2',chart2)
 router.get('/logout',adminLogout)
 
 
