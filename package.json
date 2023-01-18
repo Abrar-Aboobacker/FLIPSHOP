@@ -29,7 +29,7 @@
     "passport-local": "^1.0.0",
     "razorpay": "^2.8.4",
     "sharp": "^0.31.2",
-    "twilio": "^2.5.2"
+    "twilio": "^3.84.1"
   },
   "devDependencies": {
     "dotenv": "^16.0.3"
