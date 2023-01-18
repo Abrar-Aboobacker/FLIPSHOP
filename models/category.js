@@ -3,7 +3,9 @@ const mongoose = require ('mongoose')
 const addCategory = new mongoose.Schema({
     name:{
         type:String,
-        required:true
+        required:true,
+        unique:true,
+        uppercase: true,
     },
     description:{
         type:String,

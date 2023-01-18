@@ -31,7 +31,16 @@
         <div class="col-lg-8">
           <h2 class="fw-bold mb-5">Sign up now</h2>
           <form action="/signup" method="post">
-            <!-- 2 column grid layout with text inputs for the first and last names -->
+            <%if(emailerr) {%>
+              <% if(emailerr.length){%> 
+              <div class="alert alert-danger d-flex align-items-center" role="alert">
+                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                <div>
+                  <%=emailerr %> 
+                </div>
+              </div>
+              <% }%>
+                <% } %>   
             <div class="row">
               <div class="col-md-6 mb-4">
                 <div class="form-outline text-left">

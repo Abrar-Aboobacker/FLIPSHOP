@@ -195,15 +195,11 @@ function maiin($){
             const count=[]
             res.salesRep.forEach(element => {
                 month.push(element._id.month)
-                console.log(element._id.month+"lllllllll");
             });
             
             res.salesRep.forEach(element => {
                 count.push(element.count)
-                console.log(element.count+"pppppppppppp");
-
             })
-            // var ctx1 = $("#worldwide-sales").getContext("2d");
     var myChart1 = new Chart('worldwide-sales', {
         type: "bar",
         data: {
@@ -232,10 +228,7 @@ function maiin2($){
             const count=[]
             res.payment.forEach(element => {
                 count.push(element.count)
-                console.log(element.count+"pppppppppppp");
-
             })
-            // var ctx1 = $("#worldwide-sales").getContext("2d");
             var myChart6 = new Chart('doughnut-chart', {
                     type: "doughnut",
                     data: {

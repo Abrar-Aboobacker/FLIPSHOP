@@ -7,7 +7,7 @@ const orders2=require('../models/orders')
 const adminDatabase = require('./adminDatabase');
 const product = require('../models/product');
 const banner = require('../models/banner');
-// const { months } = require('moment');
+const { handleDuplicate } = require('../middleware/dberrors')
 
 module.exports={
   adminLogin :(req, res) => {
@@ -292,7 +292,8 @@ orders.count((err, count) => {
      
     },
     addCategory:(req,res)=>{
-      res.render("admin/add-category")
+      const errors = req.flash('error')
+      res.render("admin/add-category",{errors})
     },
     postCategory:async(req,res)=>{
        
@@ -305,13 +306,19 @@ orders.count((err, count) => {
         })
           category.save((err,doc)=>{
           if(err){
-            console.log(err);
+            const error = { ...err }
+          console.log(error.code)
+          let errors
+          if (error.code === 11000) {
+            errors = handleDuplicate(error)
+            res.render('admin/add-category', { errors })
+          }
           }else{
-            console.log(doc);
+            res.redirect("/admin/categories")
           }
         })
-        console.log(categoryInformation);
-        res.redirect("/admin/categories")
+        
+        // res.redirect("/admin/categories")
         
       },
       disableCategory:async (req,res)=>{
@@ -589,9 +596,7 @@ orders.count((err, count) => {
         {
           $group: {
             _id: {
-
               month: { $month: '$date' },
-
             },
             totalPrice: { $sum: '$total' },
             items: { $sum: { $size: '$products' } },
@@ -599,11 +604,9 @@ orders.count((err, count) => {
 
           },
         }, { $sort: { '_id.month': -1 } }]);
-        console.log(sale[0].count+"ssale");
       const salesRep = sale.map((el) => {
         const newOne = { ...el };
         newOne._id.month = months[newOne._id.month - 1]; 
-        console.log(newOne._id.month+"llllllllll");
           return newOne;
          
       });

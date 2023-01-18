@@ -34,57 +34,32 @@ const mailer = nodemailer.createTransport({
 })
 module.exports={
     home:async (req, res, next) =>{
-//       const moment = require("moment");
-// const orderModule = require("../models/orders");
-
-// async function getFirstMonthOrders() {
-//   // const startDate = moment().subtract(0, "months").startOf("month");
-//   const startDate = moment().startOf('months').format('DD-MM-YYYY hh:mm');
-// const endDate   = moment().endOf('months').format('YYYY-MM-DD hh:mm');
-//   console.log(startDate+("ith nthaaa"));
-//   // const endDate = moment().subtract(0, "months").endOf("month");
-//   console.log(endDate+"whattttttttt");
-//   const orders = await orderModule.find({
-//     $and: [{ createdAt: { $gt: startDate } }, { createdAt: { $lt: endDate } }],
-//   });
-//   const totalSale = orders.reduce((total, order) => {
-//     total += order.total;
-//     return total;
-//   }, 0);
-//   return totalSale;
-// }
-
-// let first= await getFirstMonthOrders()
-// console.log(first,'firstfirstfirstfirstfirstfirstfirstfirstfirst');
           let users=req.session.user
           let count= null;
           if(users){
             count= users.cart.items.length
           }
+          let emailSent = req.flash('emailSent')
           const categories = await category.find().where()
           const bannerzz = await banner.find().where()
           const productList = await product.find()
-          res.render('user/index', {users,productList,count,categories,bannerzz});
-          
+          res.render('user/index', {users,productList,count,categories,bannerzz,emailSent});
         },
     userSignUp:(req,res)=>{
         if(req.session.user){
             res.redirect('/')
         }else{
-            res.render("user/signup")
+          var emailerr=req.flash('emailExist')
+            res.render("user/signup",{emailerr})
         }  
-    } ,
-   
+    } , 
 postUserSignUp: async (req, res) => {
-
   const mobilenum = req.body.phoneno
   req.session.signup = req.body
-  console.log(req.body)
-
   const uusser = await user.findOne({ email: req.body.email })
-
   if (uusser) {
-      res.redirect('/login')
+    req.flash('emailExist','This email is already used. Please try with another Email Id')
+      res.redirect('/signup')
   } else {
       sendOtp(mobilenum)
       res.render('user/otp.ejs', { uzer: false, num: mobilenum, admin: false, error: false })
@@ -110,8 +85,7 @@ postOtp: async (req, res) => {
                   email:email,
                   phone:phoneno,
                   password:pass,
-                  cPassword:cpass,
-                 
+                  cPassword:cpass,    
               })
               console.log(members);
               members.save((err, newUser) => {
@@ -140,7 +114,9 @@ postOtp: async (req, res) => {
       if(req.session.user){
         res.redirect('/')
       }else{
-        res.render('user/login')
+        var userLoginErr =  req.session.userLoginErr
+        req.session.userLoginErr=false
+        res.render('user/login',{userLoginErr})
       }
     },
     postLogin:(req,res)=>{
@@ -156,12 +132,12 @@ postOtp: async (req, res) => {
       })
     },
     forgetPassword:(req,res)=>{
-      res.render('user/forget-password')
+      var error = req.flash('error')
+      res.render('user/forget-password',{error})
     },
     PostforgotPassword:async(req,res)=>{
       crypto.randomBytes(32,(err,buffer)=>{
         if(err){
-          console.log(err+"err");
          return  res.redirect('/forgetPassword')
         }
         const token =buffer.toString('hex')
@@ -169,7 +145,7 @@ postOtp: async (req, res) => {
           console.log(users+"users");
           if (!users) {
             req.flash('error',
-            'sorry No such account with this email,Please enter a valid email id')
+            'Sorry No such account with this email,Please enter a valid email id')
             return res.redirect('/forgetPassword')
           }
           users.resetToken=token;
@@ -177,7 +153,8 @@ postOtp: async (req, res) => {
           users.save()
         })
         .then(result=>{
-          console.log(result);
+          req.flash('emailSent',
+          'We have send an email to your email Id, It may be in spam messages')
            res.redirect('/')
           var emails = {
             to:req.body.email,
@@ -299,22 +276,17 @@ postOtp: async (req, res) => {
       }
     },
     viewCart:async (req,res)=>{
-      // console.log("ethndo");
       const users=req.session.user
       let count= null;
       if(users){
         count= users.cart.items.length
       }
-      
       const userId=req.session.user._id
        const couponz= await coupon.find().where() 
-       console.log(couponz);
       const prd = await user.findOne({_id:userId}).populate('cart.items.productId')
       const cart=prd.cart.totalPrice
-      console.log(cart,4444444444);
       // const cart = await user.findOne({cart:})
       if (cart==null||cart==0){
-      console.log('hjgfhds');
         res.render('user/cart-empty',{users,count})
       }else{
       res.render('user/cart',{users,prd,count,userId,couponz})}
@@ -342,10 +314,7 @@ postOtp: async (req, res) => {
     viewWishList:async (req,res)=>{
       let users=req.session.user
       let id=req.session.user._id.toString()
-      // console.log(id);
       const prd = await wishlist.findOne({userId:id}).populate('productItems')
-      
-
       let count= null;
       if(users){
         count= users.cart.items.length

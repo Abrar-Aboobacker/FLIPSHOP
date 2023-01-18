@@ -34,16 +34,20 @@
                     </div>
   
                     <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Sign into your account</h5>
-  
+                    <% if(userLoginErr){ %>
+                      <p style="color: red;"
+                        ><%=userLoginErr  %> </p>
+                      <% }  else{  %>
+                    <% } %> 
                     <div class="form-outline mb-4">
                         <label class="form-label " for="form2Example17" >Enter Your Email </label>
-                      <input type="tel" id="form2Example17" name="email" class="form-control form-control-lg" />
+                      <input type="email" id="form2Example17" name="email" class="form-control form-control-lg" required/>
                      
                     </div>
   
                     <div class="form-outline mb-4">
                         <label class="form-label" for="form2Example27">Password</label>
-                      <input type="password" id="form2Example27" name="pass" class="form-control form-control-lg" />
+                      <input type="password" id="form2Example27" name="pass" class="form-control form-control-lg" required/>
                      
                     </div>
   
