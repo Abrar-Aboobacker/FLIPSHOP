@@ -6,7 +6,11 @@
             <div class="container-fluid pt-4 px-4">
                 <div class="row g-4">
                     <div class="col-12">
-                        <div class="bg-secondary rounded h-100 p-4">
+                        <div class="col d-flex justify-content-end">
+                           
+                            <button type="button" class="btn btn-dark rounded-pill m-2"id="download-button">Download as PDF</button>
+                        </div>
+                        <div class="bg-secondary rounded h-100 p-4" id="invoice">
                             <h6 class="mb-4">Month sales Report</h6>
                             <div class="table-responsive">
                                 <table class="table">
@@ -39,7 +43,18 @@
             </div>
                     
             <!-- Table End -->
-
+            <script>
+                const button = document.getElementById('download-button');
+    
+                function generatePDF() {
+                    // Choose the element that your content will be rendered to.
+                    const element = document.getElementById('invoice');
+                    // Choose the element and save the PDF for your user.
+                    html2pdf().from(element).save();
+                }
+    
+                button.addEventListener('click', generatePDF);
+            </script>
         <!-- Content End -->
 
         <%-include('./layout/admin footer.ejs') %> 
