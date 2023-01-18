@@ -48,4 +48,18 @@ db.once('open',()=> console.log('connected to mongoose'));
 app.use('/',userRouter)
 app.use('/admin',adminRouter)
 
+app.use(function(req, res, next) {
+const error = new Error(`Not found ${req.originalUrl}`)
+error.status = 404
+next(error)
+  });
+  
+  // error handler
+  app.use(function(err, req, res, next) {
+
+    // render the error page
+    res.status(err.status || 500);
+    res.render('404',{error:err.message});
+  });
+
 app.listen(process.env.PORT || 3000, console.log("started "))

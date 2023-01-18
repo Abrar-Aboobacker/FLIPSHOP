@@ -34,6 +34,7 @@ const mailer = nodemailer.createTransport({
 })
 module.exports={
     home:async (req, res, next) =>{
+      try{
           let users=req.session.user
           let count= null;
           if(users){
@@ -44,16 +45,24 @@ module.exports={
           const bannerzz = await banner.find().where()
           const productList = await product.find()
           res.render('user/index', {users,productList,count,categories,bannerzz,emailSent});
+        }catch(e){
+          next(new Error(e))
+        }
         },
-    userSignUp:(req,res)=>{
+    userSignUp:(req,res,next)=>{
+      try{
         if(req.session.user){
             res.redirect('/')
         }else{
           var emailerr=req.flash('emailExist')
             res.render("user/signup",{emailerr})
-        }  
+        } 
+      }catch(e){
+        next(new Error(e))
+      } 
     } , 
-postUserSignUp: async (req, res) => {
+postUserSignUp: async (req, res,next) => {
+  try{
   const mobilenum = req.body.phoneno
   req.session.signup = req.body
   const uusser = await user.findOne({ email: req.body.email })
@@ -64,21 +73,19 @@ postUserSignUp: async (req, res) => {
       sendOtp(mobilenum)
       res.render('user/otp.ejs', { uzer: false, num: mobilenum, admin: false, error: false })
   }
-
+  }catch(e){
+    next(new Error(e))
+  }
 },
-postOtp: async (req, res) => {
+postOtp: async (req, res,next) => {
   try {
-      console.log(req.session.signup);
       let {fName, lName, email, phoneno, pass,cpass } = req.session.signup
       const otp = req.body.otpis
 
       await verifyOtp(phoneno, otp).then(async (verification_check) => {
-          console.log(verification_check.status + 'hiiii');
           if (verification_check.status == "approved") {
-              console.log(' hhhhhhhhhh');
               pass = await bcrypt.hash(pass, 10)
               cpass = await bcrypt.hash(cpass, 10)
-              // console.log('otp verifying');
               let members = new user({
                   fristName:fName,
                   lastName:lName,
@@ -87,10 +94,8 @@ postOtp: async (req, res) => {
                   password:pass,
                   cPassword:cpass,    
               })
-              console.log(members);
               members.save((err, newUser) => {
                   if (err) {
-                      console.log(err.message)
                       res.redirect('/signup')
                   }
                   else {
@@ -100,17 +105,16 @@ postOtp: async (req, res) => {
               })
           } else if (verification_check.status == "pending") {
               res.redirect('/signup')
-              // console.log('otp not match')
           }
       })
 
 
-  } catch (e) {
-      res.redirect('/signup')
-      console.log(e.message);
-        }
+  } catch(e){
+    next(new Error(e))
+  }
     },
-    userLogin:(req,res)=>{
+    userLogin:(req,res,next)=>{
+      try{
       if(req.session.user){
         res.redirect('/')
       }else{
@@ -118,8 +122,12 @@ postOtp: async (req, res) => {
         req.session.userLoginErr=false
         res.render('user/login',{userLoginErr})
       }
+    }catch(e){
+      next(new Error(e))
+    }
     },
-    postLogin:(req,res)=>{
+    postLogin:(req,res,next)=>{
+      try{
       userDatabase.doLogin(req.body).then((response)=>{
         if(response.status){
           req.session.user=response.user
@@ -130,19 +138,26 @@ postOtp: async (req, res) => {
           res.redirect('/login')
         }
       })
+    }catch(e){
+      next(new Error(e))
+    }
     },
-    forgetPassword:(req,res)=>{
+    forgetPassword:(req,res,next)=>{
+      try{
       var error = req.flash('error')
       res.render('user/forget-password',{error})
+      }catch(e){
+        next(new Error(e))
+      }
     },
-    PostforgotPassword:async(req,res)=>{
+    PostforgotPassword:async(req,res,next)=>{
+      try{
       crypto.randomBytes(32,(err,buffer)=>{
         if(err){
          return  res.redirect('/forgetPassword')
         }
         const token =buffer.toString('hex')
         user.findOne({email:req.body.email}).then(users=>{
-          console.log(users+"users");
           if (!users) {
             req.flash('error',
             'Sorry No such account with this email,Please enter a valid email id')
@@ -167,29 +182,33 @@ postOtp: async (req, res) => {
         }
         mailer.sendMail(emails, function(err, res) {
           if (err) { 
-              console.log(err) 
+
           }else{
-            console.log(res.response
-              +'email sended');
           }
         })
         })
         .catch(err=>{
-          console.log(err);
         })
       })
+    }catch(e){
+      next(new Error(e))
+    }
     },
-    newPassword:(req,res)=>{
+    newPassword:(req,res,next)=>{
+      try{
       const token = req.query.token;
        user.findOne({resetToken:token,resetTokenExpiration:{$gt:Date.now()}})
        .then(usserz=>{
         res.render('user/new-password',{userid:usserz._id,passwordToken:token})
        })
        .catch(err=>{
-        console.log(err);
        })
+      }catch(e){
+        next(new Error(e))
+      }
     },
-    postNewPassword:(req,res)=>{
+    postNewPassword:(req,res,next)=>{
+      try{
       let updatedUser;
       const newpassword = req.body.pass;
       const userId = req.body.userid;
@@ -209,8 +228,12 @@ postOtp: async (req, res) => {
     }).then(result=>{
       res.redirect('/login')
     })
+  }catch(e){
+    next(new Error(e))
+  }
     },
-    productShow: async (req,res)=>{
+    productShow: async (req,res,next)=>{
+      try{
       let users=req.session.user
       let count= null;
       if(users){
@@ -219,10 +242,13 @@ postOtp: async (req, res) => {
       const id = req.params.id
       const cat = await category.findById(id)
       const pro = await product.find({category:cat.name})
-      console.log(pro);
       res.render("user/catProduct",{pro,users,count})
+    }catch(e){
+      next(new Error(e))
+    }
     },
-    userShop:async (req,res)=>{
+    userShop:async (req,res,next)=>{
+      try{
       let productList;
       let users=req.session.user
       const page = +req.query.page||1
@@ -232,26 +258,25 @@ postOtp: async (req, res) => {
       if(users){
         count= users.cart.items.length
       }
-      
       const totalproducts = await product.find().countDocuments()
       if(req.query.q){
          const Id=req.query.q
          productList = await product.find({_id:Id})
-      }if (req.query.cat) {
+      }else if (req.query.cat) {
         const cat = req.query.cat
         productList = await product.find({_id:cat})
       } else {
         productList= await product.find().skip((page - 1) * items_per_page).limit(items_per_page);
       }
-     
-
-      
         res.render("user/shop",{productList,users,count,page,curentPage:page,hasNextPage: items_per_page * page < totalproducts,
           hasPreviousPage: page > 1,nextPage:page+1,lastPage:Math.ceil(totalproducts/items_per_page),
           PreviousPage: page - 1,categories})
-  
+        }catch(e){
+          next(new Error(e))
+        }
     }, 
-    getsingleProduct :async (req, res) => {
+    getsingleProduct :async (req, res,next) => {
+      try{
       const users = req.session.user;
       let count= null;
       if(users){
@@ -260,8 +285,12 @@ postOtp: async (req, res) => {
       const id= req.params.id
       const viewproduct = await product.findById(id)
         res.render('user/productDetails',{viewproduct,count,users});
+    }catch(e){
+      next(new Error(e))
+    }
     },
-    couponCheck:async (req,res)=>{
+    couponCheck:async (req,res,next)=>{
+      try{
       let codes=req.body.code
       let code1 = codes.trim()
       let total = req.body.total
@@ -274,8 +303,12 @@ postOtp: async (req, res) => {
       }else{
         res.json({status:false,message:'No such coupon'})
       }
+    }catch(e){
+      next(new Error(e))
+    }
     },
-    viewCart:async (req,res)=>{
+    viewCart:async (req,res,next)=>{
+      try{
       const users=req.session.user
       let count= null;
       if(users){
@@ -290,8 +323,12 @@ postOtp: async (req, res) => {
         res.render('user/cart-empty',{users,count})
       }else{
       res.render('user/cart',{users,prd,count,userId,couponz})}
+      }catch(e){
+        next(new Error(e))
+      }
     },
-    doAddToCart:async(req,res)=>{
+    doAddToCart:async(req,res,next)=>{
+      try{
       const id =req.session.user._id
       const usser= await user.findById(id)
       const products=req.params.id
@@ -300,9 +337,12 @@ postOtp: async (req, res) => {
           res.redirect('/viewCart')
         })
       })
+    }catch(e){
+      next(new Error(e))
+    }
     },
-    changeQuantity:async (req,res)=>{
-      console.log(req.body);
+    changeQuantity:async (req,res,next)=>{
+      try{
       const id =req.session.user._id
       const productId=req.body.productId
       const usser = await user.findById(id)
@@ -310,8 +350,12 @@ postOtp: async (req, res) => {
         response.access = true
         res.json(response)
       })
+    }catch(e){
+      next(new Error(e))
+    }
     },
-    viewWishList:async (req,res)=>{
+    viewWishList:async (req,res,next)=>{
+      try{
       let users=req.session.user
       let id=req.session.user._id.toString()
       const prd = await wishlist.findOne({userId:id}).populate('productItems')
@@ -320,18 +364,20 @@ postOtp: async (req, res) => {
         count= users.cart.items.length
       }
       res.render('user/wishlist',{users,prd,count})
+    }catch(e){
+      next(new Error(e))
+    }
     },
-    doAddToWishlist:async(req,res)=>{
+    doAddToWishlist:async(req,res,next)=>{
+      try{
       const usser =req.session.user
       let id =req.session.user._id
       const products=req.params.id
       const wish =await wishlist.findOne({userId:id})
       if(wish){
-        // console.log('und');
         wish.addToWishlist(products,async(response)=>{
           const proDt = await wishlist.find({userId:id},{productItems:1,_id:0}).populate('productItems')
           if(response.status){
-            console.log('entered ');
             res.redirect('/wishlist')
           }else{
             res.redirect('/shop')
@@ -352,33 +398,40 @@ postOtp: async (req, res) => {
           }
         })
       }
+    }catch(e){
+      next(new Error(e))
+    }
       },
-      doDeleteWishlist:(req,res)=>{
+      doDeleteWishlist:(req,res,next)=>{
+        try{
         const id = req.session.user._id
-  
         const products= req.body.productId
-        // console.log(products,55454545445)
         const response={}
         wishlist.updateOne({userId:id},{$pull:{productItems:products}}).then(()=>{
           response.access=true
           res.json(response)
         })
-
+      }catch(e){
+        next(new Error(e))
+      }
       },
-      userProfileView:async (req,res)=>{
+      userProfileView:async (req,res,next)=>{
+        try{
         let users=req.session.user
         let id = req.session.user._id
-        console.log(id,"iddddddddddd");
         const userz= await  user.findOne({_id:id})
-        console.log(userz,'ffffffffffff');
         let count= null;
       if(users){
         count= users.cart.items.length
       }
 
       res.render('user/userProfile',{users,count,userz})
+    }catch(e){
+      next(new Error(e))
+    }
       },
-      profileChanges:async (req,res)=>{
+      profileChanges:async (req,res,next)=>{
+        try{
         const id = req.params.id
         const changeInformation = req.body
         const userz = await user.updateOne({_id:id},{
@@ -391,8 +444,12 @@ postOtp: async (req, res) => {
         })
      
         res.redirect("/profile")
+      }catch(e){
+        next(new Error(e))
+      }
       },
-      userAddressView:async (req,res)=>{
+      userAddressView:async (req,res,next)=>{
+        try{
         const id = req.session.user._id
         let users=req.session.user
         let count= null;
@@ -408,21 +465,21 @@ postOtp: async (req, res) => {
       const add=adds.address
         res.render('user/address',{users,count,add,adds})
     }
+  }catch(e){
+    next(new Error(e))
+  }
       },
-      addAdress:async (req,res)=>{
+      addAdress:async (req,res,next)=>{
+        try{
         const id = req.session.user._id
-        console.log(req.body+"bodyyyyyyyyyyyyyyyyyyy");
         const addres = req.body
        
         const add= await addresses.findOne({userId:id})
         if(add){
-          console.log("coming home");
           addresses.updateOne({userId:id},{$push:{address:addres}}).then(()=>{
-            console.log('ithiludeeeeee');
             res.redirect("/address")
           })
         }else{
-          console.log('ivdeeeeeeeeeeeeee');
           const newAddress= new addresses({
             userId:id,
             address:[addres]
@@ -431,18 +488,19 @@ postOtp: async (req, res) => {
             if(doc){
               res.redirect('/address')
             }else{
-              console.log(err);
+
             }
             
           })
         }
+      }catch(e){
+        next(new Error(e))
+      }
       },
-    editAddress:async (req,res)=>{
-      console.log(req.body.name+"bodyyyyyyyyyyyyyyyyyyyyyy")
+    editAddress:async (req,res,next)=>{
+      try{
       const addId=req.params.id
-      // console.log(addId + "idddddddddddddddd");
       const userId= req.session.user._id
-      console.log(userId+ "useeeeeeeeeeeee");
       const update={
         name:req.body.name,
         mobile:req.body.mobile,
@@ -454,33 +512,32 @@ postOtp: async (req, res) => {
         landmarkrk:req.body.landmark,
         optmob:req.body.optmob
       }
-     console.log(update.name);
-     console.log(update.mobile);
-     console.log(typeof update+'5555555555555555');
-
       const addCheck=await addresses.findOne({userId:userId})
       addCheck.editAdd(update,addId).then((doc)=>{
-        console.log(doc);
         res.redirect('/address')
       })
+    }catch(e){
+      next(new Error(e))
+    }
     },
-    deleteAdd:(req,res)=>{
+    deleteAdd:(req,res,next)=>{
+      try{
       const id = req.session.user._id
-      console.log(id + "id annnn");
       const address=req.body.addressId
-      console.log(address +"address annnnnn");
       const response={}
       addresses.updateOne({userId:id},{$pull:{address:{_id:address}}})
       .then(()=>{
         response.access=true
       }).catch((er)=>{
-        console.log(er);
       }).then(()=>{
         res.json(response)
       })     
+    }catch(e){
+      next(new Error(e))
+    }
     },
-    checkoutView:async (req,res)=>{
-      // const id = req.session.user._id
+    checkoutView:async (req,res,next)=>{
+      try{
       let users=req.session.user
       const id = req.query.user
       let couponCode =req.query.code
@@ -514,12 +571,15 @@ postOtp: async (req, res) => {
         const add=adds.address
         res.render('user/checkout',{users,count,adds,add,prd,error,total})
       }
+    }catch(e){
+      next(new Error(e))
+    }
     },
-    addAdressInCheckout:async (req,res)=>{
+    addAdressInCheckout:async (req,res,next)=>{
+      try{
       let users=req.session.user
       const id = req.session.user._id
       let total = req.query.total
-      console.log(req.body+"bodyyyyyyyyyyyyyyyyyyy");
       const addres = req.body
       let count= null;
       if(users){
@@ -529,13 +589,10 @@ postOtp: async (req, res) => {
       const prd = await user.findOne({_id:id}).populate('cart.items.productId')
       if(adds){
         const add=adds.address
-        console.log("coming home");
         addresses.updateOne({userId:id},{$push:{address:addres}}).then(()=>{
-          console.log('ithiludeeeeee');
           res.render("user/checkout",{users,count,add,adds,prd,total})
         })
       }else{
-        console.log('ivdeeeeeeeeeeeeee');
         const newAddress= new addresses({
           userId:id,
           address:[addres]
@@ -544,15 +601,16 @@ postOtp: async (req, res) => {
           if(doc){
             res.render("user/checkout",{users,count,adds,prd,total})
           }else{
-            console.log(err);
           }
           
         })
       }
+    }catch(e){
+      next(new Error(e))
+    }
     },
-     placeorder:(req,res)=>{    
-      console.log(req.body+"hmmmmmmm"); 
-      
+     placeorder:(req,res,next)=>{ 
+      try{   
       var totalPrice = req.body.totalPrice
       var totalPrice=Number(totalPrice)
       UserDatabase.placeOrder(req.body).then((orderId)=>{
@@ -564,23 +622,33 @@ postOtp: async (req, res) => {
         })
        }
       })
+    }catch(e){
+      next(new Error(e))
+    }
     },
-    verifyPayment:(req,res)=>{
-      console.log(req.body+"houiiiiiiiiiii");
+    verifyPayment:(req,res,next)=>{
+      try{
       userDatabase.verifyPayment(req.body).then(()=>{
         userDatabase.changePaymentStatus(req.body.order.receipt).then(()=>{
           res.json({status:true})
 
         })
       }).catch((err)=>{
-        console.log(err);
         res.json({status:false,erMsg:""})
       })
+    }catch(e){
+      next(new Error(e))
+    }
     },
-    orderSuccessPageView:(req,res)=>{
+    orderSuccessPageView:(req,res,next)=>{
+      try{
       res.render('user/orderSuccessPage')
+      }catch(e){
+        next(new Error(e))
+      }
     },
-    orderDetailsPageView:async (req,res)=>{
+    orderDetailsPageView:async (req,res,next)=>{
+      try{
       let users=req.session.user
       
       let count= null;
@@ -590,13 +658,21 @@ postOtp: async (req, res) => {
       id=req.session.user._id
       const orders = await orders2.find({userid:id}).populate('products.productId')
       res.render('user/ordersView',{orders,count,users})
+    }catch(e){
+      next(new Error(e))
+    }
     },
-    invoice: async (req, res) => {
+    invoice: async (req, res,next) => {
+      try{
       const orderId = req.query.id
       const orderDetials = await orders2.findOne({ _id: orderId }).populate('products.productId')
       res.render('user/invoice', {  orderDetials, })
+      }catch(e){
+        next(new Error(e))
+      }
     },
-  search: async (req, res) => {
+  search: async (req, res,next) => {
+    try{
     const sResult = [];
     const skey = req.body.payload;
     const regex = new RegExp(`^${skey}.*`, 'i');
@@ -621,13 +697,25 @@ postOtp: async (req, res) => {
     });
 
     res.send({ payload: sResult });
+  }catch(e){
+    next(new Error(e))
+  }
   },
-  error: (req, res) => {
+  error: (req, res,next) => {
+    try{
     res.render('user/error');
+    }catch(e){
+      next(new Error(e))
+    }
   },
-    logout:(req,res)=>{
+    logout:(req,res,next)=>{
+      try{
       req.session.user=null
       req.session.loggedIn=false
       res.redirect('/')
+      }catch(e){
+        next(new Error(e))
+      }
     }
+    
   }

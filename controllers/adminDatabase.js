@@ -28,14 +28,6 @@ module.exports={
             }
         })
     },
-    // getAllProduct:  (callback) => {
-    //     const page = req.query.page||1
-    //     product .find().skip((page-1)*ITEMS_PER_PAGE).limit(ITEMS_PER_PAGE).where().
-    //    exec((err,productList)=>{
-           
-    //        callback(err,productList)
-    //      });
-    //  },
      getProductDetails:(productId)=>{
         return new Promise((resolve,reject)=>{
             product.findOne({_id:productId}).then((product)=>{

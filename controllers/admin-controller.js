@@ -10,7 +10,8 @@ const banner = require('../models/banner');
 const { handleDuplicate } = require('../middleware/dberrors')
 
 module.exports={
-  adminLogin :(req, res) => {
+  adminLogin :(req, res,next) => {
+    try{
     if(req.session.admin){
         res.redirect('/admin/dashboard')
       }else{
@@ -18,9 +19,12 @@ module.exports={
         req.session.adminLoginErr=false
         res.render('admin/login',{adminLoginErr})
       }
+    }catch(e){
+      next(new Error(e))
+    }
 },
-    adminPostLogin:(req,res)=>{
-        console.log(req.body);
+    adminPostLogin:(req,res,next)=>{
+      try{
         adminDatabase.adminlogin(req.body).then((response)=>{
 
             if(response.status){
@@ -33,8 +37,12 @@ module.exports={
               res.redirect('/admin/adlogin')
             }
           })
+        }catch(e){
+          next(new Error(e))
+        }
     },
-    adminDashboard:async (req,res)=>{
+    adminDashboard:async (req,res,next)=>{
+      try{
         if(req.session.admin){
             let admins=req.session.admin 
             let userCount;
@@ -85,102 +93,112 @@ module.exports={
           $or: [{ $and: [{ status: { $eq: 'Delivered' }, payment: { $eq: 'cod' } }] },
         { $and: [{ status: { $eq: 'Delivered' }, payment: { $eq: 'razorPay' } }] },
         { $and: [{ status: { $eq: 'Placed' }, payment: { $eq: 'razorPay' } }] }],
-    },
-  }, {
-    $addFields: { Day: { $dayOfMonth: '$date' }, Month: { $month: '$date' }, Year: { $year: '$date' } },
-  },
-  { $match: { Day: day, Year: year, Month: month } },
+          },
+        }, {
+          $addFields: { Day: { $dayOfMonth: '$date' }, Month: { $month: '$date' }, Year: { $year: '$date' } },
+        },
+        { $match: { Day: day, Year: year, Month: month } },
 
-  {
-    $group: {
+        {
+          $group: {
 
-      _id: {
-        day: { $dayOfMonth: '$date' },
+            _id: {
+              day: { $dayOfMonth: '$date' },
 
-      },
-      totalPrice: { $sum: '$total' },
-      items: { $sum: { $size: '$products' } },
-      count: { $sum: 1 },
+            },
+            totalPrice: { $sum: '$total' },
+            items: { $sum: { $size: '$products' } },
+            count: { $sum: 1 },
 
-    },
-  },
-]);
+          },
+        },
+      ]);
 
-const todaySales = await orders2.aggregate([
-  {
-    $match: { status: { $ne: 'Cancelled' } },
-  }, {
-    $addFields: { Day: { $dayOfMonth: '$date' }, Month: { $month: '$date' }, Year: { $year: '$date' } },
-  },
-  { $match: { Day: day, Year: year, Month: month } },
+      const todaySales = await orders2.aggregate([
+        {
+          $match: { status: { $ne: 'Cancelled' } },
+        }, {
+          $addFields: { Day: { $dayOfMonth: '$date' }, Month: { $month: '$date' }, Year: { $year: '$date' } },
+        },
+        { $match: { Day: day, Year: year, Month: month } },
 
-  {
-    $group: {
+        {
+          $group: {
 
-      _id: {
-        day: { $dayOfMonth: '$date' },
+            _id: {
+              day: { $dayOfMonth: '$date' },
 
-      },
-      totalPrice: { $sum: '$total' },
-      items: { $sum: { $size: '$products' } },
-      count: { $sum: 1 },
+            },
+            totalPrice: { $sum: '$total' },
+            items: { $sum: { $size: '$products' } },
+            count: { $sum: 1 },
 
-    },
-  },
-]);
-const allSales = await orders2.aggregate([
-  {
-    $match: { status: { $ne: 'Cancelled' } },
-  },
+          },
+        },
+      ]);
+      const allSales = await orders2.aggregate([
+        {
+          $match: { status: { $ne: 'Cancelled' } },
+        },
 
-  {
-    $group: {
-      _id: {
-      },
-      totalPrice: { $sum: '$total' },
-      items: { $sum: { $size: '$products' } },
-      count: { $sum: 1 },
+        {
+          $group: {
+            _id: {
+            },
+            totalPrice: { $sum: '$total' },
+            items: { $sum: { $size: '$products' } },
+            count: { $sum: 1 },
 
-    },
-  }, { $sort: { date: -1 } },
-]);
+          },
+        }, { $sort: { date: -1 } },
+      ]);
 
-const orders = orders2.find();
-orders.count((err, count) => {
-  orderCount = count;
-  res.render('admin/index', {
-    admins,
-    userCount,
-    categoryCount,
-    proCount,
-    orderCount,
-    revenue,
-    allSales,
-    todaySales,
-    todayrevenue,
-  });
-});         
+      const orders = orders2.find();
+      orders.count((err, count) => {
+        orderCount = count;
+        res.render('admin/index', {
+          admins,
+          userCount,
+          categoryCount,
+          proCount,
+          orderCount,
+          revenue,
+          allSales,
+          todaySales,
+          todayrevenue,
+        });
+      });         
          
           
           }else{
             res.redirect('/admin/adlogin')
           }
+        }catch(e){
+          next(new Error(e))
+        }
     },
-    AdminProductManagment:(req,res)=>{
+    AdminProductManagment:(req,res,next)=>{
+      try{
       adminDatabase.getAllProduct((err,productList)=>{
         category1.findById()
         res.render("admin/products",{productList})
       })
+    }catch(e){
+      next(new Error(e))
+    }
     },
-    addProduct:(req,res)=>{
+    addProduct:(req,res,next)=>{
+      try{
       adminDatabase.getAllCategory((err,categoryList)=>{
       res.render("admin/add-Product",{categoryList})
     })
+  }catch(e){
+    next(new Error(e))
+  }
   },
-    postProduct:async(req,res)=>{
-     
+    postProduct:async(req,res,next)=>{
+     try{
       const productInformation=req.body
-      console.log(productInformation);
       const product1 = new products({
         name:productInformation.name,
         price:productInformation.price,
@@ -202,16 +220,22 @@ orders.count((err, count) => {
           
         }
       })
-    
+    }catch(e){
+      next(new Error(e))
+    }
     },
-    editProduct: async (req,res)=>{
+    editProduct: async (req,res,next)=>{
+      try{
       adminDatabase.getAllCategory(async (err,categoryList)=>{
         let product =await adminDatabase.getProductDetails(req.params.id)
-      console.log(product+"iugytdytryu");
       res.render('admin/edit-product',{product,categoryList})
       })
+    }catch(e){
+      next(new Error(e))
+    }
     },
-    postEditProduct: async(req,res)=>{
+    postEditProduct: async(req,res,next)=>{
+      try{
       const id = req.params.id
       let pro=[]
       const updatedProName=req.body.name
@@ -231,8 +255,6 @@ orders.count((err, count) => {
         size:updatedSize,
         image:updatedImage
       } 
-      console.log(product);
-      // const image=req.body.images
       if(req.body.images==""){
         
         const productz=await  products.updateOne({_id:id},{
@@ -266,39 +288,48 @@ orders.count((err, count) => {
       }
      
     res.redirect('/admin/products')
+      }catch(e){
+        next(new Error(e))
+      }
   },
-  //   deleteProduct:(req,res)=>{
-  //   let userId=req.params.id
-  //   adminDatabase.deleteProductDetails(userId).then((response)=>{
-  //     req.session.user=null
-  //    req.session.loggedIn=false
-  //     res.redirect('/admin/products')
-  //   }) 
-  // },
-  disableProduct:async (req,res)=>{
+  disableProduct:async (req,res,next)=>{
+    try{
     const id=req.params.id
     await product.findByIdAndUpdate(id,{access:false},{})
     res.redirect('/admin/products')
+    }catch(e){
+      next(new Error(e))
+    }
   },
-  unableProduct: async (req,res)=>{
+  unableProduct: async (req,res,next)=>{
+    try{
     const id = req.params.id
     await product.findByIdAndUpdate(id,{access:true},{})
     res.redirect('/admin/products')
+    }catch(e){
+      next(new Error(e))
+    }
   },
-    AdminCategoryManagment:(req,res)=>{
+    AdminCategoryManagment:(req,res,next)=>{
+      try{
       adminDatabase.getAllCategory((err,categoryList)=>{
         res.render("admin/category",{categoryList})
       })
-     
+    }catch(e){
+      next(new Error(e))
+    }
     },
-    addCategory:(req,res)=>{
+    addCategory:(req,res,next)=>{
+      try{
       const errors = req.flash('error')
       res.render("admin/add-category",{errors})
+      }catch(e){
+        next(new Error(e))
+      }
     },
-    postCategory:async(req,res)=>{
-       
+    postCategory:async(req,res,next)=>{
+       try{
         const categoryInformation=req.body
-        console.log(req.body.images);
         const category = new category1({
           name:categoryInformation.category,
           description:categoryInformation.description,
@@ -307,7 +338,6 @@ orders.count((err, count) => {
           category.save((err,doc)=>{
           if(err){
             const error = { ...err }
-          console.log(error.code)
           let errors
           if (error.code === 11000) {
             errors = handleDuplicate(error)
@@ -317,75 +347,95 @@ orders.count((err, count) => {
             res.redirect("/admin/categories")
           }
         })
-        
-        // res.redirect("/admin/categories")
-        
+      }catch(e){
+        next(new Error(e))
+      }
       },
-      disableCategory:async (req,res)=>{
+      disableCategory:async (req,res,next)=>{
+        try{
         const id=req.params.id
         await category1.findByIdAndUpdate(id,{access:false},{})
         res.redirect('/admin/categories')
+        }catch(e){
+          next(new Error(e))
+        }
       },
-      unableCategory: async (req,res)=>{
+      unableCategory: async (req,res,next)=>{
+        try{
         const id = req.params.id
         await category1.findByIdAndUpdate(id,{access:true},{})
         res.redirect('/admin/categories')
+        }catch(e){
+          next(new Error(e))
+        }
       },
-      AdminCouponManagment:(req,res)=>{
+      AdminCouponManagment:(req,res,next)=>{
+        try{
         adminDatabase.getAllCoupon((err,couponList)=>{
           res.render("admin/coupon",{couponList})
         })
+      }catch(e){
+        next(new Error(e))
+      }
       },
-      addCoupon:(req,res)=>{
+      addCoupon:(req,res,next)=>{
+        try{
         res.render("admin/add-coupon")
+        }catch(e){
+          next(new Error(e))
+        }
       },
-      postCoupon:(req,res)=>{
-
+      postCoupon:(req,res,next)=>{
+        try{
         let couponInformation=req.body
-        // couponInformation.expirydate=couponInformation.expirydate.
         const coupon = new coupons({code:couponInformation.couponName,amount:couponInformation.amount,minCartAmount:couponInformation.minPurchase
         ,expireDate:couponInformation.expirydate})
          coupon.save((err, doc) => {
           if (err) {
             console.log(err);
           } else {
-            console.log(doc);
+            res.redirect("/admin/coupons")
           }
         })
-        console.log(couponInformation);
-        res.redirect("/admin/coupons")
+        
+      }catch(e){
+        next(new Error(e))
+      }
       },
-      disableCoupon:async (req,res)=>{
+      disableCoupon:async (req,res,next)=>{
+        try{
         const id=req.params.id
         await coupons.findByIdAndUpdate(id,{access:false},{})
         res.redirect('/admin/coupons')
+        }catch(e){
+          next(new Error(e))
+        }
       },
-      unableCoupon: async (req,res)=>{
+      unableCoupon: async (req,res,next)=>{
+        try{
         const id = req.params.id
         await coupons.findByIdAndUpdate(id,{access:true},{})
         res.redirect('/admin/coupons')
+        }catch(e){
+          next(new Error(e))
+        }
       },
-      editCoupon: async (req,res)=>{
-
+      editCoupon: async (req,res,next)=>{
+        try{
         let coup =await adminDatabase.getCouponDetails(req.params.id)
-        console.log(coup);
         res.render('admin/edit-coupon',{coup})
+        }catch(e){
+          next(new Error(e))
+        }
       },
       postEditCoupoun: async(req,res)=>{
-        console.log("eeeeeeeeeeeeeeee"+req.params.id);
+        try{
         const id = req.params.id
-        console.log(req.body);
-
         const updatedName=req.body.couponName
         const updatedAmount = req.body.amount
         const updatedMinAmount = req.body.minPurchase
         const updatedExpireDate = req.body.expirydate
-       
-        
-
-        let coup ={name:updatedName,amount:updatedAmount,minCartAmount:updatedMinAmount,expireDate:updatedExpireDate}
-        
-        console.log(coup);
+        let coup ={name:updatedName,amount:updatedAmount,minCartAmount:updatedMinAmount,expireDate:updatedExpireDate} 
        await  coupons.updateOne({_id:id},{
           $set:{
               name:coup.name,
@@ -396,29 +446,49 @@ orders.count((err, count) => {
           }
       })
       res.redirect('/admin/coupons')
+    }catch(e){
+      next(new Error(e))
+    }
     },
-    AdminUserManagment:(req,res)=>{
+    AdminUserManagment:(req,res,next)=>{
+      try{
       adminDatabase.getAllUsers((err,users)=>{
         res.render("admin/users",{users})
       })
+    }catch(e){
+      next(new Error(e))
+    }
     },
 
-    BlockUser:async (req,res)=>{
+    BlockUser:async (req,res,next)=>{
+      try{
       const id=req.params.id
       await user.findByIdAndUpdate(id,{access:false},{})
       res.redirect('/admin/users')
+      }catch(e){
+        next(new Error(e))
+      }
     },
-    unblockUser: async (req,res)=>{
+    unblockUser: async (req,res,next)=>{
+      try{
       const id = req.params.id
       await user.findByIdAndUpdate(id,{access:true},{})
       res.redirect('/admin/users')
+      }catch(e){
+        next(new Error(e))
+      }
     },
-    orderDetailsPageView:async (req,res)=>{
+    orderDetailsPageView:async (req,res,next)=>{
+      try{
       adminDatabase.getAllOrders((err,orders)=>{
         res.render("admin/order",{orders})
       })
+    }catch(e){
+      next(new Error(e))
+    }
     },
-    changeStatus:(req,res)=>{
+    changeStatus:(req,res,next)=>{
+      try{
       const status = req.query.s
       const orederId = req.query.id
       const response = {}
@@ -434,19 +504,29 @@ orders.count((err, count) => {
         res.json(response)
       })
     }
+  }catch(e){
+    next(new Error(e))
+  }
     },
-    bannerDetailsView:async (req,res)=>{
+    bannerDetailsView:async (req,res,next)=>{
+      try{
       const banners= await banner.find()
-
       res.render("admin/banner",{banners})
+      }catch(e){
+        next(new Error(e))
+      }
     },
-    addBanner:(req,res)=>{    
+    addBanner:(req,res,next)=>{   
+      try{ 
       adminDatabase.getAllCategory((err,categoryList)=>{
         res.render("admin/add-banner",{categoryList})
       })
+    }catch(e){
+      next(new Error(e))
+    }
     },
-    postBanner:(req,res)=>{
-      console.log(req.body);
+    postBanner:(req,res,next)=>{
+      try{
       const bannerInformation=req.body
       const banners = new banner({
         title:bannerInformation.cat,
@@ -458,23 +538,27 @@ orders.count((err, count) => {
       
        banners.save((err,doc)=>{
         if(err){ 
-          console.log(err);
           res.redirect("/admin/addBanner")
         }else{
-          res.redirect("/admin/banner")
-          
+          res.redirect("/admin/banner")      
         }
       })
-    
+      }catch(e){
+        next(new Error(e))
+      }
     },
-    editBanner: async (req,res)=>{
+    editBanner: async (req,res,next)=>{
+      try{
       adminDatabase.getAllCategory(async (err,categoryList)=>{
         let banner =await adminDatabase.getBannerDetails(req.params.id)
-      console.log(banner+"iugytdytryu");
       res.render('admin/edit-banner',{banner,categoryList})
       })
+    }catch(e){
+      next(new Error(e))
+    }
     },
-    postEditBanner: async(req,res)=>{
+    postEditBanner: async(req,res,next)=>{
+      try{
       const id = req.params.id
       const bannerInformation=req.body
       if(req.body.images==""){
@@ -505,18 +589,30 @@ orders.count((err, count) => {
       }
      
     res.redirect('/admin/banner')
+      }catch(e){
+        next(new Error(e))
+      }
   },
-  disableBanner:async (req,res)=>{
+  disableBanner:async (req,res,next)=>{
+    try{
     const id=req.params.id
     await banner.findByIdAndUpdate(id,{access:false},{})
     res.redirect('/admin/banner')
+    }catch(e){
+      next(new Error(e))
+    }
   },
-  unableBanner: async (req,res)=>{
+  unableBanner: async (req,res,next)=>{
+    try{
     const id = req.params.id
     await banner.findByIdAndUpdate(id,{access:true},{})
     res.redirect('/admin/banner')
+    }catch(e){
+      next(new Error(e))
+    }
   },
-  salesReport:async (req,res)=>{
+  salesReport:async (req,res,next)=>{
+    try{
     const sales =await orders2.aggregate([
       {$match:{status:{$eq:'Delivered'}}},
       {
@@ -538,10 +634,13 @@ orders.count((err, count) => {
         },
       },
     ]);
-    console.log(sales);
     res.render('admin/day-report',{sales});
+  }catch(e){
+    next(new Error(e))
+  }
   },
-  monthReport:async (req,res)=>{
+  monthReport:async (req,res,next)=>{
+    try{
     const months = [
       'January', 'February', 'March', 
       'April', 'May', 'June',
@@ -568,8 +667,12 @@ orders.count((err, count) => {
       return newOne
     })
     res.render('admin/month-report',{sales})
+  }catch(e){
+    next(new Error(e))
+  }
   },
-  yearReport:async (req,res)=>{
+  yearReport:async (req,res,next)=>{
+    try{
     const sales=await orders2.aggregate([
       {$match:{status:{$eq:'Delivered'}}},
       {
@@ -586,10 +689,13 @@ orders.count((err, count) => {
         $sort:{'_id.year':-1}
       }
     ])
-    console.log(sales);
     res.render('admin/year-report',{sales})
+  }catch(e){
+    next(new Error(e))
+  }
   },
-  chart1: async (req, res) => {
+  chart1: async (req, res,next) => {
+    try{
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
       const sale = await orders2.aggregate([
         { $match: { status: { $eq: 'Delivered' } } },
@@ -612,10 +718,13 @@ orders.count((err, count) => {
       });
 
       res.json({ salesRep });
+    }catch(e){
+      next(new Error(e))
+    }
   },
 
-  chart2: async (req, res) => {
-    // const months = 
+  chart2: async (req, res,next) => {
+    try{
       const payment = await orders2.aggregate([
         { $match: { status: { $eq: 'Delivered' } } },
         {
@@ -631,12 +740,18 @@ orders.count((err, count) => {
 
           },
         }, { $sort: { '_id.month': -1 } }]);
-        console.log(payment,"djfkls;a");
       res.json({ payment });
+    }catch(e){
+      next(new Error(e))
+    }
   },
     adminLogout:(req,res)=>{
+      try{
       req.session.admin=null
       req.session.adloggedIn=false
       res.redirect('/admin/adlogin')
+      }catch(e){
+        next(new Error(e))
+      }
     }
 }
