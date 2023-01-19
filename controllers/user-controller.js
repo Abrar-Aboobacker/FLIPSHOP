@@ -6,7 +6,7 @@ const { sendOtp, verifyOtp } = require('../middleware/otp')
 const user = require('../models/user')
 const product = require ('../models/product')
 const userDatabase = require('./userDatabase')
-const adminDatabase = require ('./adminDatabase')
+const adminDatabase = require ('./admindatabase')
 const wishlist= require('../models/wishlist')
 const addresses = require('../models/address')
 const orders2 = require('../models/orders')
@@ -242,7 +242,7 @@ postOtp: async (req, res,next) => {
       const id = req.params.id
       const cat = await category.findById(id)
       const pro = await product.find({category:cat.name})
-      res.render("user/catProduct",{pro,users,count})
+      res.render("user/catproduct",{pro,users,count})
     }catch(e){
       next(new Error(e))
     }
@@ -284,7 +284,7 @@ postOtp: async (req, res,next) => {
       }
       const id= req.params.id
       const viewproduct = await product.findById(id)
-        res.render('user/productDetails',{viewproduct,count,users});
+        res.render('user/productdetails',{viewproduct,count,users});
     }catch(e){
       next(new Error(e))
     }
@@ -355,7 +355,7 @@ postOtp: async (req, res,next) => {
     }
     },
     viewWishList:async (req,res,next)=>{
-      try{
+      try{productItems
       let users=req.session.user
       let id=req.session.user._id.toString()
       const prd = await wishlist.findOne({userId:id}).populate('productItems')
@@ -365,7 +365,7 @@ postOtp: async (req, res,next) => {
       }
      const wishlists= prd.productItems
       if (wishlists==null||wishlists==''){
-        res.render('user/wishlist-Empty',{users,count})
+        res.render('user/wishlist-empty',{users,count})
       }else{
         res.render('user/wishlist',{users,prd,count})
       }
@@ -431,7 +431,7 @@ postOtp: async (req, res,next) => {
         count= users.cart.items.length
       }
 
-      res.render('user/userProfile',{users,count,userz})
+      res.render('user/userprofile',{users,count,userz})
     }catch(e){
       next(new Error(e))
     }
@@ -650,7 +650,7 @@ postOtp: async (req, res,next) => {
     },
     orderSuccessPageView:(req,res,next)=>{
       try{
-      res.render('user/orderSuccessPage')
+      res.render('user/ordersuccesspage')
       }catch(e){
         next(new Error(e))
       }
@@ -665,7 +665,7 @@ postOtp: async (req, res,next) => {
       }
       id=req.session.user._id
       const orders = await orders2.find({userid:id}).populate('products.productId')
-      res.render('user/ordersView',{orders,count,users})
+      res.render('user/ordersview',{orders,count,users})
     }catch(e){
       next(new Error(e))
     }

@@ -1,6 +1,6 @@
 
 
-const adminVerifyLogin =(req,res,next)=>{
+const adminverifylogin =(req,res,next)=>{
     if(req.session.adloggedIn){
         next()
     }else{
@@ -8,5 +8,5 @@ const adminVerifyLogin =(req,res,next)=>{
     }
 }
 module.exports={
-    adminVerifyLogin
+    adminverifylogin
 }

@@ -1,8 +1,8 @@
 const express = require('express')
 const res = require('express/lib/response')
 const router = express.Router()
-const {userVerifyLogin}=require('../middleware/userVerifyLogin')
-const {AuthAjaxVerification}= require('../middleware/AuthAjax')
+const {userVerifyLogin}=require('../middleware/userverifylogin')
+const {AuthAjaxVerification}= require('../middleware/authajax')
 const {
     home,
     userLogin,
