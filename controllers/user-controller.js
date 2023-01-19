@@ -564,7 +564,7 @@ postOtp: async (req, res,next) => {
         count= users.cart.items.length
       }
       const adds = await addresses.findOne({userId:id})
-      const error=req.flash('error')
+      var error=req.flash('error')
       if(adds==null){
         res.render('user/checkout',{users,count,adds,prd,error,total})
       }else{
@@ -588,9 +588,10 @@ postOtp: async (req, res,next) => {
       const adds= await addresses.findOne({userId:id})
       const prd = await user.findOne({_id:id}).populate('cart.items.productId')
       if(adds){
+        var error=req.flash('error')
         const add=adds.address
         addresses.updateOne({userId:id},{$push:{address:addres}}).then(()=>{
-          res.render("user/checkout",{users,count,add,adds,prd,total})
+          res.render("user/checkout",{users,count,add,adds,prd,total,error})
         })
       }else{
         const newAddress= new addresses({
@@ -599,7 +600,8 @@ postOtp: async (req, res,next) => {
         })
         newAddress.save((err,doc)=>{
           if(doc){
-            res.render("user/checkout",{users,count,adds,prd,total})
+            var error=req.flash('error')
+            res.render("user/checkout",{users,count,adds,prd,total,error})
           }else{
           }
           

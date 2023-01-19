@@ -30,7 +30,7 @@
                         <h6 class="checkout__title">Select delivery Address</h6> -->
                         <% if(error) {%> 
                         <div class="alert alert-danger" role="alert">
-                            <%=error %> 
+                            <%=error%> 
                           </div>
                           <% } %> 
                         <p>
@@ -116,7 +116,7 @@
                                             <div class="d-flex justify-content-between">
                                                 <h5 class="card-title">Address <%=index+1 %>  </h5>
                                                 
-                                                    <input class="checkout__input__checkbox" type="radio" id="html" name="address"  value="<%=adds.name %>  <%=adds.addressDetails%> <%=adds.locality%> <%=adds.district %> <%=adds.pin%> <%=adds.mobile%> ">
+                                                    <input required class="checkout__input__checkbox" type="radio" id="html" name="address"  value="<%=adds.name %>  <%=adds.addressDetails%> <%=adds.locality%> <%=adds.district %> <%=adds.pin%> <%=adds.mobile%> ">
                                                    
                                                 
                                             </div>
