@@ -363,7 +363,13 @@ postOtp: async (req, res,next) => {
       if(users){
         count= users.cart.items.length
       }
-      res.render('user/wishlist',{users,prd,count})
+     const wishlists= prd.productItems
+      if (wishlists==null||wishlists==''){
+        res.render('user/wishlist-Empty',{users,count})
+      }else{
+        res.render('user/wishlist',{users,prd,count})
+      }
+      
     }catch(e){
       next(new Error(e))
     }

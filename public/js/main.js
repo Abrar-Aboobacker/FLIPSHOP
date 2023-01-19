@@ -235,10 +235,7 @@ function maiin2($){
                         labels:['razorPay','cod'],
                         datasets: [{
                             backgroundColor: [
-                                "rgba(235, 22, 22, .7)",
                                 "rgba(235, 22, 22, .6)",
-                                "rgba(235, 22, 22, .5)",
-                                "rgba(235, 22, 22, .4)",
                                 "rgba(235, 22, 22, .3)"
                             ],
                             data: count
