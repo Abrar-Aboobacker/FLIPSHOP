@@ -621,7 +621,6 @@ postOtp: async (req, res,next) => {
       try{   
       var totalPrice = req.body.totalPrice
       var totalPrice=Number(totalPrice)
-      console.log(req.body,"whatttttt");
       UserDatabase.placeOrder(req.body).then((orderId)=>{
        if (req.body.payment=='cod'){
         res.json({codSuccess:true})

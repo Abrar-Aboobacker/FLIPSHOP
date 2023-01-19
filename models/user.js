@@ -50,33 +50,10 @@ const userSchema = new mongoose.Schema({
     }
 })
 
-// userSchema.methods.addToCart = function (products,callBack){
-//     let cart = this.cart;
-// console.log(products);
-//     const isExisting = cart.items.findIndex(objInItems=>
-//          new String(objInItems.productId)  == String(products._id) )
-//          console.log(isExisting);
-//         if(isExisting>=0){
-//           cart.items[isExisting].qty+=1
-           
-//         }else{
-//             cart.items.push({productId:products._id,qty:1})
-//         }
-//         if (!cart.totalPrice){
-//             cart.totalPrice=0
-//         }
-//         cart.totalPrice+=products.price
-//         return this.save().then(()=>{
-//             callBack()
-//         })
-// }
-
 userSchema.methods.addToCart = function (products,callBack){
     let cart = this.cart;
-    console.log(cart,"hmmmmmmm");
     const prId=products._id.toString()
     const isExisting = cart.items.findIndex(objInItems=>objInItems.productId ==prId)
-         console.log(isExisting,"enthallaaa");
         if(isExisting>=0){
           cart.items[isExisting].qty+=1
            
@@ -93,11 +70,9 @@ userSchema.methods.addToCart = function (products,callBack){
         }
 
         userSchema.methods.changeQty= async function(productId,qty,count,cb){
-            // console.log(productId+"or")
             const cart=this.cart
             const quantity = parseInt(qty)
             const cnt=parseInt(count)
-            // console.log(qty);
               const response={}
             const products = await product.findOne({_id:productId})
             if(cnt==-1&&quantity==1 || cnt == -2){

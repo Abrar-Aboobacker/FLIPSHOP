@@ -45,7 +45,6 @@ const resizeImages = async (req, res, next) => {
         .toFormat("jpeg")
         .jpeg({ quality: 100 })
         .toFile(`./public/image/productImages/${newFilename}`);
-      console.log(newFilename, "filenmae");
       req.body.images.push(newFilename);
     })
   );

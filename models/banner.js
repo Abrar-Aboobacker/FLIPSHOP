@@ -12,7 +12,6 @@ const bannerCchema = new mongoose.Schema({
       },
       image: {
         type: Array,
-        // default: 'banner_logo.jpg',
       },
       url: {
         type: String,

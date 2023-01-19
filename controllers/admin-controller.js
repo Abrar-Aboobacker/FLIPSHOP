@@ -390,7 +390,7 @@ module.exports={
         ,expireDate:couponInformation.expirydate})
          coupon.save((err, doc) => {
           if (err) {
-            console.log(err);
+            res.redirect("/admin/addcoupon")
           } else {
             res.redirect("/admin/coupons")
           }
@@ -732,8 +732,6 @@ module.exports={
               payment: '$payment',
 
             },
-            // totalPrice: { $sum: '$total' },
-            // items: { $sum: { $size: '$products' } },
             count: { $sum: 1 },
 
           },

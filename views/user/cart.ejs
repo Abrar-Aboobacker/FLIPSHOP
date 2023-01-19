@@ -8,8 +8,8 @@
                     <div class="breadcrumb__text">
                         <h4>Shopping Cart</h4>
                         <div class="breadcrumb__links">
-                            <a href="./index.html">Home</a>
-                            <a href="./shop.html">Shop</a>
+                            <a href="/">Home</a>
+                            <a href="/shop">Shop</a>
                             <span>Shopping Cart</span>
                         </div>
                     </div>
@@ -44,7 +44,7 @@
                             </thead>
                             <tbody>
                                 <%prd.cart.items.forEach(function(prd){%>
-                                <tr id="table">
+                                <tr id="<%=prd.productId._id%>jk">
                                     <td class="product__cart__item">
                                         <div class="product__cart__item__pic">
                                             <img src="/image/productImages/<%= prd.productId.image[0] %>" height="100px" alt="">
@@ -142,7 +142,6 @@
 <script>
     function changeQuantity(proId,cnt,ct){
         let quantity = document.getElementById(proId).value
-        console.log(quantity);
         quantity=parseInt(quantity)
         let cont = parseInt(cnt)
         $.ajax({
@@ -161,8 +160,8 @@
                             'Your item has been deleted',
                             'success'
                         ) 
-                        document.getElementById
-                        setTimeout(()=>location.reload(),2000)                 
+                        // document.getElementById(proId+"jk").remove()
+                        setTimeout(()=>location.reload(),500)                 
                     }else{
                         document.getElementById(proId).value=response.status
                         document.getElementById('total').innerHTML=response.total

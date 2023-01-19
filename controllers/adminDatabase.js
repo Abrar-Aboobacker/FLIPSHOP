@@ -9,7 +9,6 @@ const ITEMS_PER_PAGE = 6;
 module.exports={
     adminlogin:(admindata)=>{
         return new Promise(async(resolve,reject)=>{
-            // let logginStatus=false
             let response={}
             let admin=await admins.find({email:admindata.email})
             if(admin.length>0){
@@ -17,14 +16,11 @@ module.exports={
                     response.admin=admin
                     response.status=true
                     resolve(response)
-                    console.log('sucess');
                 }else{
                     resolve({status:false})
-                    console.log('failed');
                 }
             }else{
                 resolve({status:false})
-                console.log('not working');
             }
         })
     },

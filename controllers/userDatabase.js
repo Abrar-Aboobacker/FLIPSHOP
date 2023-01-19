@@ -26,15 +26,12 @@ module.exports={
                         response.user=user
                         response.status=true
                         resolve(response)
-                        console.log('success');
                     }else{
                         resolve({status:false})
-                        console.log('failed');
                     }
                 })
             }else{
                 resolve({status:false})
-                console.log('didnt exist');
             }
         })
     },
@@ -49,8 +46,6 @@ module.exports={
         return new Promise(async (resolve,reject)=>{
             const prd = await users.findOne({_id:order.userId})
             const status = order.payment== 'cod'?'Placed':'Pending'
-            
-            console.log(prd.cart.items[0].productPrice,"iiiiiiiiiiiiiiiiiiiiiiiiiiiii");
             const orders = new orders1({
                 userid:prd._id,
                 total:prd.cart.totalPrice,
@@ -60,13 +55,11 @@ module.exports={
                 status,
                 date:new Date()
             })
-            console.log(orders,'lllllllllllllll');
             await orders.save().then(async (response)=>{
            
                 prd.cart.items=[]
                 prd.cart.totalPrice=null
               await  prd.save()
-            //   resolve({status:true})
                 resolve(response._id)
             })
         })
@@ -83,11 +76,8 @@ module.exports={
                 }
               },(err,order)=>{
                 if(err){
-                    console.log(err + "ivdeno preshnam");
-
                 }else{
-                    resolve(order)
-                    
+                    resolve(order)    
                 }
               })
         })
@@ -103,10 +93,8 @@ module.exports={
             hmac=hmac.digest('hex')
            
             if(hmac==details.payment.razorpay_signature){
-                console.log("hy");
                 resolve()
             }else{
-                console.log("ithanoooooo");
                 reject()
             }
             

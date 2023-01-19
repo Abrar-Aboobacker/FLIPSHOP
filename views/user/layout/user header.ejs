@@ -44,24 +44,18 @@
 
         
             <div class="offcanvas__links">
-                <a href="#">Sign in</a>
-                <a href="#">FAQs</a>
-            </div>
-            
-            <div class="offcanvas__top__hover">
-                <span>Usd <i class="arrow_carrot-down"></i></span>
-                <ul>
-                    <li>USD</li>
-                    <li>EUR</li>
-                    <li>USD</li>
-                </ul>
+                <a href="/login">Sign in</a>
             </div>
         </div>
         <div class="offcanvas__nav__option">
-            <a href="#" class="search-switch"><img src="/user/img/icon/search.png" alt=""></a>
-            <a href="#"><img src="/user/img/icon/heart.png" alt=""></a>
-            <a href="#"><img src="/user/img/icon/cart.png" alt=""> <span>0</span></a>
-            <div class="price">$0.00</div>
+            <button class="search" data-toggle="modal" data-target="#exampleModalCenter" onclick="searched()" style=" background-color: white; border: none;"><i class="bi bi-search" style="color: black; font-size: 17px;"></i></button>
+            <a href="/wishlist"><i class="bi bi-heart" style="color: black; font-size: 17px;"></i></a>
+            <% if(users) {%> 
+            <a href="/viewCart"><i class="bi bi-cart2" style="color: black; font-size: 20px;"></i>  <span class="position-absolute top-0 start-100 translate-middle badge bg-primary rounded-circle text-light" style="font-size: 1rem; top: 0; right: -10;"><%= count %> </span>
+            </a>
+            <% }else{ %> 
+                <a href="/viewCart"><i class="bi bi-cart2" style="color: black; font-size: 20px;"></i></a>
+                <% } %> 
         </div>
         <div id="mobile-menu-wrap"></div>
         <div class="offcanvas__text">
@@ -81,44 +75,14 @@
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-5">
-                        <% if (users){ %> 
-                        <div class="header__top__right">
-                            <div class="header__top__links">
-                                <a href="/logout">Sign Out</a>
-                                <a href="#">FAQs</a>
-                            </div>
-                            <div class="header__top__hover">
-                                <span>Usd <i class="arrow_carrot-down"></i></span>
-                                <ul>
-                                    <li>USD</li>
-                                    <li>EUR</li>
-                                    <li>USD</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <% } else{%>
-                            <div class="header__top__right">
-                                <div class="header__top__links">
-                                    <a href="/login">Sign in</a>
-                                    <a href="#">FAQs</a>
-                                </div>
-                                <div class="header__top__hover">
-                                    <span>Usd <i class="arrow_carrot-down"></i></span>
-                                    <ul>
-                                        <li>USD</li>
-                                        <li>EUR</li>
-                                        <li>USD</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <% } %> 
+                   
                     </div>
                 </div>
             </div>
         </div>
         <div class="container">
             <div class="row">
-                <div class="col-lg-3 col-md-3">
+                <div class="col-lg-3 col-md-6">
                     <div class="header__logo">
                         <a href="./index.html"><img src="/user/img/logo.png" alt=""></a>
                     </div>
@@ -128,8 +92,6 @@
                         <ul>
                             <li class="active"><a href="/">Home</a></li>
                             <li><a href="/shop">Shop</a></li>
-                            <li><a href="./blog.html">Blog</a></li>
-                            <li><a href="./contact.html">Contacts</a></li>
                             <%if(users) {%> 
                             <li><a href="#"><%=users.fristName.toUpperCase()%> <i class="bi bi-chevron-down" style="font-size: 1.5rem;"></i></a>
                                 <ul class="dropdown">

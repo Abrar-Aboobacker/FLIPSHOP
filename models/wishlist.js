@@ -1,6 +1,4 @@
 const mongoose =require('mongoose')
-// const product = require('./product')
-
 const wishlistSchema =  new mongoose.Schema({
     userId:{
         type:String,
@@ -17,12 +15,9 @@ const wishlistSchema =  new mongoose.Schema({
         let productItems = this.productItems
         const response={}
         const isExisting=productItems.findIndex(objinItems=>objinItems==products)
-        console.log(isExisting);
         if (isExisting>=0){
-            console.log('Keerry');
             response.status=false
         }else{
-            console.log('Ithil keeery');
             response.status=true;
             productItems.push(products)
         }

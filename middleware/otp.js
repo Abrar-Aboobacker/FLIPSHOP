@@ -39,13 +39,11 @@ const client = require('twilio')(sid, token);
 
 function sendOtp(mobile){
 
- console.log('start')
 
  client.verify.v2.services(serviceid)
                 .verifications
                 .create({to:`+91${mobile}`, channel: 'sms'})
                 .then(verification => console.log(verification.status));
-   console.log('end');
 
 }
 

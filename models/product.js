@@ -20,10 +20,6 @@ const productSchema = new mongoose.Schema({
       discount:{
         type:String,
       },
-      // size:{
-      //   type:Number,
-      //   required:true,
-      // },
       is_deleted: {
         type: Boolean,
         default: false,
