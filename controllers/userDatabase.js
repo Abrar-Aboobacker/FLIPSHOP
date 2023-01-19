@@ -49,17 +49,18 @@ module.exports={
         return new Promise(async (resolve,reject)=>{
             const prd = await users.findOne({_id:order.userId})
             const status = order.payment== 'cod'?'Placed':'Pending'
+            
+            console.log(prd.cart.items[0].productPrice,"iiiiiiiiiiiiiiiiiiiiiiiiiiiii");
             const orders = new orders1({
                 userid:prd._id,
                 total:prd.cart.totalPrice,
                 payment:order.payment,
-                // ProductPrice:
                 address:order.address,
                 products:prd.cart.items,
                 status,
                 date:new Date()
             })
-            // newOrder
+            console.log(orders,'lllllllllllllll');
             await orders.save().then(async (response)=>{
            
                 prd.cart.items=[]

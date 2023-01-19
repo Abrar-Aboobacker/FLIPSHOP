@@ -36,6 +36,7 @@
                                     
                                 <tr>
                                     <th>Product</th>
+                                    <th>Price</th>
                                     <th>Quantity</th>
                                     <th>Total</th>
                                     <th></th>
@@ -43,15 +44,19 @@
                             </thead>
                             <tbody>
                                 <%prd.cart.items.forEach(function(prd){%>
-                                <tr>
+                                <tr id="table">
                                     <td class="product__cart__item">
                                         <div class="product__cart__item__pic">
                                             <img src="/image/productImages/<%= prd.productId.image[0] %>" height="100px" alt="">
                                         </div>
                                         <div class="product__cart__item__text">
-                                             <h5><%= prd.productId.name %></h5>
-                                            <h6 style="font-weight: lighter;"><%=prd.productId.price %> </h6>
+                                             <h5 style="width: 100px; margin: 0px;"><%= prd.productId.name %></h5>
                                         </div>
+                                    </td>
+                                    <td>
+                                        <div class="product__cart__item__text">
+                                           <h6 style="font-weight: bold;"><%=prd.productId.price %> </h6>
+                                       </div>
                                     </td>
                                     <td class="quantity__item">
                                         <div class="quantity" >
@@ -156,6 +161,7 @@
                             'Your item has been deleted',
                             'success'
                         ) 
+                        document.getElementById
                         setTimeout(()=>location.reload(),2000)                 
                     }else{
                         document.getElementById(proId).value=response.status

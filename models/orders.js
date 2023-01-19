@@ -34,7 +34,7 @@ const orderSchema = new mongoose.Schema(
         qty: {
           type: Number,
         },
-        ProductPrice:{
+        productPrice:{
           type:Number
         },
         _id: {
