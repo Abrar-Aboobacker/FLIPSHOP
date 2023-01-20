@@ -355,7 +355,7 @@ postOtp: async (req, res,next) => {
     }
     },
     viewWishList:async (req,res,next)=>{
-      try{productItems
+      try{
       let users=req.session.user
       let id=req.session.user._id.toString()
       const prd = await wishlist.findOne({userId:id}).populate('productItems')
