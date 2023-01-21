@@ -73,7 +73,8 @@
 
                                         </div>
                                     </td>
-                                    <td id=" " class="cart__price"><%=prd.productId.price * prd.qty%> </td>
+                                    <td id="<%=prd.productId._id%>hy" style="display: none;" ><%=prd.productId.price%></td>
+                                    <td id="<%=prd.productId._id%>ts" class="cart__price"><%=prd.productId.price * prd.qty%> </td>
                                     <a href="">
                                         <td class="cart__close">
                                             <button class="cart__close" onclick="changeQuantity('<%=prd.productId._id%>','-2')" style="border: none; background-color: white;" >
@@ -141,8 +142,13 @@
     <!-- Shopping Cart Section End -->
 <script>
     function changeQuantity(proId,cnt,ct){
+        console.log(ct,'nthaaaaaaaaaaa');
+        console.log(proId,"whaaat");
         let quantity = document.getElementById(proId).value
         quantity=parseInt(quantity)
+        let proPrice = document.getElementById(proId+"hy").innerHTML
+        proPrice=parseInt(proPrice)
+        console.log(proPrice,"kkkkkkkkkkkk")
         let cont = parseInt(cnt)
         $.ajax({
             url:'/changeQuantity',
@@ -153,6 +159,7 @@
                 count:cont
             },
             success:((response)=>{
+                console.log(response,"what is coming");
                 if(response.access){
                     if(response.remove){
                         Swal.fire(
@@ -165,7 +172,7 @@
                     }else{
                         document.getElementById(proId).value=response.status
                         document.getElementById('total').innerHTML=response.total
-                        // document.getElementById(ct).innerHTML=response.total
+                        document.getElementById(proId+"ts").innerHTML= response.status*proPrice
                     }
                 }else{
                     Swal.fire({
