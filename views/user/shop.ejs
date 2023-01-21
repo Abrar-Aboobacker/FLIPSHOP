@@ -35,7 +35,7 @@
                                             <div class="shop__sidebar__categories">
                                                 <ul class="nice-scroll">
                                                     <% for(var i = 0 ;i<categories.length;i++){ %>
-                                                        <li><a href="/productShow/<%=categories[1]._id%>"><%=categories[i].name%> </a></li>
+                                                        <li><a href="/productShow/<%=categories[i]._id%>"><%=categories[i].name%> </a></li>
                                                   <%  } %> 
                                                 </ul>
                                             </div>
@@ -73,25 +73,14 @@
                             <div class="product__item">
                                 <div class="product__item__pic set-bg" data-setbg="/image/productImages/<%=productList.image[0] %> ">
                                     <ul class="product__hover">
-                                        <li><a href="/addToWishlist/<%= productList._id %> "><img src="/user/img/icon/heart.png" alt=""></a></li>
-                                        <li><a href="/singleView/<%=productList._id%>"> <i style="background-color: white; font-size: 18px; padding: 10px; margin-top: 2000px;" class="bi bi-arrows-move"></i></a></li>
+                                        <li><a href="/addToWishlist/<%= productList._id %> "><i style=" color: black; font-size: 18px; padding: 10px" class="bi bi-heart"></i></a></li>
+                                        <li><a href="/singleView/<%=productList._id%>"> <i style=" color: black; font-size: 18px; padding: 10px; margin-top: 2000px;" class="bi bi-arrows-move"></i> <span>View More</span></a></li>
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
                                     <h6><%=productList.name %></h6>
                                     <a href="/addToCart/<%= productList._id %> " class="add-cart">+ Add To Cart</a>
                                     <h5><%=productList.price %></h5>
-                                    <div class="product__color__select">
-                                        <label for="pc-4">
-                                            <input type="radio" id="pc-4">
-                                        </label>
-                                        <label class="active black" for="pc-5">
-                                            <input type="radio" id="pc-5">
-                                        </label>
-                                        <label class="grey" for="pc-6">
-                                            <input type="radio" id="pc-6">
-                                        </label>
-                                    </div>
                                 </div>
                             </div>
                         </div>

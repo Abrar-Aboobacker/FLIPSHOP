@@ -41,11 +41,6 @@
     <div class="offcanvas-menu-overlay"></div>
     <div class="offcanvas-menu-wrapper">
         <div class="offcanvas__option">
-
-        
-            <div class="offcanvas__links">
-                <a href="/login">Sign in</a>
-            </div>
         </div>
         <div class="offcanvas__nav__option">
             <button class="search" data-toggle="modal" data-target="#exampleModalCenter" onclick="searched()" style=" background-color: white; border: none;"><i class="bi bi-search" style="color: black; font-size: 17px;"></i></button>
@@ -84,7 +79,7 @@
             <div class="row">
                 <div class="col-lg-3 col-md-6">
                     <div class="header__logo">
-                        <a href="./index.html"><img src="/user/img/logo.png" alt=""></a>
+                        <a href="/"><img src="/user/img/logo.png" alt=""></a>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6">
@@ -99,12 +94,10 @@
                                     <li><a href="/wishlist">Wishlist</a></li>
                                     <li><a href="/orders">Orders</a></li>
                                     <li><a href="/logout">LogOut</a></li>
-                                    <!-- <li><a href="./checkout.html">Check Out</a></li>
-                                    <li><a href="./blog-details.html">Blog Details</a></li> -->
                                 </ul>
                             </li>
                             <%}else{ %> 
-                                <li><a href="/login"class="btn btn-danger">Login</a></li>
+                                <li><a style="color: white; padding: 7px 30px 7px 30px; background-color: rgb(211, 9, 9);" href="/login"class="btn btn-danger">Login</a></li>
                                 <% } %> 
                         </ul>
                     </nav>

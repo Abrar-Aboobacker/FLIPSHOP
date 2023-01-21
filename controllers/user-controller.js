@@ -241,8 +241,9 @@ postOtp: async (req, res,next) => {
       }
       const id = req.params.id
       const cat = await category.findById(id)
+      const categories = await category.find().where()
       const pro = await product.find({category:cat.name})
-      res.render("user/catproduct",{pro,users,count})
+      res.render("user/catproduct",{pro,users,count,categories})
     }catch(e){
       next(new Error(e))
     }
