@@ -28,11 +28,16 @@
                         <!-- <h6 class="coupon__code"><span class="icon_tag_alt"></span> Have a coupon? <a href="#">Click
                         here</a> to enter your code</h6>
                         <h6 class="checkout__title">Select delivery Address</h6> -->
-                        <% if(error) {%> 
-                        <div class="alert alert-danger" role="alert">
-                            <%=error%> 
-                          </div>
-                          <% } %> 
+                          <%if(error) {%>
+                            <% if(error.length){%> 
+                            <div class="alert alert-success d-flex align-items-center" role="alert">
+                                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+                                <div>
+                                   <h2><%=error %></h2> 
+                                </div>
+                              </div>
+                            <% }%>
+                              <% } %> 
                         <p>
                             <button class="btn btn-primary" type="button" data-toggle="collapse" style="font-size: .6em; background-color: rgb(229, 54, 55); border: none;" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                               ADD new ADDRESS
@@ -159,8 +164,10 @@
                                 <li >Total <span  ><%=total%></span></li>
                                 <input type="text" name="totalPrice" value="<%=total%>" hidden>
                                 <input type="text" name="userId" id="" value="<%=users._id %>" hidden>
-                                <input class="checkout__input__checkbox" type="radio" id="html" name="address"  value="<%=adds.name %>  <%=adds.addressDetails%> <%=adds.locality%> <%=adds.district %> <%=adds.pin%> <%=adds.mobile%> " hidden>
-
+                                <% if(adds){%> 
+                                <input class="checkout__input__checkbox" type="radio" id="html" name="address"  value="<%=adds.name %>  <%=adds.addressDetails%> <%=adds.locality%> <%=adds.district %> <%=adds.pin%> <%=adds.mobile%>" hidden>
+                                <% }else{%>
+                                    <% } %>  
                             </ul>
                            
                             <p>Dear Customer, Kindly select your payment method given below:</p>
