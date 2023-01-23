@@ -33,7 +33,7 @@ module.exports={
               res.redirect('/admin/dashboard')
             }else{
               
-              req.session.adminLoginErr="INCORECT"
+              req.session.adminLoginErr="INCORECT" 
               res.redirect('/admin/adlogin') 
             }
           })
