@@ -101,7 +101,7 @@ postOtp: async (req, res,next) => {
                   else {
                     req.session.user=newUser
                     req.session.loggedIn=true
-                      res.redirect('/')
+                       res.redirect('/')
                   }
               })
           } else if (verification_check.status == "pending") {
