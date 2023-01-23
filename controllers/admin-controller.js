@@ -34,7 +34,7 @@ module.exports={
             }else{
               
               req.session.adminLoginErr="INCORECT"
-              res.redirect('/admin/adlogin')
+              res.redirect('/admin/adlogin') 
             }
           })
         }catch(e){
