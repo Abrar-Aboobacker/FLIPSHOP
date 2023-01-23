@@ -99,7 +99,8 @@ postOtp: async (req, res,next) => {
                       res.redirect('/signup')
                   }
                   else {
-                      req.session.loggedIn = newUser;
+                    req.session.user=newUser
+                    req.session.loggedIn=true
                       res.redirect('/')
                   }
               })
