@@ -27,14 +27,14 @@ module.exports={
       try{
         adminDatabase.adminlogin(req.body).then((response)=>{
 
-            if(response.status){
+            if(response.status){ 
               req.session.admin=response.admin
               req.session.adloggedIn=true
               res.redirect('/admin/dashboard')
             }else{
               
               req.session.adminLoginErr="INCORECT" 
-              res.redirect('/admin/adlogin') 
+              res.redirect('/admin/adlogin')  
             }
           })
         }catch(e){
