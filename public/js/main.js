@@ -191,11 +191,11 @@ function maiin($){
         url:'/admin/chart1',
         mathod:'get',
         success:(res)=>{
-            const month=[]
+            const month=['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
             const count=[]
-            res.salesRep.forEach(element => {
-                month.push(element._id.month)
-            });
+            // res.salesRep.forEach(element => {
+            //     month.push(element._id.month)
+            // });
             
             res.salesRep.forEach(element => {
                 count.push(element.count)
