@@ -34,7 +34,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                
+                                <% if(prd){%> 
                                     <%prd.productItems.forEach(function(prd){ %> 
                                
                                 <tr align="center">
@@ -59,6 +59,8 @@
                                     </td>
                                 </tr>
                                 <%  })%>
+                                <%}else{%>
+                                    <% } %>  
                             </tbody>
                         </table>
                     </div>
