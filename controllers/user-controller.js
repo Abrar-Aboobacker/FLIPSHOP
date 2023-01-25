@@ -357,24 +357,24 @@ postOtp: async (req, res,next) => {
     }
     },
     viewWishList:async (req,res,next)=>{
-      try{
+      // try{
       let users=req.session.user
       let id=req.session.user._id.toString()
-      const prd = await wishlist.findOne({userId:id}).populate('productItems')
+      var prd = await wishlist.findOne({userId:id}).populate('productItems')
       let count= null;
       if(users){
         count= users.cart.items.length
       }
-     const wishlists= prd.productItems
-      if (wishlists==null||wishlists==''){
+     console.log(prd.productItems+"hhhh");
+      if (prd==null||prd.productItems==""){
         res.render('user/wishlist-empty',{users,count})
       }else{
         res.render('user/wishlist',{users,prd,count})
       }
       
-    }catch(e){
-      next(new Error(e))
-    }
+    // }catch(e){
+    //   next(new Error(e))
+    // }
     },
     doAddToWishlist:async(req,res,next)=>{
       try{
