@@ -357,7 +357,7 @@ postOtp: async (req, res,next) => {
     }
     },
     viewWishList:async (req,res,next)=>{
-      // try{
+      try{
       let users=req.session.user
       let id=req.session.user._id.toString()
       var prd = await wishlist.findOne({userId:id}).populate('productItems')
@@ -371,9 +371,9 @@ postOtp: async (req, res,next) => {
         res.render('user/wishlist',{users,prd,count})
       }
       
-    // }catch(e){
-    //   next(new Error(e))
-    // }
+    }catch(e){
+      next(new Error(e))
+    }
     },
     doAddToWishlist:async(req,res,next)=>{
       try{
