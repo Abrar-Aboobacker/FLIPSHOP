@@ -679,7 +679,7 @@ postOtp: async (req, res,next) => {
       }catch(e){
         next(new Error(e))
       }
-    },
+    },
   search: async (req, res,next) => {
     try{
     const sResult = [];
